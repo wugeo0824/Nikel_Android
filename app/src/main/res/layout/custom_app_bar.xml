@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/colorPrimary"
+    android:layout_height="?android:actionBarSize">
+
+    <Button
+        android:paddingLeft="@dimen/keyline_12"
+        android:id="@+id/btnBack_appBar"
+        android:drawableLeft="@drawable/ic_arrow_left_24dp"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/tvTitle_appBar"
+        tools:text="HOME"
+        android:layout_width="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/btnCancel_appBar"
+        android:background="@color/colorPrimary"
+        android:text="Cancel"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

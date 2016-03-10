@@ -1,11 +1,10 @@
-package com.media2359.nikel;
+package com.media2359.nikel.view;
 
-import android.app.ActivityOptions;
-import android.content.Context;
-import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
@@ -13,13 +12,13 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.media2359.nikel.R;
+import com.media2359.nikel.utils.DisplayUtils;
+
 /**
  * Created by Xijun on 10/3/16.
  */
 public class WebViewActivity extends AppCompatActivity {
-
-    private final static String EXTRA_WEB_URL = "web_url";
-    private final static String EXTRA_WEB_TITLE = "web_title";
 
     private static final String webUrl = "http://www.uob.com.sg/uob-branches-and-atms/assets/uob-locator-new.html";
     private static final String webTitle = "Cash Deposit Machines";
@@ -60,6 +59,11 @@ public class WebViewActivity extends AppCompatActivity {
     private class mWebViewClient extends WebViewClient {
 
         @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+        }
+
+        @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             //load all web links inside the webview
             return false;
@@ -84,6 +88,16 @@ public class WebViewActivity extends AppCompatActivity {
             view.loadUrl("javascript:document.getElementById(\"menu\").setAttribute(\"style\",\"display:none;\");");
             // hide the side pane
             view.loadUrl("javascript:document.getElementsByClassName(\"sidePane\")[0].setAttribute(\"style\",\"display:none;\");");
+
+//            // make the map canvas same size as the phone screen
+//            int displayHeight = DisplayUtils.getDisplayHeight(WebViewActivity.this);
+//            int displayWidth = DisplayUtils.getDisplayWidth(WebViewActivity.this);
+//            view.loadUrl("javascript:document.getElementById(\"map-canvas\").setAttribute(\"style\",\"height:100%;\");");
+//            view.loadUrl("javascript:document.getElementById(\"map-canvas\").setAttribute(\"style\",\"width:100%;\");");
+//            view.loadUrl("javascript:document.getElementById(\"map-frame\").setAttribute(\"style\",\"height:"+ displayHeight+"px;\");");
+//            view.loadUrl("javascript:document.getElementById(\"map-frame\").setAttribute(\"style\",\"width:"+ displayWidth+"px;\");");
+
+//            view.requestLayout();
         }
     }
 

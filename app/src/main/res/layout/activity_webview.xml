@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:id="@+id/top_bar_webview"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
 
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            tools:text="Privacy Policy"
+            tools:text="Web"
             android:textSize="18sp"
             android:gravity="center"
             android:textColor="@color/white" />

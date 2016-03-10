@@ -6,26 +6,39 @@
 
     <application
         android:allowBackup="true"
+        android:name=".NikelApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:hardwareAccelerated="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+        <activity android:name=".view.MainActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
+        <activity android:name=".view.WebViewActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".WebViewActivity"
-            android:screenOrientation="portrait">
+        <activity android:name=".view.CaptureActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".view.LoginActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".view.ProfileActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".view.SplashActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SplashActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
