@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.media2359.nikel">
+    package="com.media2359.nickel">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
 
     <application
         android:allowBackup="true"
-        android:name=".NikelApplication"
+        android:name=".NickelApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:hardwareAccelerated="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.MainActivity"
+        <activity android:name="com.media2359.nickel.ui.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".view.WebViewActivity"
+        <activity android:name="com.media2359.nickel.ui.WebViewActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".view.CaptureActivity"
+        <activity android:name="com.media2359.nickel.ui.LoginActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".view.LoginActivity"
+        <activity android:name="com.media2359.nickel.ui.ProfileActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".view.ProfileActivity"
+        <activity android:name=".ui.CaptureActivity"
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".view.SplashActivity"
+            android:name="com.media2359.nickel.ui.SplashActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SplashActivity">

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/customAppBar"
+        layout="@layout/custom_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize"
+        android:layout_alignParentTop="true" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?android:actionBarSize">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.media2359.nickel.ui.customview.ProfileField
+                android:id="@+id/pfDisplayName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                app:tvHint="Name (First, Last)" />
+
+            <com.media2359.nickel.ui.customview.ProfileField
+                android:id="@+id/pfDOB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pfDisplayName"
+                app:tvHint="D.O.B" />
+
+            <com.media2359.nickel.ui.customview.ProfileField
+                android:id="@+id/pfStreetAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pfDOB"
+                app:tvHint="Street Address" />
+
+            <com.media2359.nickel.ui.customview.ProfileField
+                android:id="@+id/pfCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pfStreetAddress"
+                app:tvHint="City" />
+
+            <com.media2359.nickel.ui.customview.ProfileField
+                android:id="@+id/pfPostalCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pfCity"
+                app:tvHint="Postal Code" />
+
+
+            <ImageView
+                android:id="@+id/ivIDFront"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_below="@id/pfPostalCode" />
+
+            <Button
+                android:id="@+id/btnSaveChanges"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ivIDFront"
+                android:onClick="addPhoto"
+                android:text="@string/save_changes"
+                android:textAllCaps="false" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+</FrameLayout>

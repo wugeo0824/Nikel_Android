@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:enterFadeDuration="150" android:exitFadeDuration="150">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="22.5dp" />
+            <solid android:color="@color/dark_pink" />
+        </shape>
+    </item>
+    <!--<item android:state_enabled="false">-->
+        <!--<shape android:shape="rectangle">-->
+            <!--<corners android:radius="6dp" />-->
+            <!--<stroke android:width="1px" android:color="@color/paleBlueSky40" />-->
+            <!--<solid android:color="@android:color/transparent" />-->
+        <!--</shape>-->
+    <!--</item>-->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="22.5dp" />
+            <solid android:color="@color/pink" />
+        </shape>
+    </item>
+</selector>
