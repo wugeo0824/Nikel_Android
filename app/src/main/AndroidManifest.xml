@@ -26,10 +26,7 @@
         <activity android:name="com.media2359.nickel.ui.LoginActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="com.media2359.nickel.ui.ProfileActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".ui.CaptureActivity"
+        <activity android:name="com.media2359.nickel.ui.CaptureActivity"
             android:screenOrientation="portrait"/>
 
         <activity

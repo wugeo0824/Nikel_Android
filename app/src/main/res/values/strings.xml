@@ -10,6 +10,12 @@
     <string name="need_account">Need an account?</string>
     <string name="have_account">Have an account?</string>
     <string name="cancel">Cancel</string>
+    <string name="home">Home</string>
+    <string name="my_profile">My Profile</string>
+    <string name="my_recipients">My Recipients</string>
+    <string name="drawer_open">open drawer</string>
+    <string name="drawer_closed">close drawer</string>
+    <string name="join_nickel">Join Nickel</string>
     
     <string name="take_photo_instruction">Please take a photo of the front of your I.D</string>
 

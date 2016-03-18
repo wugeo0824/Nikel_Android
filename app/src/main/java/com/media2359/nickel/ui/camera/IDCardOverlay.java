@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
@@ -78,10 +79,48 @@ public class IDCardOverlay extends View {
 
         RectF card = new RectF(left,top,right,bottom);
 
+        Path path = RoundedRect(left,top,right,bottom,40,40,true);
+        osCanvas.drawPath(path,paint);
+
         //osCanvas.drawRect(card,paint);
-        osCanvas.drawRoundRect(card,0,0,paint);
+        //osCanvas.drawRoundRect(card,0,0,paint);
         //osCanvas.drawRoundRect(left,top,right,bottom,6,6,paint);
         //osCanvas.drawCircle(centerX, centerY, radius, paint);
+    }
+
+    static public Path RoundedRect(float left, float top, float right, float bottom, float rx, float ry, boolean conformToOriginalPost) {
+        Path path = new Path();
+        if (rx < 0) rx = 0;
+        if (ry < 0) ry = 0;
+        float width = right - left;
+        float height = bottom - top;
+        if (rx > width/2) rx = width/2;
+        if (ry > height/2) ry = height/2;
+        float widthMinusCorners = (width - (2 * rx));
+        float heightMinusCorners = (height - (2 * ry));
+
+        path.moveTo(right, top + ry);
+        path.rQuadTo(0, -ry, -rx, -ry);//top-right corner
+        path.rLineTo(-widthMinusCorners, 0);
+        path.rQuadTo(-rx, 0, -rx, ry); //top-left corner
+        path.rLineTo(0, heightMinusCorners);
+
+        if (conformToOriginalPost) {
+            path.rLineTo(0, ry);
+            path.rLineTo(width, 0);
+            path.rLineTo(0, -ry);
+        }
+        else {
+            path.rQuadTo(0, ry, rx, ry);//bottom-left corner
+            path.rLineTo(widthMinusCorners, 0);
+            path.rQuadTo(rx, 0, rx, -ry); //bottom-right corner
+        }
+
+        path.rLineTo(0, -heightMinusCorners);
+
+        path.close();//Given close, last lineto can be removed.
+
+        return path;
     }
     @Override
     protected void onDraw(Canvas canvas) {

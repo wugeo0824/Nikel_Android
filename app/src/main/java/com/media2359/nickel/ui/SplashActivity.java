@@ -13,8 +13,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //TODO: process any data if necessary
-        Intent i = new Intent(SplashActivity.this,MainActivity.class);
+        //TODO: process any data if necessary or Animation
+        Intent i = new Intent(SplashActivity.this,LoginActivity.class);
         startActivity(i);
         finish();
     }

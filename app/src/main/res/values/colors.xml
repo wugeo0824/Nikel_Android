@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="white40">#66FFFFFF</color>
     <color name="black">#000000</color>
     <color name="grey">#616161</color>
     <color name="pink">#ED1C91</color>
@@ -12,7 +13,7 @@
     <color name="dark_pink">#CE1784</color>
 
     <color name="nav_bar_color">#393939</color>
-    <color name="nav_bar_color_40">#40393939</color>
+    <color name="nav_bar_color_40">#66393939</color>
     <color name="text_color_normal">#4c4c4c</color>
     <color name="text_color_inactive">#b2b2b2</color>
     <color name="icon_color_inactive">#cccccc</color>

@@ -2,16 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/keyline_12">
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:layout_height="60dp">
 
     <ImageView
         android:id="@+id/ivFieldLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginRight="@dimen/keyline_16"
         android:layout_alignParentLeft="true"
-        android:layout_alignBottom="@+id/inputLayout"
-        android:padding="@dimen/keyline_12"
+        android:layout_centerVertical="true"
         android:src="@drawable/ic_person_black_24dp" />
 
     <android.support.design.widget.TextInputLayout
@@ -31,11 +32,9 @@
 
     <ImageView
         android:id="@+id/ivFieldStatus"
-        android:padding="@dimen/keyline_12"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:src="@drawable/ico_ok"
-        tools:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

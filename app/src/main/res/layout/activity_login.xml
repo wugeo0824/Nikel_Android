@@ -2,127 +2,163 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/splash_bg"
     android:paddingLeft="@dimen/login_vertical_margin"
-    android:paddingRight="@dimen/login_vertical_margin"
-    android:background="@drawable/splash_bg">
+    android:paddingRight="@dimen/login_vertical_margin">
 
     <ImageView
         android:id="@+id/ivLogo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/rlLoginContainer"
+        android:layout_above="@+id/centerAnchor"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="120dp"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp"
-        android:scaleType="fitCenter"
         android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         android:src="@drawable/logo_big" />
 
-    <Button
+    <TextView
+        android:id="@+id/tvNeedAccount"
+        style="@style/TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/rlLoginContainer"
         android:layout_alignRight="@+id/rlLoginContainer"
-        android:text="@string/need_account"
-        style="@style/TextButton"/>
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:text="@string/need_account" />
+
+    <View
+        android:id="@+id/centerAnchor"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
 
     <RelativeLayout
         android:id="@+id/rlLoginContainer"
-        android:layout_centerVertical="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
 
         <ImageView
             android:id="@+id/ivPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/etPhoneLogin"
             android:layout_alignParentLeft="true"
+            android:layout_alignTop="@+id/etPhoneLogin"
             android:scaleType="centerInside"
-            android:layout_alignTop="@+id/etPhone"
-            android:layout_alignBottom="@+id/etPhone"
-            android:src="@drawable/ico_sm_phone"/>
+            android:src="@drawable/ico_sm_phone" />
 
         <EditText
-            android:id="@+id/etPhone"
+            android:id="@+id/etPhoneLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/keyline_16"
+            android:layout_toRightOf="@+id/ivPhone"
             android:hint="@string/phone_number"
             android:inputType="phone"
-            android:layout_marginLeft="15dp"
-            android:theme="@style/LoginField"
-            android:layout_toRightOf="@+id/ivPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/white"
+            android:theme="@style/LoginField" />
 
         <ImageView
             android:id="@+id/ivPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ivPhone"
-            android:layout_alignLeft="@+id/ivPhone"
-            android:scaleType="centerInside"
-            android:layout_alignTop="@+id/etPassword"
             android:layout_alignBottom="@+id/etPassword"
-            android:src="@drawable/ico_sm_password"/>
+            android:layout_alignLeft="@+id/ivPhone"
+            android:layout_alignTop="@+id/etPassword"
+            android:layout_below="@+id/ivPhone"
+            android:scaleType="centerInside"
+            android:src="@drawable/ico_sm_password" />
 
         <EditText
             android:id="@+id/etPassword"
-            android:hint="@string/password"
-            android:fontFamily="sans-serif"
-            android:inputType="textPassword"
-            android:layout_below="@+id/etPhone"
-            android:theme="@style/LoginField"
-            android:layout_alignLeft="@+id/etPhone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/etPhoneLogin"
+            android:layout_below="@+id/etPhoneLogin"
+            android:fontFamily="sans-serif"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:theme="@style/LoginField" />
 
         <ImageView
             android:id="@+id/ivPasswordAgain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ivPassword"
-            android:visibility="gone"
-            android:layout_alignLeft="@+id/ivPhone"
-            android:scaleType="centerInside"
-            android:layout_alignTop="@+id/etPasswordAgain"
             android:layout_alignBottom="@+id/etPasswordAgain"
-            android:src="@drawable/ico_sm_password"/>
+            android:layout_alignLeft="@+id/ivPhone"
+            android:layout_alignTop="@+id/etPasswordAgain"
+            android:layout_below="@+id/ivPassword"
+            android:scaleType="centerInside"
+            android:src="@drawable/ico_sm_password"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/etPasswordAgain"
-            android:visibility="gone"
-            android:hint="@string/re_enter_password"
-            android:fontFamily="sans-serif"
-            android:inputType="textPassword"
-            android:layout_below="@+id/etPassword"
-            android:theme="@style/LoginField"
-            android:layout_alignLeft="@+id/etPhone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/etPhoneLogin"
+            android:layout_below="@+id/etPassword"
+            android:fontFamily="sans-serif"
+            android:hint="@string/re_enter_password"
+            android:inputType="textPassword"
+            android:theme="@style/LoginField"
+            android:visibility="gone" />
+
+        <!--<ImageView-->
+        <!--android:id="@+id/ivLanguage"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/ivPasswordAgain"-->
+        <!--android:layout_marginTop="@dimen/keyline_16"-->
+        <!--android:layout_alignLeft="@+id/ivPhone"-->
+        <!--android:scaleType="centerInside"-->
+        <!--android:src="@drawable/ico_sm_language"/>-->
+
+        <!--<android.support.v7.widget.AppCompatSpinner-->
+        <!--android:id="@+id/spinnerLanguage"-->
+        <!--android:layout_below="@+id/etPasswordAgain"-->
+        <!--android:layout_marginTop="@dimen/keyline_12"-->
+        <!--android:layout_alignLeft="@+id/etPhone"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+
+        <!--</android.support.v7.widget.AppCompatSpinner>-->
 
     </RelativeLayout>
 
-    <Button
+    <TextView
+        android:id="@+id/tvForgotPassword"
+        style="@style/TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rlLoginContainer"
         android:layout_alignRight="@+id/rlLoginContainer"
-        android:text="@string/forgot_password"
-        style="@style/TextButton"/>
+        android:layout_below="@+id/rlLoginContainer"
+        android:layout_marginTop="@dimen/keyline_12"
+        android:text="@string/forgot_password" />
 
     <TextView
+        android:id="@+id/tvPrivacyPolicy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
         android:layout_above="@+id/btnLogin"
         android:layout_marginBottom="@dimen/keyline_16"
-        android:textSize="@dimen/font_size_body"
-        android:text="@string/privacy_message_1"/>
+        android:gravity="center"
+        android:text="@string/privacy_message_1"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_body" />
 
     <Button
         android:id="@+id/btnLogin"
-        android:text="@string/sign_in"
-        android:layout_centerHorizontal="true"
+        style="@style/PinkButton"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
-        style="@style/PinkButton" />
+        android:text="@string/sign_in" />
 </RelativeLayout>

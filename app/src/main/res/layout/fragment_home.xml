@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/splash_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rlHomeNumbers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/card"
+        android:padding="@dimen/keyline_16">
+
+        <TextView
+            android:id="@+id/tvISend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/etSendAmount"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:text="I'm sending" />
+
+        <EditText
+            android:id="@+id/etSendAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/tvSGD"
+            android:layout_alignLeft="@+id/etGetAmount"
+            android:layout_alignRight="@+id/etGetAmount"
+            android:background="@drawable/edittext_oval" />
+
+        <TextView
+            android:id="@+id/tvSGD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/etSendAmount"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:drawableLeft="@drawable/flag_sg"
+            android:gravity="center"
+            android:text="SGD" />
+
+        <TextView
+            android:id="@+id/tvRecipientGets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/etGetAmount"
+            android:layout_alignLeft="@+id/tvISend"
+            android:layout_below="@+id/tvISend"
+            android:layout_marginTop="@dimen/keyline_12"
+            android:gravity="center"
+            android:text="Recipient Gets" />
+
+        <EditText
+            android:id="@+id/etGetAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etSendAmount"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="@dimen/keyline_12"
+            android:layout_toLeftOf="@+id/tvIDR"
+            android:layout_toRightOf="@+id/tvRecipientGets"
+            android:background="@drawable/edittext_oval" />
+
+        <TextView
+            android:id="@+id/tvIDR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tvSGD"
+            android:layout_alignTop="@id/tvRecipientGets"
+            android:layout_below="@+id/tvSGD"
+            android:drawableLeft="@drawable/flag_id"
+            android:gravity="center"
+            android:text="IDR" />
+
+        <TextView
+            android:id="@+id/tvOneDollar"
+            android:text="1 SGD ="
+            android:layout_below="@id/tvRecipientGets"
+            android:layout_marginTop="@dimen/keyline_12"
+            android:layout_alignLeft="@+id/tvISend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvExchangeRate"
+            android:text="9,682.00"
+            android:layout_toLeftOf="@+id/tvIDR2"
+            android:layout_alignTop="@+id/tvOneDollar"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/pink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvIDR2"
+            android:text="IDR"
+            android:layout_alignLeft="@+id/tvSGD"
+            android:layout_below="@+id/tvIDR"
+            android:layout_alignTop="@+id/tvOneDollar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvFees"
+            android:text="Fees:"
+            android:layout_below="@id/tvOneDollar"
+            android:layout_marginTop="@dimen/keyline_12"
+            android:layout_alignLeft="@+id/tvISend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvFeesAmount"
+            android:text="7.00"
+            android:layout_toLeftOf="@+id/tvSGD2"
+            android:layout_alignTop="@+id/tvFees"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/pink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvSGD2"
+            android:text="SGD"
+            android:layout_alignLeft="@+id/tvSGD"
+            android:layout_below="@+id/tvIDR2"
+            android:layout_alignTop="@+id/tvFees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvTotal"
+            android:text="Total:"
+            android:layout_below="@id/tvFees"
+            android:layout_marginTop="@dimen/keyline_12"
+            android:layout_alignLeft="@+id/tvISend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvTotalAmount"
+            android:text="7.00"
+            android:layout_toLeftOf="@+id/tvSGD3"
+            android:layout_alignTop="@+id/tvTotal"
+            android:layout_marginRight="5dp"
+            android:textColor="@color/pink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvSGD3"
+            android:text="SGD"
+            android:layout_alignLeft="@+id/tvSGD"
+            android:layout_below="@+id/tvSGD2"
+            android:layout_alignTop="@+id/tvTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_marginTop="@dimen/keyline_12"
+        android:background="@drawable/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="@dimen/keyline_16"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My Information"/>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
