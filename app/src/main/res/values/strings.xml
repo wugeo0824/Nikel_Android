@@ -16,6 +16,7 @@
     <string name="drawer_open">open drawer</string>
     <string name="drawer_closed">close drawer</string>
     <string name="join_nickel">Join Nickel</string>
+    <string name="send_money_to">Send Money to %s</string>
     
     <string name="take_photo_instruction">Please take a photo of the front of your I.D</string>
 

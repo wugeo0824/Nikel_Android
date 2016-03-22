@@ -20,7 +20,7 @@
     </style>
 
     <style name="LoginField">
-        <item name="android:textColorHint">@color/white</item>
+        <item name="android:textColorHint">@color/text_color_inactive</item>
         <item name="android:textSize">@dimen/font_size_body</item>
         <item name="colorControlNormal">@color/icon_color_inactive</item>
         <item name="colorControlActivated">@color/white</item>

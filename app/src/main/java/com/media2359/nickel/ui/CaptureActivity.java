@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.ui.camera.CameraPreview;
@@ -26,7 +27,7 @@ import java.util.Date;
 
 /**
  * The general steps for creating a custom camera interface for your application are as follows:
- * <p/>
+ * <p>
  * Detect and Access Camera - Create code to check for the existence of cameras and request access.
  * Create a Preview Class - Create a camera preview class that extends SurfaceView and implements the SurfaceHolder interface. This class previews the live images from the camera.
  * Build a Preview Layout - Once you have the camera preview class, create a view layout that incorporates the preview and the user interface controls you want.
@@ -48,7 +49,18 @@ public class CaptureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture);
 
-        checkCameraPermission();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (checkCameraHardware(getApplicationContext()))
+            checkCameraPermission();
+        else {
+            Toast.makeText(CaptureActivity.this, "Sorry, this device does not have a camera", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
     }
 
@@ -116,16 +128,16 @@ public class CaptureActivity extends AppCompatActivity {
     }
 
     @Override
-    public void finish() {
+    protected void onPause() {
         mCamera.release();
-        super.finish();
+        super.onPause();
     }
 
     private void initViews() {
         mCamera = getCameraInstance();
         mCameraPreview = new CameraPreview(this, mCamera);
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
-        preview.addView(mCameraPreview,0);
+        preview.addView(mCameraPreview, 0);
 
         Camera.Parameters params = mCamera.getParameters();
         if (params.getSupportedFocusModes().contains(

@@ -1,6 +1,5 @@
 package com.media2359.nickel.ui;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -45,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         initViews();
 
         manager = getSupportFragmentManager();
+
         switchFragment(new HomeFragment(), false);
     }
 
@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                     newFragment = null;
                     break;
             }
+
             if (newFragment != null) {
                 if (manager.getBackStackEntryCount() >= 1) //only maintain one entry on backStack
                     manager.popBackStack();
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                 switchFragment(newFragment, true);
                 item.setChecked(true);
             }
+
             mDrawerLayout.closeDrawers();
             return true;
         }
@@ -138,24 +140,32 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     }
 
 
-    private void switchFragment(Fragment fragment, boolean addToBackStack) {
+    public void switchFragment(Fragment fragment, boolean addToBackStack) {
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fl_container, fragment);
 
-        if (addToBackStack)
+        if (addToBackStack) {
             transaction.addToBackStack(null);
+        }
+        //transaction.setCustomAnimations(R.anim.fragment_slide_in_left,R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right,R.anim.fragment_slide_out_left);
 
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.show(fragment);
         transaction.commit();
     }
 
-    public void showLoadingSpinner(){
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    public void showLoadingSpinner() {
         mSpinnerFragment = new SpinnerFragment();
         manager.beginTransaction().add(R.id.fl_container, mSpinnerFragment).commit();
     }
 
-    public void dismissLoadingSpinner(){
-        if(mSpinnerFragment == null)
+    public void dismissLoadingSpinner() {
+        if (mSpinnerFragment == null)
             return;
 
         manager.beginTransaction().remove(mSpinnerFragment).commit();

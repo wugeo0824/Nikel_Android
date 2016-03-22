@@ -11,6 +11,7 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
@@ -55,7 +56,29 @@ public class LoginActivity extends AppCompatActivity {
         etPasswordAgain = (EditText) findViewById(R.id.etPasswordAgain);
         rlLoginContainer = (RelativeLayout) findViewById(R.id.rlLoginContainer);
         rlLoginContainer.setLayoutTransition(new LayoutTransition());
+    }
 
+    private boolean validPhone(){
+        String input = etPhone.getText().toString();
+        // TODO:
+        if(TextUtils.isEmpty(input)){
+            etPhone.setError("Please enter your phone number");
+            return false;
+        }else if(input.length() < 8){
+            etPhone.setError("Please enter full phone number");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean validPassword(){
+        String password = etPassword.getText().toString();
+        if(TextUtils.isEmpty(password)){
+            etPassword.setError("Please enter your password");
+            return false;
+        }
+        return true;
     }
 
     private void initPrivacyMessage() {
@@ -125,6 +148,13 @@ public class LoginActivity extends AppCompatActivity {
     private View.OnClickListener onSignInClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            if (!validPhone())
+                return;
+
+            if (!validPassword())
+                return;
+
             //TODO sign in
             Intent i = new Intent(LoginActivity.this,MainActivity.class);
             startActivity(i);
@@ -151,6 +181,13 @@ public class LoginActivity extends AppCompatActivity {
     private View.OnClickListener onJoinClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
+            if (!validPhone())
+                return;
+
+            if (!validPassword())
+                return;
+
             //TODO join nickel
             Intent i = new Intent(LoginActivity.this,MainActivity.class);
             startActivity(i);
