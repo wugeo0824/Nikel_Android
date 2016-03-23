@@ -2,13 +2,15 @@
 <resources>
     <declare-styleable name="ProfileField">
         <attr name="tvHint" format="string" />
-        <attr name="isCompleted" format="boolean"/>
-        <attr name="ivLeftImageRes" format="integer"/>
+        <attr name="isCompleted" format="boolean" />
+        <attr name="ivLeftImageRes" format="integer">
+
+        </attr>
         <attr name="inputType" format="integer">
-            <enum name="name" value="0"/>
-            <enum name="text" value="1"/>
-            <enum name="number" value="2"/>
-            <enum name="date" value="3"/>
+            <enum name="name" value="0" />
+            <enum name="text" value="1" />
+            <enum name="number" value="2" />
+            <enum name="date" value="3" />
         </attr>
     </declare-styleable>
 

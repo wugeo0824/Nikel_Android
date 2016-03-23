@@ -1,16 +1,22 @@
 package com.media2359.nickel.ui.customview;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.view.MotionEventCompat;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -19,10 +25,17 @@ import android.widget.TextView;
 import com.media2359.nickel.R;
 import com.media2359.nickel.utils.DisplayUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 /**
  * Created by Xijun on 10/3/16.
  */
 public class ProfileField extends RelativeLayout {
+
+    private static final String TAG = "ProfileField";
+    private boolean shouldIntercept = false;
 
 //    TextView tvFieldTitle;
     EditText etInputLayout;
@@ -60,45 +73,69 @@ public class ProfileField extends RelativeLayout {
             switch (inputType){
                 case 0:
                     // name
-                    etInputLayout.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME | InputType.TYPE_TEXT_FLAG_CAP_WORDS | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                    etInputLayout.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                     break;
                 case 1:
                     // text
-                    etInputLayout.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
+                    etInputLayout.setInputType(InputType.TYPE_CLASS_TEXT);
                     break;
                 case 2:
                     // number
-                    etInputLayout.setInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
+                    etInputLayout.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                     break;
                 case 3:
                     // date
-                    etInputLayout.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
+                    etInputLayout.setInputType(InputType.TYPE_CLASS_DATETIME | InputType.TYPE_DATETIME_VARIATION_DATE);
                     break;
                 default:
-                    etInputLayout.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
+                    etInputLayout.setInputType(InputType.TYPE_CLASS_TEXT);
                     break;
             }
 
             boolean enabled = a.getBoolean(R.styleable.ProfileField_isCompleted, true);
             setEnabledEditing(enabled);
 
-            @DrawableRes int drawableRes = a.getInt(R.styleable.ProfileField_ivLeftImageRes,R.drawable.ic_person_black_24dp);
-            ivLeftImage.setImageDrawable(getResources().getDrawable(drawableRes));
+            //@DrawableRes int drawableRes = a.getInt(R.styleable.ProfileField_ivLeftImageRes,R.drawable.ic_person_black_24dp);
+            Drawable drawable = a.getDrawable(R.styleable.ProfileField_ivLeftImageRes);
+            ivLeftImage.setImageDrawable(drawable);
+
+            etInputLayout.setOnKeyListener(onNextListener);
         }
     }
 
-    public void setShowCompletedStatus(boolean show){
-        if (show){
-            ivFieldStatus.setVisibility(VISIBLE);
+    private OnKeyListener onNextListener = new OnKeyListener() {
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_NAVIGATE_NEXT)) {
+                validateInput();
+                return true;
+            }
+            return false;
+        }
+    };
+
+    private void validateInput() {
+        if (etInputLayout.getText().toString().length() >3){
+            showCompletedStatus(true);
         }else{
-            ivFieldStatus.setVisibility(INVISIBLE);
+            showCompletedStatus(false);
+            showErrorMessage(true,"Please check here");
         }
     }
 
-    public void showErrorMessage(boolean show, @Nullable String text){
+    public void showCompletedStatus(boolean completed){
+        if (completed)
+            ivFieldStatus.setVisibility(VISIBLE);
+        else
+            ivFieldStatus.setVisibility(INVISIBLE);
+
+
+    }
+
+    public void showErrorMessage(boolean show, String text){
         if (show){
             inputLayout.setErrorEnabled(true);
-            inputLayout.setError(text);
+            etInputLayout.setError(text);
         }else{
             inputLayout.setErrorEnabled(false);
         }
@@ -123,5 +160,58 @@ public class ProfileField extends RelativeLayout {
                 }
             });
         }
+    }
+
+    public String getInput(){
+        return etInputLayout.getText().toString();
+    }
+
+    public EditText getEditText(){
+        return etInputLayout;
+    }
+
+    private DatePickerDialog dateOfBirth;
+    private SimpleDateFormat dateFormatter;
+
+    public void showCalendar(){
+        Calendar newCalendar = Calendar.getInstance();
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        dateOfBirth = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                etInputLayout.setText(dateFormatter.format(newDate.getTime()));
+            }
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        dateOfBirth.show();
+    }
+
+    public boolean isShouldIntercept() {
+        return shouldIntercept;
+    }
+
+    public void setShouldIntercept(boolean shouldIntercept) {
+        this.shouldIntercept = shouldIntercept;
+        etInputLayout.setFocusable(false);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        final int action = MotionEventCompat.getActionMasked(ev);
+        if (action == MotionEvent.ACTION_DOWN && shouldIntercept)
+            return true;
+
+        return super.onInterceptTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN && shouldIntercept){
+            showCalendar();
+            return true;
+        }
+        return false;
     }
 }

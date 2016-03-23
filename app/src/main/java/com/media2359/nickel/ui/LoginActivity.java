@@ -149,11 +149,11 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            if (!validPhone())
-                return;
-
-            if (!validPassword())
-                return;
+//            if (!validPhone())
+//                return;
+//
+//            if (!validPassword())
+//                return;
 
             //TODO sign in
             Intent i = new Intent(LoginActivity.this,MainActivity.class);
@@ -182,11 +182,11 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            if (!validPhone())
-                return;
-
-            if (!validPassword())
-                return;
+//            if (!validPhone())
+//                return;
+//
+//            if (!validPassword())
+//                return;
 
             //TODO join nickel
             Intent i = new Intent(LoginActivity.this,MainActivity.class);

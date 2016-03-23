@@ -2,6 +2,7 @@ package com.media2359.nickel.ui;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.ui.camera.CameraPreview;
+import com.media2359.nickel.ui.camera.ImageInputHelper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,7 +29,7 @@ import java.util.Date;
 
 /**
  * The general steps for creating a custom camera interface for your application are as follows:
- * <p>
+ * <p/>
  * Detect and Access Camera - Create code to check for the existence of cameras and request access.
  * Create a Preview Class - Create a camera preview class that extends SurfaceView and implements the SurfaceHolder interface. This class previews the live images from the camera.
  * Build a Preview Layout - Once you have the camera preview class, create a view layout that incorporates the preview and the user interface controls you want.
@@ -48,8 +50,14 @@ public class CaptureActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture);
-
     }
+
+//    private void hideStatusBar() {
+//        View decorView = getWindow().getDecorView();
+//        // Hide the status bar.
+//        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+//        decorView.setSystemUiVisibility(uiOptions);
+//    }
 
     @Override
     protected void onResume() {
@@ -72,27 +80,11 @@ public class CaptureActivity extends AppCompatActivity {
         // Here, thisActivity is the current activity
         if (permissionCheck
                 != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.CAMERA)) {
-
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            } else {
-
                 // No explanation needed, we can request the permission.
-
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CAMERA},
                         MY_PERMISSION_CAMERA);
 
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
         } else {
             initViews();
         }
@@ -109,11 +101,9 @@ public class CaptureActivity extends AppCompatActivity {
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-
                     initViews();
 
                 } else {
-
                     //TODO
                     finish();
                     // permission denied, boo! Disable the
@@ -121,16 +111,20 @@ public class CaptureActivity extends AppCompatActivity {
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
     @Override
     protected void onPause() {
-        mCamera.release();
         super.onPause();
+        releaseCamera();
+    }
+
+    private void releaseCamera(){
+        if (mCamera != null){
+            mCamera.release();        // release the camera for other applications
+            mCamera = null;
+        }
     }
 
     private void initViews() {
@@ -138,14 +132,6 @@ public class CaptureActivity extends AppCompatActivity {
         mCameraPreview = new CameraPreview(this, mCamera);
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mCameraPreview, 0);
-
-        Camera.Parameters params = mCamera.getParameters();
-        if (params.getSupportedFocusModes().contains(
-                Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
-            params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
-        }
-        mCamera.setParameters(params);
-//        mCameraPreview = (CameraPreview) findViewById(R.id.camera_preview_2);
 
         captureButton = (Button) findViewById(R.id.button_capture);
         captureButton.setOnClickListener(new View.OnClickListener() {
@@ -196,9 +182,15 @@ public class CaptureActivity extends AppCompatActivity {
                 fos.write(data);
                 fos.close();
             } catch (FileNotFoundException e) {
-
+                e.printStackTrace();
             } catch (IOException e) {
+                e.printStackTrace();
             }
+
+            Intent intent = new Intent();
+            intent.putExtra(ImageInputHelper.DATA_PHOTO_FILE, pictureFile.getPath());
+            setResult(RESULT_OK,intent);
+            finish();
         }
     };
 

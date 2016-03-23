@@ -9,6 +9,8 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.media2359.nickel.ui.CaptureActivity;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -28,10 +30,14 @@ import java.util.Calendar;
  */
 public class ImageInputHelper {
 
-    public static final int REQUEST_PICTURE_FROM_GALLERY = 23;
-    public static final int REQUEST_PICTURE_FROM_CAMERA = 24;
-    public static final int REQUEST_CROP_PICTURE = 25;
+    public static final int REQUEST_PICTURE_FROM_GALLERY_FRONT = 231;
+    public static final int REQUEST_PICTURE_FROM_GALLERY_BACK = 232;
+    public static final int REQUEST_PICTURE_FROM_CAMERA_FRONT = 241;
+    public static final int REQUEST_PICTURE_FROM_CAMERA_BACK = 242;
+//    public static final int REQUEST_CROP_PICTURE = 25;
     private static final String TAG = "ImageInputHelper";
+
+    public static final String DATA_PHOTO_FILE = "Extra_photo_camera";
 
     private File tempFileFromSource = null;
     private Uri tempUriFromSource = null;
@@ -83,22 +89,40 @@ public class ImageInputHelper {
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if ((requestCode == REQUEST_PICTURE_FROM_GALLERY) && (resultCode == Activity.RESULT_OK)) {
+        if ((requestCode == REQUEST_PICTURE_FROM_GALLERY_FRONT) && (resultCode == Activity.RESULT_OK)) {
 
             Log.d(TAG, "Image selected from gallery");
             copyImageToApplicationFolder(data.getData());
-            imageActionListener.onImageSelectedFromGallery(Uri.fromFile(tempFileFromSource), tempFileFromSource);
+            imageActionListener.onImageSelectedFromGallery(Uri.fromFile(tempFileFromSource), tempFileFromSource, true);
 
-        } else if ((requestCode == REQUEST_PICTURE_FROM_CAMERA) && (resultCode == Activity.RESULT_OK)) {
+        } else if ((requestCode == REQUEST_PICTURE_FROM_GALLERY_BACK) && (resultCode == Activity.RESULT_OK)){
+            Log.d(TAG, "Image selected from gallery");
+            copyImageToApplicationFolder(data.getData());
+            imageActionListener.onImageSelectedFromGallery(Uri.fromFile(tempFileFromSource), tempFileFromSource, false);
+        } else if((requestCode == REQUEST_PICTURE_FROM_CAMERA_FRONT) && (resultCode == Activity.RESULT_OK)) {
 
             Log.d(TAG, "Image selected from camera");
-            imageActionListener.onImageTakenFromCamera(tempUriFromSource, tempFileFromSource);
+            String filePath = data.getStringExtra(DATA_PHOTO_FILE);
+            File result = new File(filePath);
+            tempFileFromSource = result;
+            tempUriFromSource = Uri.fromFile(result);
+            imageActionListener.onImageTakenFromCamera(tempUriFromSource, tempFileFromSource, true);
 
-        } else if ((requestCode == REQUEST_CROP_PICTURE) && (resultCode == Activity.RESULT_OK)) {
+        } else if((requestCode == REQUEST_PICTURE_FROM_CAMERA_BACK) && (resultCode == Activity.RESULT_OK)) {
 
-            Log.d(TAG, "Image returned from crop");
-            imageActionListener.onImageCropped(tempUriFromCrop, tempFileFromCrop);
+            Log.d(TAG, "Image selected from camera");
+            String filePath = data.getStringExtra(DATA_PHOTO_FILE);
+            File result = new File(filePath);
+            tempFileFromSource = result;
+            tempUriFromSource = Uri.fromFile(result);
+            imageActionListener.onImageTakenFromCamera(tempUriFromSource, tempFileFromSource, false);
         }
+
+//        } else if ((requestCode == REQUEST_CROP_PICTURE) && (resultCode == Activity.RESULT_OK)) {
+//
+//            Log.d(TAG, "Image returned from crop");
+//            imageActionListener.onImageCropped(tempUriFromCrop, tempFileFromCrop);
+//        }
     }
 
     private void copyImageToApplicationFolder(Uri data) {
@@ -160,7 +184,7 @@ public class ImageInputHelper {
      * Starts an intent for selecting image from gallery. The result is returned to the
      * onImageSelectedFromGallery() method of the ImageSelectionListener interface.
      */
-    public void selectImageFromGallery() {
+    public void selectImageFromGallery(boolean isFront) {
         checkListener();
 
         if (tempFileFromSource == null) {
@@ -179,10 +203,17 @@ public class ImageInputHelper {
 //        intent.addCategory(Intent.CATEGORY_OPENABLE);
 //        intent.setType("image/*");
 
+        int requestCode;
+
+        if (isFront)
+            requestCode = REQUEST_PICTURE_FROM_GALLERY_FRONT;
+        else
+            requestCode = REQUEST_PICTURE_FROM_GALLERY_BACK;
+
         if (fragment == null) {
-            mContext.startActivityForResult(intent, REQUEST_PICTURE_FROM_GALLERY);
+            mContext.startActivityForResult(intent, requestCode);
         } else {
-            fragment.startActivityForResult(intent, REQUEST_PICTURE_FROM_GALLERY);
+            fragment.startActivityForResult(intent, requestCode);
         }
     }
 
@@ -190,7 +221,7 @@ public class ImageInputHelper {
      * Starts an intent for taking photo with camera. The result is returned to the
      * onImageTakenFromCamera() method of the ImageSelectionListener interface.
      */
-    public void takePhotoWithCamera() {
+    public void takePhotoWithCamera(boolean isFront) {
         checkListener();
 
         if (tempFileFromSource == null) {
@@ -202,56 +233,66 @@ public class ImageInputHelper {
             }
         }
 
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, tempUriFromSource);
+//        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, tempUriFromSource);
+
+        int requestCode;
+
+        if (isFront)
+            requestCode = REQUEST_PICTURE_FROM_CAMERA_FRONT;
+        else
+            requestCode = REQUEST_PICTURE_FROM_CAMERA_BACK;
+
         if (fragment == null) {
-            mContext.startActivityForResult(intent, REQUEST_PICTURE_FROM_CAMERA);
+            Intent intent = new Intent(mContext, CaptureActivity.class);
+            mContext.startActivityForResult(intent, requestCode);
         } else {
-            fragment.startActivityForResult(intent, REQUEST_PICTURE_FROM_CAMERA);
+            Intent intent = new Intent(fragment.getActivity(),CaptureActivity.class);
+            fragment.startActivityForResult(intent, requestCode);
         }
     }
 
-    /**
-     * Starts an intent for cropping an image that is saved in the uri. The result is
-     * returned to the onImageCropped() method of the ImageSelectionListener interface.
-     *
-     * @param uri     uri that contains the data of the image to crop
-     * @param outputX width of the result image
-     * @param outputY height of the result image
-     * @param aspectX horizontal ratio value while cutting the image
-     * @param aspectY vertical ratio value of while cutting the image
-     */
-    public void requestCropImage(Uri uri, int outputX, int outputY, int aspectX, int aspectY) {
-        checkListener();
-
-        if (tempFileFromCrop == null) {
-            try {
-                tempFileFromCrop = File.createTempFile("crop", "png", mContext.getExternalCacheDir());
-                tempUriFromCrop = Uri.fromFile(tempFileFromCrop);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        // open crop intent when user selects image
-        final Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        intent.putExtra("output", tempUriFromCrop);
-        intent.putExtra("outputX", outputX);
-        intent.putExtra("outputY", outputY);
-        intent.putExtra("aspectX", aspectX);
-        intent.putExtra("aspectY", aspectY);
-        intent.putExtra("scale", true);
-        intent.putExtra("noFaceDetection", true);
-//        intent.putExtra("crop", true);
-//        intent.putExtra("return-data", true);
-
-        if (fragment == null) {
-            mContext.startActivityForResult(intent, REQUEST_CROP_PICTURE);
-        } else {
-            fragment.startActivityForResult(intent, REQUEST_CROP_PICTURE);
-        }
-    }
+//    /**
+//     * Starts an intent for cropping an image that is saved in the uri. The result is
+//     * returned to the onImageCropped() method of the ImageSelectionListener interface.
+//     *
+//     * @param uri     uri that contains the data of the image to crop
+//     * @param outputX width of the result image
+//     * @param outputY height of the result image
+//     * @param aspectX horizontal ratio value while cutting the image
+//     * @param aspectY vertical ratio value of while cutting the image
+//     */
+//    public void requestCropImage(Uri uri, int outputX, int outputY, int aspectX, int aspectY) {
+//        checkListener();
+//
+//        if (tempFileFromCrop == null) {
+//            try {
+//                tempFileFromCrop = File.createTempFile("crop", "png", mContext.getExternalCacheDir());
+//                tempUriFromCrop = Uri.fromFile(tempFileFromCrop);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        // open crop intent when user selects image
+//        final Intent intent = new Intent("com.android.camera.action.CROP");
+//        intent.setDataAndType(uri, "image/*");
+//        intent.putExtra("output", tempUriFromCrop);
+//        intent.putExtra("outputX", outputX);
+//        intent.putExtra("outputY", outputY);
+//        intent.putExtra("aspectX", aspectX);
+//        intent.putExtra("aspectY", aspectY);
+//        intent.putExtra("scale", true);
+//        intent.putExtra("noFaceDetection", true);
+////        intent.putExtra("crop", true);
+////        intent.putExtra("return-data", true);
+//
+//        if (fragment == null) {
+//            mContext.startActivityForResult(intent, REQUEST_CROP_PICTURE);
+//        } else {
+//            fragment.startActivityForResult(intent, REQUEST_CROP_PICTURE);
+//        }
+//    }
 
     private void checkListener() {
         if (imageActionListener == null) {
@@ -263,10 +304,10 @@ public class ImageInputHelper {
      * Listener interface for receiving callbacks from the ImageInputHelper.
      */
     public interface ImageActionListener {
-        void onImageSelectedFromGallery(Uri uri, File imageFile);
+        void onImageSelectedFromGallery(Uri uri, File imageFile, boolean isFront);
 
-        void onImageTakenFromCamera(Uri uri, File imageFile);
+        void onImageTakenFromCamera(Uri uri, File imageFile, boolean isFront);
 
-        void onImageCropped(Uri uri, File imageFile);
+        //void onImageCropped(Uri uri, File imageFile);
     }
 }

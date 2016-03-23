@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        mDrawerToggle.syncState();
+        //mDrawerToggle.syncState();
 
         tvTitle = (TextView) findViewById(R.id.tvToolbarTitle);
 

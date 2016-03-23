@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.media2359.nickel.R;
+import com.media2359.nickel.utils.DisplayUtils;
 
 /**
  * Created by Xijun on 15/3/16.
@@ -20,7 +21,7 @@ import com.media2359.nickel.R;
 public class IDCardOverlay extends View {
 
     private Bitmap bitmap;
-    private Canvas canvas;
+    //private Canvas canvas;
 
     public IDCardOverlay(Context context) {
         super(context);
@@ -38,8 +39,8 @@ public class IDCardOverlay extends View {
     }
 
     private void init() {
-        bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-        canvas = new Canvas(bitmap);
+        //bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        //canvas = new Canvas(bitmap);
     }
 
     @Override
@@ -69,21 +70,20 @@ public class IDCardOverlay extends View {
         float centerX = getWidth() / 2;
         float centerY = getHeight() / 2;
         float radius = getResources().getDimensionPixelSize(R.dimen.radius);
-        float height = getResources().getDimensionPixelSize(R.dimen.card_overlay_height);
-        float width = getResources().getDimensionPixelSize(R.dimen.card_overlay_width);
-
+        float width = DisplayUtils.getDisplayWidth(getContext()) - radius;
+        float height = width / 1.585f; // normal ID card follows dimension 85.6mm x 53.98mm, that translates to 1.585 aspect ratio
         float top = centerY + height / 2;
         float bottom = centerY - height / 2;
         float left = centerX - width / 2;
         float right = centerX + width / 2;
 
-        RectF card = new RectF(left,top,right,bottom);
+        RectF card = new RectF(left, top, right, bottom);
 
-        Path path = RoundedRect(left,top,right,bottom,40,40,true);
-        osCanvas.drawPath(path,paint);
+        //Path path = RoundedRect(left,top,right,bottom,6,6,false);
+        //osCanvas.drawPath(path,paint);
 
-        //osCanvas.drawRect(card,paint);
-        //osCanvas.drawRoundRect(card,0,0,paint);
+        osCanvas.drawRect(card, paint);
+        //osCanvas.drawRoundRect(card,6,6,paint);
         //osCanvas.drawRoundRect(left,top,right,bottom,6,6,paint);
         //osCanvas.drawCircle(centerX, centerY, radius, paint);
     }
@@ -94,8 +94,8 @@ public class IDCardOverlay extends View {
         if (ry < 0) ry = 0;
         float width = right - left;
         float height = bottom - top;
-        if (rx > width/2) rx = width/2;
-        if (ry > height/2) ry = height/2;
+        if (rx > width / 2) rx = width / 2;
+        if (ry > height / 2) ry = height / 2;
         float widthMinusCorners = (width - (2 * rx));
         float heightMinusCorners = (height - (2 * ry));
 
@@ -109,8 +109,7 @@ public class IDCardOverlay extends View {
             path.rLineTo(0, ry);
             path.rLineTo(width, 0);
             path.rLineTo(0, -ry);
-        }
-        else {
+        } else {
             path.rQuadTo(0, ry, rx, ry);//bottom-left corner
             path.rLineTo(widthMinusCorners, 0);
             path.rQuadTo(rx, 0, rx, -ry); //bottom-right corner
@@ -122,6 +121,7 @@ public class IDCardOverlay extends View {
 
         return path;
     }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

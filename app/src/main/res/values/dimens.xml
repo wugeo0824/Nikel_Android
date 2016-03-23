@@ -13,4 +13,7 @@
 
     <dimen name="keyline_16">16dp</dimen>
     <dimen name="keyline_12">12dp</dimen>
+
+    <dimen name="card_holder_height">120dp</dimen>
+    <dimen name="card_holder_width">190dp</dimen>
 </resources>

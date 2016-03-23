@@ -4,8 +4,11 @@ import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.Camera;
 import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,6 +22,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private SurfaceHolder mHolder;
     private Camera mCamera;
     private List<Camera.Size> mSupportedPreviewSizes;
+    private Camera.Size mPreviewSize;
 
     public CameraPreview(Context context, Camera camera) {
         super(context);
@@ -35,8 +39,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public void surfaceCreated(SurfaceHolder holder) {
         // The Surface has been created, now tell the camera where to draw the preview.
 
-        List<Camera.Size> localSizes = mCamera.getParameters().getSupportedPreviewSizes();
-        mSupportedPreviewSizes = localSizes;
+        mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
         requestLayout();
 
         try {
@@ -69,11 +72,53 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         // set preview size and make any resize, rotate or
         // reformatting changes here
+        mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);
+
         Camera.Parameters parameters = mCamera.getParameters();
-        parameters.setPreviewSize(mSupportedPreviewSizes.get(0).width, mSupportedPreviewSizes.get(0).height);
-        requestLayout();
+        parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+        //requestLayout();
+
+        //AUTO FOCUS!
+        if (parameters.getSupportedFocusModes().contains(
+                Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+        }
+
+        //AUTO MODE!
+        if (parameters.getSupportedSceneModes().contains(Camera.Parameters.SCENE_MODE_AUTO)){
+            parameters.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
+        }
+
+        Display display = ((WindowManager)getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+
+        //ROTATE PHOTO!
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, info);
+        int rotation = display.getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0: degrees = 0; break; //Natural orientation
+            case Surface.ROTATION_90: degrees = 90; break; //Landscape left
+            case Surface.ROTATION_180: degrees = 180; break;//Upside down
+            case Surface.ROTATION_270: degrees = 270; break;//Landscape right
+        }
+        int rotate = (info.orientation - degrees + 360) % 360;
+
+        parameters.setRotation(rotate);
+
         mCamera.setParameters(parameters);
-        mCamera.setDisplayOrientation(90);
+
+
+
+        if(rotation == Surface.ROTATION_0)
+        {
+            mCamera.setDisplayOrientation(90);
+        }
+
+        if(rotation == Surface.ROTATION_270)
+        {
+            mCamera.setDisplayOrientation(180);
+        }
 
         // start preview with new settings
         try {
@@ -84,4 +129,38 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             Log.d(TAG, "Error starting camera preview: " + e.getMessage());
         }
     }
+
+
+    private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
+        final double ASPECT_TOLERANCE = 0.1;
+        double targetRatio=(double)h / w;
+
+        if (sizes == null) return null;
+
+        Camera.Size optimalSize = null;
+        double minDiff = Double.MAX_VALUE;
+
+        int targetHeight = h;
+
+        for (Camera.Size size : sizes) {
+            double ratio = (double) size.width / size.height;
+            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
+            if (Math.abs(size.height - targetHeight) < minDiff) {
+                optimalSize = size;
+                minDiff = Math.abs(size.height - targetHeight);
+            }
+        }
+
+        if (optimalSize == null) {
+            minDiff = Double.MAX_VALUE;
+            for (Camera.Size size : sizes) {
+                if (Math.abs(size.height - targetHeight) < minDiff) {
+                    optimalSize = size;
+                    minDiff = Math.abs(size.height - targetHeight);
+                }
+            }
+        }
+        return optimalSize;
+    }
+
 }
