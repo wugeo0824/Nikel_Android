@@ -106,9 +106,9 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                 case R.id.nav_profile:
                     newFragment = new ProfileFragment();
                     break;
-                case R.id.nav_recipients:
-                    newFragment = new RecipientFragment();
-                    break;
+//                case R.id.nav_recipients:
+//                    newFragment = new RecipientFragment();
+//                    break;
                 case R.id.nav_settings:
                     //newFragment = new SettingsFragment();
                     break;
@@ -159,6 +159,9 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         super.onBackPressed();
     }
 
+    public void switchRecipientFragment(int position){
+
+    }
     public void showLoadingSpinner() {
         mSpinnerFragment = new SpinnerFragment();
         manager.beginTransaction().add(R.id.fl_container, mSpinnerFragment).commit();

@@ -194,7 +194,14 @@ public class ProfileField extends RelativeLayout {
 
     public void setShouldIntercept(boolean shouldIntercept) {
         this.shouldIntercept = shouldIntercept;
-        etInputLayout.setFocusable(false);
+        etInputLayout.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus && etInputLayout.getText().toString().length()<=0){
+                    showCalendar();
+                }
+            }
+        });
     }
 
     @Override

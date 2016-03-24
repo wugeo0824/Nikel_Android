@@ -10,7 +10,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
+import com.media2359.nickel.event.OnRecipientEditClickEvent;
 import com.media2359.nickel.model.DummyRecipient;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Xijun on 21/3/16.
@@ -43,6 +46,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
             @Override
             public void onClick(View v) {
                 //TODO: edit recipient
+                EventBus.getDefault().post(new OnRecipientEditClickEvent(getAdapterPosition()));
             }
         });
 

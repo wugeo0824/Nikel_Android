@@ -6,8 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/keyline_12"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/keyline_12">
 
         <com.media2359.nickel.ui.customview.ProfileField
@@ -55,14 +54,36 @@
             app:ivLeftImageRes="@drawable/ico_address3"
             app:tvHint="Postal Code" />
 
-        <!--<ImageView-->
-        <!--android:layout_marginLeft="@dimen/keyline_12"-->
-        <!--android:padding="@dimen/keyline_12"-->
-        <!--android:layout_below="@id/pfPostalCode"-->
-        <!--android:layout_alignLeft="@id/pfPostalCode"-->
-        <!--android:src="@drawable/ico_document"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content" />-->
+        <ImageView
+            android:id="@+id/ivDocType"
+            android:layout_width="18dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="@dimen/keyline_16"
+            android:layout_below="@id/pfPostalCode"
+            android:src="@drawable/ico_document" />
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/spinnerDocType"
+            android:entries="@array/document_types"
+            android:layout_toRightOf="@+id/ivDocType"
+            android:paddingLeft="4dp"
+            android:layout_below="@id/pfPostalCode"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+
+        </android.support.v7.widget.AppCompatSpinner>
+
+
+        <com.media2359.nickel.ui.customview.ProfileField
+            android:id="@+id/pfDocumentID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinnerDocType"
+            app:inputType="text"
+            app:ivLeftImageRes="@drawable/ico_document"
+            app:tvHint="Document ID" />
 
 
         <ImageView
@@ -79,8 +100,9 @@
             android:id="@+id/tvPhotoID"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:paddingLeft="4dp"
+            android:layout_below="@+id/pfDocumentID"
             android:layout_marginRight="20dp"
-            android:layout_below="@+id/pfPostalCode"
             android:layout_toRightOf="@+id/ivPhotoID"
             android:gravity="center_vertical"
             android:text="Photo of ID"
@@ -88,13 +110,13 @@
 
         <RelativeLayout
             android:id="@+id/rlIDPhotoContainer"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/tvPhotoID"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
             android:background="@drawable/square_grey_box"
-            android:layout_below="@id/tvPhotoID">
+            android:padding="10dp">
 
             <View
                 android:id="@+id/photoCenter"
@@ -128,21 +150,21 @@
 
             <ImageView
                 android:id="@+id/ivIDFront"
-                android:layout_marginRight="@dimen/keyline_12"
                 android:layout_width="@dimen/card_holder_width"
-                android:layout_toLeftOf="@+id/photoCenter"
                 android:layout_height="@dimen/card_holder_height"
                 android:layout_below="@+id/tvIDFront"
+                android:layout_marginRight="@dimen/keyline_12"
                 android:layout_marginTop="@dimen/keyline_12"
+                android:layout_toLeftOf="@+id/photoCenter"
                 android:src="@drawable/id_missing_front" />
 
             <ImageView
                 android:id="@+id/ivIDBack"
-                android:layout_marginLeft="@dimen/keyline_12"
                 android:layout_width="@dimen/card_holder_width"
                 android:layout_height="@dimen/card_holder_height"
                 android:layout_alignLeft="@+id/tvIDBack"
                 android:layout_below="@+id/tvIDBack"
+                android:layout_marginLeft="@dimen/keyline_12"
                 android:layout_marginTop="@dimen/keyline_12"
                 android:src="@drawable/id_missing_back" />
 

@@ -12,7 +12,10 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.ui.camera.ImageInputHelper;
@@ -28,6 +31,8 @@ public class ProfileFragment extends BaseFragment implements ImageInputHelper.Im
     private ProfileField pfName, pfDOB, pfStreet, pfCity, pfPostal;
     private ImageView ivIDFront, ivIDBack;
     private ImageInputHelper imageInputHelper;
+    private TextView tvIDFront, tvIDBack;
+    private Spinner documentTypes;
 
     @Nullable
     @Override
@@ -54,9 +59,20 @@ public class ProfileFragment extends BaseFragment implements ImageInputHelper.Im
         ivIDFront.setOnClickListener(pickImageFront);
         ivIDBack.setOnClickListener(pickImageBack);
 
+        tvIDFront = (TextView) view.findViewById(R.id.tvIDFront);
+        tvIDBack = (TextView) view.findViewById(R.id.tvIDBack);
+        documentTypes = (Spinner) view.findViewById(R.id.spinnerDocType);
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.document_types, R.layout.item_spinner_entry);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        documentTypes.setAdapter(adapter);
     }
 
-    private void showSelectionDialog(final boolean isFront){
+    private void showSelectionDialog(final boolean isFront) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle("Get your photo from Gallery?")
@@ -96,26 +112,32 @@ public class ProfileFragment extends BaseFragment implements ImageInputHelper.Im
     @Override
     public void onPause() {
         super.onPause();
-
     }
 
     @Override
     public void onImageSelectedFromGallery(Uri uri, File imageFile, boolean isFront) {
         Bitmap thumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(imageFile.getPath()), getResources().getDimensionPixelSize(R.dimen.card_holder_width), getResources().getDimensionPixelSize(R.dimen.card_holder_height));
 
-        if (isFront)
+        if (isFront) {
             ivIDFront.setImageBitmap(thumbImage);
-        else
+            tvIDFront.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_ok, 0, 0, 0);
+        } else {
             ivIDBack.setImageBitmap(thumbImage);
+            tvIDBack.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ico_ok), null, null, null);
+        }
+
     }
 
     @Override
     public void onImageTakenFromCamera(Uri uri, File imageFile, boolean isFront) {
         Bitmap thumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(imageFile.getPath()), getResources().getDimensionPixelSize(R.dimen.card_holder_width), getResources().getDimensionPixelSize(R.dimen.card_holder_height));
-        if (isFront)
+        if (isFront) {
             ivIDFront.setImageBitmap(thumbImage);
-        else
+            tvIDFront.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ico_ok), null, null, null);
+        } else {
             ivIDBack.setImageBitmap(thumbImage);
+            tvIDBack.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ico_ok), null, null, null);
+        }
     }
 
 //    @Override
@@ -126,7 +148,7 @@ public class ProfileFragment extends BaseFragment implements ImageInputHelper.Im
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        imageInputHelper.onActivityResult(requestCode,resultCode,data);
+        imageInputHelper.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

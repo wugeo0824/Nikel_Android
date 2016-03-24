@@ -15,9 +15,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
+import com.media2359.nickel.event.OnRecipientEditClickEvent;
 import com.media2359.nickel.model.DummyRecipient;
 import com.media2359.nickel.ui.MainActivity;
 import com.media2359.nickel.ui.adapter.RecipientAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -128,11 +132,26 @@ public class HomeFragment extends BaseFragment {
 
             etSendAmount.addTextChangedListener(this);
 
-
-
-
         }
     };
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onEvent(OnRecipientEditClickEvent onRecipientEditClickEvent){
+        //TODO: change to actual ID
+        mainActivity.switchFragment(RecipientFragment.newInstance(onRecipientEditClickEvent.getPosition()),true);
+    }
 
     private void getRecipients() {
         DummyRecipient a = new DummyRecipient("Husband", "BRI 281973021894");
@@ -143,6 +162,7 @@ public class HomeFragment extends BaseFragment {
         b.setExpanded(false);
         c.setExpanded(false);
         d.setExpanded(false);
+        dataList.clear();
         dataList.add(a);
         dataList.add(b);
         dataList.add(c);

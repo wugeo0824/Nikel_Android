@@ -26,6 +26,7 @@
             android:id="@+id/etInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColorHint="@color/text_color_normal"
             android:singleLine="true"
             tools:hint="Name" />
     </android.support.design.widget.TextInputLayout>

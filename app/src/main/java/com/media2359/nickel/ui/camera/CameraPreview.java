@@ -39,10 +39,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public void surfaceCreated(SurfaceHolder holder) {
         // The Surface has been created, now tell the camera where to draw the preview.
 
-        mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
-        requestLayout();
-
         try {
+            mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
+            requestLayout();
+
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
         } catch (IOException e) {
@@ -70,55 +70,57 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             // ignore: tried to stop a non-existent preview
         }
 
-        // set preview size and make any resize, rotate or
-        // reformatting changes here
-        mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);
+        if (mCamera.getParameters() != null){
+            // set preview size and make any resize, rotate or
+            // reformatting changes here
+            mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);
 
-        Camera.Parameters parameters = mCamera.getParameters();
-        parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
-        //requestLayout();
+            Camera.Parameters parameters = mCamera.getParameters();
+            parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+            //requestLayout();
 
-        //AUTO FOCUS!
-        if (parameters.getSupportedFocusModes().contains(
-                Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
-            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+            //AUTO FOCUS!
+            if (parameters.getSupportedFocusModes().contains(
+                    Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
+                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+            }
+
+            //AUTO MODE!
+            if (parameters.getSupportedSceneModes() != null && parameters.getSupportedSceneModes().contains(Camera.Parameters.SCENE_MODE_AUTO)){
+                parameters.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
+            }
+
+            Display display = ((WindowManager)getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+
+            //ROTATE PHOTO!
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, info);
+            int rotation = display.getRotation();
+            int degrees = 0;
+            switch (rotation) {
+                case Surface.ROTATION_0: degrees = 0; break; //Natural orientation
+                case Surface.ROTATION_90: degrees = 90; break; //Landscape left
+                case Surface.ROTATION_180: degrees = 180; break;//Upside down
+                case Surface.ROTATION_270: degrees = 270; break;//Landscape right
+            }
+            int rotate = (info.orientation - degrees + 360) % 360;
+
+            parameters.setRotation(rotate);
+
+            mCamera.setParameters(parameters);
+
+
+            if(rotation == Surface.ROTATION_0)
+            {
+                mCamera.setDisplayOrientation(90);
+            }
+
+            if(rotation == Surface.ROTATION_270)
+            {
+                mCamera.setDisplayOrientation(180);
+            }
         }
 
-        //AUTO MODE!
-        if (parameters.getSupportedSceneModes().contains(Camera.Parameters.SCENE_MODE_AUTO)){
-            parameters.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
-        }
-
-        Display display = ((WindowManager)getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-
-        //ROTATE PHOTO!
-        Camera.CameraInfo info = new Camera.CameraInfo();
-        Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, info);
-        int rotation = display.getRotation();
-        int degrees = 0;
-        switch (rotation) {
-            case Surface.ROTATION_0: degrees = 0; break; //Natural orientation
-            case Surface.ROTATION_90: degrees = 90; break; //Landscape left
-            case Surface.ROTATION_180: degrees = 180; break;//Upside down
-            case Surface.ROTATION_270: degrees = 270; break;//Landscape right
-        }
-        int rotate = (info.orientation - degrees + 360) % 360;
-
-        parameters.setRotation(rotate);
-
-        mCamera.setParameters(parameters);
-
-
-
-        if(rotation == Surface.ROTATION_0)
-        {
-            mCamera.setDisplayOrientation(90);
-        }
-
-        if(rotation == Surface.ROTATION_270)
-        {
-            mCamera.setDisplayOrientation(180);
-        }
 
         // start preview with new settings
         try {

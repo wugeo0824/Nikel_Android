@@ -107,6 +107,7 @@
             android:fontFamily="sans-serif"
             android:hint="@string/re_enter_password"
             android:inputType="textPassword"
+            android:textColor="@color/white"
             android:theme="@style/LoginField"
             android:visibility="gone" />
 

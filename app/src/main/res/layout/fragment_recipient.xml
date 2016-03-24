@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <LinearLayout
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.media2359.nickel.ui.customview.ProfileField
+            android:id="@+id/pfReciDisplayName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:inputType="name"
+            app:ivLeftImageRes="@drawable/ico_name"
+            app:tvHint="Display Name" />
+
+        <com.media2359.nickel.ui.customview.ProfileField
+            android:id="@+id/pfReciName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:inputType="name"
+            app:ivLeftImageRes="@drawable/ico_name"
+            app:tvHint="Name (First, Last)" />
+
+        <com.media2359.nickel.ui.customview.ProfileField
+            android:id="@+id/pfReciPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:inputType="number"
+            app:ivLeftImageRes="@drawable/ico_phone"
+            app:tvHint="Phone Number" />
+
+        <com.media2359.nickel.ui.customview.ProfileField
+            android:id="@+id/pfReciStreet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:inputType="text"
+            app:ivLeftImageRes="@drawable/ico_address1"
+            app:tvHint="Street Address" />
+
+        <com.media2359.nickel.ui.customview.ProfileField
+            android:id="@+id/pfReciCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:inputType="text"
+            app:ivLeftImageRes="@drawable/ico_address2"
+            app:tvHint="City" />
+
+        <com.media2359.nickel.ui.customview.ProfileField
+            android:id="@+id/pfReciPostal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:inputType="number"
+            app:ivLeftImageRes="@drawable/ico_address3"
+            app:tvHint="Postal Code" />
+
+        <com.media2359.nickel.ui.customview.ProfileField
+            android:id="@+id/pfReciBankName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:inputType="text"
+            app:ivLeftImageRes="@drawable/ico_bank"
+            app:tvHint="Bank Name" />
+
+        <com.media2359.nickel.ui.customview.ProfileField
+            android:id="@+id/pfReciBankAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:inputType="number"
+            app:ivLeftImageRes="@drawable/ico_bank"
+            app:tvHint="Bank Account Number" />
+
+        <com.media2359.nickel.ui.customview.ProfileField
+            android:id="@+id/pfReciBankAccountConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:inputType="number"
+            app:ivLeftImageRes="@drawable/ico_bank"
+            app:tvHint="Confirm Bank Account Number" />
+
+        <Button
+            android:id="@+id/btnSaveChanges"
+            style="@style/PinkButton"
+            android:layout_below="@id/rlIDPhotoContainer"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/keyline_16"
+            android:text="@string/save_changes"
+            android:textAllCaps="false" />
+
+
+    </LinearLayout>
+</ScrollView>
+
