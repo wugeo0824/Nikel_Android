@@ -1,7 +1,6 @@
 package com.media2359.nickel.ui.camera;
 
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.hardware.Camera;
 import android.util.Log;
 import android.view.Display;

@@ -1,8 +1,11 @@
 package com.media2359.nickel;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.squareup.picasso.Picasso;
 
 import okhttp3.OkHttpClient;
@@ -11,6 +14,8 @@ import okhttp3.OkHttpClient;
  * Created by Xijun on 10/3/16.
  */
 public class NickelApplication extends Application {
+
+    private RefWatcher refWatcher;
 
     @Override
     public void onCreate() {
@@ -24,5 +29,14 @@ public class NickelApplication extends Application {
 
         Picasso.setSingletonInstance(picasso);
 
+        refWatcher = LeakCanary.install(this);
+
     }
+
+    public static RefWatcher getRefWatcher(Context context) {
+        NickelApplication application = (NickelApplication) context.getApplicationContext();
+        return application.refWatcher;
+    }
+
+
 }

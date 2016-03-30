@@ -186,83 +186,99 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tvMyInformation"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_marginLeft="@dimen/keyline_16"
-        android:drawableLeft="@drawable/ico_ok"
-        android:drawablePadding="5dp"
-        android:gravity="center_vertical"
-        android:text="My Information"
-        android:textColor="@drawable/dark_text_onpressed" />
+        android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_margin="5dp"
-        android:background="@drawable/card">
-
-        <ImageView
-            android:id="@+id/ivMyInfoLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="@dimen/keyline_16"
-            android:layout_marginRight="@dimen/keyline_16"
-            android:scaleType="centerInside"
-            android:src="@drawable/ico_name_reversed" />
-
-
-        <TextView
-            android:id="@+id/tvMyName"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/ivMyInfoLeft"
-            android:gravity="center_vertical"
-            android:textColor="@color/text_color_normal"
-            android:textSize="16sp"
-            android:text="Dian Sastro" />
+            android:layout_height="wrap_content">
 
-        <ImageButton
-            android:id="@+id/btnMyInfoEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/button_edit_profile"
-            android:padding="@dimen/keyline_16"
-            android:scaleType="centerInside"
-            android:src="@drawable/ico_edit_reversed" />
+            <TextView
+                android:id="@+id/tvMyInformation"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_marginLeft="@dimen/keyline_16"
+                android:drawableLeft="@drawable/ico_ok"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="My Information"
+                android:textColor="@color/text_color_normal" />
 
-    </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/card">
 
-    <TextView
-        android:id="@+id/tvAddRecipient"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_marginLeft="@dimen/keyline_16"
-        android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/ico_add"
-        android:drawablePadding="5dp"
-        android:gravity="center_vertical"
-        android:text="Add New Recipients"
-        android:textColor="@drawable/dark_text_onpressed" />
+                <ImageView
+                    android:id="@+id/ivMyInfoLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="@dimen/keyline_16"
+                    android:layout_marginRight="@dimen/keyline_16"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ico_name_reversed" />
 
-    <FrameLayout
-        android:id="@+id/flRecipientsContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/card">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvRecipients"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/home_background"
-            tools:listitem="@layout/item_recipient_row_expanded" />
+                <TextView
+                    android:id="@+id/tvMyName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@id/ivMyInfoLeft"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_color_normal"
+                    android:textSize="16sp"
+                    android:text="Dian Sastro" />
 
-    </FrameLayout>
+                <ImageButton
+                    android:id="@+id/btnMyInfoEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/button_edit_profile"
+                    android:padding="@dimen/keyline_16"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ico_edit_reversed" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvAddRecipient"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_marginLeft="@dimen/keyline_16"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/ico_add"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="Add New Recipients"
+                android:textColor="@drawable/text_on_pressed_dark" />
+
+            <FrameLayout
+                android:id="@+id/flRecipientsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/card">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvRecipients"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/home_background"
+                    tools:listitem="@layout/item_recipient_row_expanded" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
 </LinearLayout>

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/splash_bg"
     android:paddingLeft="@dimen/login_vertical_margin"
     android:paddingRight="@dimen/login_vertical_margin">
@@ -22,6 +23,7 @@
     <TextView
         android:id="@+id/tvNeedAccount"
         style="@style/TextButton"
+        android:padding="@dimen/keyline_12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/rlLoginContainer"
@@ -136,6 +138,7 @@
 
     <TextView
         android:id="@+id/tvForgotPassword"
+        android:padding="@dimen/keyline_12"
         style="@style/TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -151,7 +154,7 @@
         android:layout_above="@+id/btnLogin"
         android:layout_marginBottom="@dimen/keyline_16"
         android:gravity="center"
-        android:text="@string/privacy_message_1"
+        tools:text="@string/privacy_message_1"
         android:textColor="@color/white"
         android:textSize="@dimen/font_size_body" />
 

@@ -44,6 +44,7 @@ public class CaptureActivity extends AppCompatActivity {
     private Camera mCamera;
     private CameraPreview mCameraPreview;
     private Button captureButton;
+    private FrameLayout preview;
 
 
     @Override
@@ -130,7 +131,7 @@ public class CaptureActivity extends AppCompatActivity {
     private void initViews() {
         mCamera = getCameraInstance();
         mCameraPreview = new CameraPreview(this, mCamera);
-        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+        preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mCameraPreview, 0);
 
         captureButton = (Button) findViewById(R.id.button_capture);

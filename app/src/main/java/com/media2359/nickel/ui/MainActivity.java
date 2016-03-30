@@ -2,8 +2,10 @@ package com.media2359.nickel.ui;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -18,15 +20,16 @@ import android.widget.TextView;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.ui.fragments.BaseFragment;
+import com.media2359.nickel.ui.fragments.ConfirmationFragment;
 import com.media2359.nickel.ui.fragments.HomeFragment;
+import com.media2359.nickel.ui.customview.PaymentConfirmationDialog;
 import com.media2359.nickel.ui.fragments.ProfileFragment;
-import com.media2359.nickel.ui.fragments.RecipientFragment;
 import com.media2359.nickel.ui.fragments.SpinnerFragment;
 
 /**
  * This handles the transaction logic
  */
-public class MainActivity extends AppCompatActivity implements BaseFragment.FragmentVisibleListener {
+public class MainActivity extends AppCompatActivity implements BaseFragment.FragmentVisibleListener, PaymentConfirmationDialog.ConfirmationDialogListener {
 
     private FragmentManager manager;
     private MenuItem menuCancel;
@@ -35,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     private ActionBarDrawerToggle mDrawerToggle;
     private TextView tvTitle;
     private Fragment mSpinnerFragment;
+    private NavigationView navigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +53,20 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         switchFragment(new HomeFragment(), false);
     }
 
+
+    @Override
+    public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onPostCreate(savedInstanceState, persistentState);
+        mDrawerToggle.syncState();
+    }
+
     private void initViews() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("");
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_main);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
         }
@@ -111,7 +123,9 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 //                    break;
                 case R.id.nav_settings:
                     //newFragment = new SettingsFragment();
-                    break;
+                    return false;
+                case R.id.nav_logout:
+                    return false;
                 default:
                     newFragment = null;
                     break;
@@ -147,7 +161,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         if (addToBackStack) {
             transaction.addToBackStack(null);
         }
-        //transaction.setCustomAnimations(R.anim.fragment_slide_in_left,R.anim.fragment_slide_in_right, R.anim.fragment_slide_out_right,R.anim.fragment_slide_out_left);
+
+        updateDrawerItem(fragment);
 
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.show(fragment);
@@ -157,6 +172,17 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if (getCurrentFragment() !=null){
+            updateDrawerItem(getCurrentFragment());
+        }
+    }
+
+    private void updateDrawerItem(Fragment fragment){
+        if (fragment instanceof ProfileFragment){
+            navigationView.setCheckedItem(R.id.nav_profile);
+        }else{
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
     }
 
     public void switchRecipientFragment(int position){
@@ -189,12 +215,6 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         return true;
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menuCancel = menu.findItem(R.id.action_cancel);
-        menuCancel.setVisible(false);
-        return super.onPrepareOptionsMenu(menu);
-    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -210,9 +230,6 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.action_cancel:
-                //TODO
-                return false;
             case android.R.id.home:
                 return false;
             default:
@@ -222,7 +239,31 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
     @Override
     public void setPageTitle(String title) {
-        //getSupportActionBar().setTitle(title);
         tvTitle.setText(title);
+    }
+
+    PaymentConfirmationDialog paymentConfirmationDialog;
+
+    public void showPaymentConfirmationDialog(String sendTo, float sendAmount, float exchangeRate){
+        if (paymentConfirmationDialog != null){
+            paymentConfirmationDialog.dismiss();
+        }
+        paymentConfirmationDialog = PaymentConfirmationDialog.newInstance("",0,0);
+        paymentConfirmationDialog.show(getSupportFragmentManager(),"PaymentConfirmation");
+    }
+
+    /**
+     * Responds to the payment confirmation dialog
+     * Do necessary transactions
+     * @param dialog
+     */
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        switchFragment(ConfirmationFragment.newInstance("www.google.com.sg"),true);
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        //TODO
     }
 }

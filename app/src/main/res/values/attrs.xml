@@ -3,9 +3,8 @@
     <declare-styleable name="ProfileField">
         <attr name="tvHint" format="string" />
         <attr name="isCompleted" format="boolean" />
-        <attr name="ivLeftImageRes" format="integer">
-
-        </attr>
+        <attr name="ivLeftImageRes" format="integer"/>
+        <attr name="errorMessage" format="string"/>
         <attr name="inputType" format="integer">
             <enum name="name" value="0" />
             <enum name="text" value="1" />

@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             app:inputType="name"
+            app:errorMessage="Please enter your full name"
             app:ivLeftImageRes="@drawable/ico_name"
             app:tvHint="Name (First, Last)" />
 
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/pfDisplayName"
             app:inputType="date"
+            app:errorMessage="Please enter your correct Date of Birth"
             app:ivLeftImageRes="@drawable/ico_dob"
             app:tvHint="D.O.B" />
 
@@ -33,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/pfDOB"
             app:inputType="text"
+            app:errorMessage="Please enter your full address"
             app:ivLeftImageRes="@drawable/ico_address1"
             app:tvHint="Street Address" />
 
@@ -42,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/pfStreetAddress"
             app:inputType="text"
+            app:errorMessage="Please enter full name of the city"
             app:ivLeftImageRes="@drawable/ico_address2"
             app:tvHint="City" />
 
@@ -51,6 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/pfCity"
             app:inputType="number"
+            app:errorMessage="Please enter full postal code"
             app:ivLeftImageRes="@drawable/ico_address3"
             app:tvHint="Postal Code" />
 
@@ -82,6 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/spinnerDocType"
             app:inputType="text"
+            app:errorMessage="Please enter full document ID"
             app:ivLeftImageRes="@drawable/ico_document"
             app:tvHint="Document ID" />
 
@@ -115,7 +121,7 @@
             android:layout_below="@id/tvPhotoID"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
-            android:background="@drawable/square_grey_box"
+            android:background="@drawable/shape_square_grey_box"
             android:padding="10dp">
 
             <View

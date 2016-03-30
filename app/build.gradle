@@ -20,22 +20,24 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:design:23.2.1'
-
     //includes Retrofit
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
-    compile ('com.squareup.retrofit2:converter-simplexml:2.0.0-beta4') {
+    compile('com.squareup.retrofit2:converter-simplexml:2.0.0-beta4') {
         exclude group: 'xpp3', module: 'xpp3'
         exclude group: 'stax', module: 'stax-api'
         exclude group: 'stax', module: 'stax'
     }
-    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2' //We are using this because we need to integrate with OKHTTP3. Once Picasso releases a new update with inbuilt support, we should be able to remove this
+    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
+    //We are using this because we need to integrate with OKHTTP3. Once Picasso releases a new update with inbuilt support, we should be able to remove this
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'org.greenrobot:eventbus:3.0.0'
-
     compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
+    compile files('libs/core-3.2.1.jar')
 
+    //mermory leak check
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1' // or 1.4-beta2
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/grey</color>
+    <color name="colorPrimary">@color/nav_bar_color</color>
     <color name="colorPrimaryDark">@color/black</color>
     <color name="colorAccent">#FF4081</color>
 

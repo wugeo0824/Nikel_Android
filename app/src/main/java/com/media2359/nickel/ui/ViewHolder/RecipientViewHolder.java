@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.event.OnRecipientEditClickEvent;
+import com.media2359.nickel.event.OnSendMoneyClickEvent;
 import com.media2359.nickel.model.DummyRecipient;
 
 import org.greenrobot.eventbus.EventBus;
@@ -54,6 +55,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
             @Override
             public void onClick(View v) {
                 //TODO: send money
+                EventBus.getDefault().post(new OnSendMoneyClickEvent(getAdapterPosition()));
             }
         });
 

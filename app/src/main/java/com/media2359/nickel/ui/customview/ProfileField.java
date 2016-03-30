@@ -4,26 +4,20 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.MotionEventCompat;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.media2359.nickel.R;
-import com.media2359.nickel.utils.DisplayUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,6 +36,7 @@ public class ProfileField extends RelativeLayout {
     ImageView ivFieldStatus;
     TextInputLayout inputLayout;
     ImageView ivLeftImage;
+    String errorMessage = "Please check here";
 
 
     public ProfileField(Context context, AttributeSet attrs) {
@@ -77,7 +72,7 @@ public class ProfileField extends RelativeLayout {
                     break;
                 case 1:
                     // text
-                    etInputLayout.setInputType(InputType.TYPE_CLASS_TEXT);
+                    etInputLayout.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
                     break;
                 case 2:
                     // number
@@ -94,6 +89,8 @@ public class ProfileField extends RelativeLayout {
 
             boolean enabled = a.getBoolean(R.styleable.ProfileField_isCompleted, true);
             setEnabledEditing(enabled);
+
+            errorMessage = a.getString(R.styleable.ProfileField_errorMessage);
 
             //@DrawableRes int drawableRes = a.getInt(R.styleable.ProfileField_ivLeftImageRes,R.drawable.ic_person_black_24dp);
             Drawable drawable = a.getDrawable(R.styleable.ProfileField_ivLeftImageRes);
@@ -119,7 +116,7 @@ public class ProfileField extends RelativeLayout {
             showCompletedStatus(true);
         }else{
             showCompletedStatus(false);
-            showErrorMessage(true,"Please check here");
+            showErrorMessage(true,errorMessage);
         }
     }
 

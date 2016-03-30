@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.event.OnRecipientEditClickEvent;
+import com.media2359.nickel.event.OnSendMoneyClickEvent;
 import com.media2359.nickel.model.DummyRecipient;
 import com.media2359.nickel.ui.MainActivity;
 import com.media2359.nickel.ui.adapter.RecipientAdapter;
@@ -26,7 +27,6 @@ import org.greenrobot.eventbus.Subscribe;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Xijun on 10/3/16.
@@ -59,7 +59,7 @@ public class HomeFragment extends BaseFragment {
         rv = (RecyclerView) view.findViewById(R.id.rvRecipients);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.setHasFixedSize(true);
-        recipientAdapter = new RecipientAdapter(getActivity(),dataList);
+        recipientAdapter = new RecipientAdapter(getActivity(), dataList);
         rv.setAdapter(recipientAdapter);
 
         tvExchangeRate = (TextView) view.findViewById(R.id.tvExchangeRate);
@@ -81,8 +81,8 @@ public class HomeFragment extends BaseFragment {
     private View.OnClickListener onMyInfoClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mainActivity.overridePendingTransition(R.anim.fragment_slide_in_left,R.anim.fragment_slide_out_left);
-            mainActivity.switchFragment(new ProfileFragment(),true);
+            mainActivity.overridePendingTransition(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left);
+            mainActivity.switchFragment(new ProfileFragment(), true);
         }
     };
 
@@ -102,13 +102,13 @@ public class HomeFragment extends BaseFragment {
             etSendAmount.removeTextChangedListener(this);
 
             //update the get amount
-            if (!TextUtils.isEmpty(s.toString())){
-                long sendAmount = Long.parseLong(s.toString().replaceAll(",",""));
+            if (!TextUtils.isEmpty(s.toString())) {
+                long sendAmount = Long.parseLong(s.toString().replaceAll(",", ""));
                 getAmount = sendAmount * exchangeRate;
-                tvGetAmount.setText(""+getAmount);
+                tvGetAmount.setText("" + getAmount);
                 totalAmount = sendAmount + fee;
-                tvTotal.setText(""+totalAmount);
-            }else{
+                tvTotal.setText("" + totalAmount);
+            } else {
                 tvGetAmount.setText("");
                 tvTotal.setText("" + fee);
             }
@@ -148,9 +148,16 @@ public class HomeFragment extends BaseFragment {
     }
 
     @Subscribe
-    public void onEvent(OnRecipientEditClickEvent onRecipientEditClickEvent){
+    public void onEvent(OnRecipientEditClickEvent onRecipientEditClickEvent) {
         //TODO: change to actual ID
-        mainActivity.switchFragment(RecipientFragment.newInstance(onRecipientEditClickEvent.getPosition()),true);
+        mainActivity.switchFragment(RecipientFragment.newInstance(onRecipientEditClickEvent.getPosition()), true);
+    }
+
+    @Subscribe
+    public void onEvent(OnSendMoneyClickEvent onSendMoneyClickEvent) {
+        //TODO: change to actual value
+        mainActivity.showPaymentConfirmationDialog("", 0, 0);
+
     }
 
     private void getRecipients() {

@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import com.media2359.nickel.NickelApplication;
+import com.squareup.leakcanary.RefWatcher;
+
 /**
  * Created by Xijun on 17/3/16.
  */
@@ -37,6 +40,13 @@ public abstract class BaseFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = NickelApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
     /**
