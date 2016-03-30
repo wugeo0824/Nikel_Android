@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="120dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="@dimen/login_logo_top_margin"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:src="@drawable/logo_big" />
@@ -154,6 +154,7 @@
         android:layout_above="@+id/btnLogin"
         android:layout_marginBottom="@dimen/keyline_16"
         android:gravity="center"
+        android:visibility="gone"
         tools:text="@string/privacy_message_1"
         android:textColor="@color/white"
         android:textSize="@dimen/font_size_body" />

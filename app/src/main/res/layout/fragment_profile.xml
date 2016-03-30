@@ -7,6 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline_12"
         android:layout_marginBottom="@dimen/keyline_12">
 
         <com.media2359.nickel.ui.customview.ProfileField

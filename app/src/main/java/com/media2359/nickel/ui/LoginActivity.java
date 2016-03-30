@@ -1,5 +1,6 @@
 package com.media2359.nickel.ui;
 
+import android.animation.Animator;
 import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -13,7 +14,9 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,12 +24,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
+import com.media2359.nickel.utils.DisplayUtils;
 
 /**
  * This handles login and sign up
  */
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String TAG = "LoginActivity";
+
+    private static final int ANIMATION_DURATION = 1500;
     private ImageView ivLogo,ivPasswordAgain;
     private TextView tvNeedAccount,tvForgotPassword,tvPrivacyPolicy;
     private Button btnSignIn;
@@ -38,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initViews();
-        showLogin();
+        playAnimation();
     }
 
     private void initViews() {
@@ -55,6 +62,54 @@ public class LoginActivity extends AppCompatActivity {
         etPasswordAgain = (EditText) findViewById(R.id.etPasswordAgain);
         rlLoginContainer = (RelativeLayout) findViewById(R.id.rlLoginContainer);
         rlLoginContainer.setLayoutTransition(new LayoutTransition());
+    }
+
+    private void playAnimation() {
+        int distanceY = DisplayUtils.getDisplayHeight(LoginActivity.this);
+        ivLogo.setY(distanceY);
+        hideOrShowAllElements(true);
+        ivLogo.animate().translationY(0).setDuration(ANIMATION_DURATION).setInterpolator(new DecelerateInterpolator())
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        hideOrShowAllElements(false);
+                        showLogin();
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        hideOrShowAllElements(false);
+                        showLogin();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                })
+                .start();
+        Log.d(TAG, "playAnimation: logo y position" + ivLogo.getY());
+
+    }
+
+    private void hideOrShowAllElements(boolean hide){
+        if (hide){
+            tvNeedAccount.setVisibility(View.INVISIBLE);
+            rlLoginContainer.setVisibility(View.INVISIBLE);
+            tvForgotPassword.setVisibility(View.INVISIBLE);
+            btnSignIn.setVisibility(View.INVISIBLE);
+        }else{
+            tvNeedAccount.setVisibility(View.VISIBLE);
+            rlLoginContainer.setVisibility(View.VISIBLE);
+            tvForgotPassword.setVisibility(View.VISIBLE);
+            btnSignIn.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private boolean validPhone(){
@@ -189,8 +244,9 @@ public class LoginActivity extends AppCompatActivity {
 
             //TODO join nickel
             Intent i = new Intent(LoginActivity.this,MainActivity.class);
-            startActivity(i);
             finish();
+            startActivity(i);
+
         }
     };
 }
