@@ -6,21 +6,41 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/keyline_12"
-        android:layout_marginBottom="@dimen/keyline_12">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv"
-            android:layout_alignParentTop="true"
+        <FrameLayout
+            android:id="@+id/flProfileStatus"
+            android:layout_marginBottom="@dimen/keyline_12"
+            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="50dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/home_background"/>
+
+            <TextView
+                android:id="@+id/tvProfileStatus"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:text="@string/profile_status_pending"
+                android:gravity="center"
+                android:padding="@dimen/keyline_16"
+                android:drawableLeft="@drawable/ico_alert"
+                android:background="@color/home_background"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp" />
+
+        </FrameLayout>
+
 
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfDisplayName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:layout_below="@+id/flProfileStatus"
+            android:layout_marginTop="@dimen/keyline_12"
             app:inputType="name"
             app:errorMessage="Please enter your full name"
             app:ivLeftImageRes="@drawable/ico_name"

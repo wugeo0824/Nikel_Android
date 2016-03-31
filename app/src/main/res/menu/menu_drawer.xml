@@ -8,18 +8,18 @@
         <item
             android:id="@+id/nav_profile"
             android:title="My Profile" />
-        <item
-            android:id="@+id/nav_recipients"
-            android:title="Recipients" />
+        <!--<item-->
+            <!--android:id="@+id/nav_recipients"-->
+            <!--android:title="Recipients" />-->
         <item
             android:id="@+id/nav_history"
             android:title="History" />
         <item
             android:id="@+id/nav_rewards"
             android:title="Rewards" />
-        <item
-            android:id="@+id/nav_help"
-            android:title="Help" />
+        <!--<item-->
+            <!--android:id="@+id/nav_help"-->
+            <!--android:title="Help" />-->
         <item
             android:id="@+id/nav_sign_out"
             android:title="Sign Out" />

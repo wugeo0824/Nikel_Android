@@ -2,6 +2,7 @@ package com.media2359.nickel.ui;
 
 import android.animation.Animator;
 import android.animation.LayoutTransition;
+import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -48,11 +49,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initViews();
-        playAnimation();
     }
 
     private void initViews() {
         ivLogo = (ImageView) findViewById(R.id.ivLogo);
+        ivLogo.setAlpha(0f);
         ivPasswordAgain = (ImageView) findViewById(R.id.ivPasswordAgain);
         tvNeedAccount = (TextView) findViewById(R.id.tvNeedAccount);
         tvNeedAccount.setClickable(true);
@@ -73,11 +74,17 @@ public class LoginActivity extends AppCompatActivity {
         rlLoginContainer.setLayoutTransition(new LayoutTransition());
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        playAnimation();
+    }
+
     private void playAnimation() {
-        int distanceY = DisplayUtils.getDisplayHeight(LoginActivity.this);
-        ivLogo.setY(distanceY);
+        //int distanceY = DisplayUtils.getDisplayHeight(LoginActivity.this);
+        //ivLogo.setY(distanceY);
         hideOrShowAllElements(true);
-        ivLogo.animate().translationY(0).setDuration(ANIMATION_DURATION).setInterpolator(new DecelerateInterpolator())
+        ivLogo.animate().rotationY(720f).alpha(1f).setDuration(ANIMATION_DURATION).setInterpolator(new DecelerateInterpolator())
                 .setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
@@ -102,7 +109,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 })
                 .start();
-        Log.d(TAG, "playAnimation: logo y position" + ivLogo.getY());
 
     }
 

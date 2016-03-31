@@ -133,18 +133,18 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                 case R.id.nav_profile:
                     newFragment = new ProfileFragment();
                     break;
-                case R.id.nav_recipients:
-                    newFragment = new RecipientListFragment();
-                    break;
+//                case R.id.nav_recipients:
+//                    newFragment = new RecipientListFragment();
+//                    break;
                 case R.id.nav_history:
                     newFragment = new HistoryFragment();
                     break;
                 case R.id.nav_rewards:
                     newFragment = new RewardsFragment();
                     break;
-                case R.id.nav_help:
-                    newFragment = new SettingsFragment();
-                    break;
+//                case R.id.nav_help:
+//                    newFragment = new SettingsFragment();
+//                    break;
                 case R.id.nav_sign_out:
                     signOut();
                     return false;

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,10 +29,15 @@ import java.io.File;
  */
 public class ProfileFragment extends BaseFragment implements ImageInputHelper.ImageActionListener {
 
+    private static final int STATUS_EMPTY = 0;
+    private static final int STATUS_APPROVED = 1;
+    private static final int STATUS_PENDING = 2;
+
     private ProfileField pfName, pfDOB, pfStreet, pfCity, pfPostal;
     private ImageView ivIDFront, ivIDBack;
     private ImageInputHelper imageInputHelper;
-    private TextView tvIDFront, tvIDBack;
+    private FrameLayout flStatus;
+    private TextView tvIDFront, tvIDBack, tvStatus;
     private Spinner documentTypes;
 
     @Nullable
@@ -39,6 +45,7 @@ public class ProfileFragment extends BaseFragment implements ImageInputHelper.Im
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         initViews(view);
+        getMyProfile();
         return view;
     }
 
@@ -70,6 +77,9 @@ public class ProfileFragment extends BaseFragment implements ImageInputHelper.Im
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         documentTypes.setAdapter(adapter);
+
+        flStatus = (FrameLayout) view.findViewById(R.id.flProfileStatus);
+        tvStatus = (TextView) view.findViewById(R.id.tvProfileStatus);
     }
 
     private void showSelectionDialog(final boolean isFront) {
@@ -93,6 +103,34 @@ public class ProfileFragment extends BaseFragment implements ImageInputHelper.Im
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    private void getMyProfile() {
+        //TODO get my profile
+
+        changeProfileStatus(STATUS_PENDING);
+    }
+
+    private void changeProfileStatus(int status){
+        switch (status){
+            case STATUS_EMPTY:
+                flStatus.setVisibility(View.GONE);
+                break;
+            case STATUS_PENDING:
+                flStatus.setVisibility(View.VISIBLE);
+                tvStatus.setText(getString(R.string.profile_status_pending));
+                tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_alert,0,0,0);
+                break;
+            case STATUS_APPROVED:
+                flStatus.setVisibility(View.VISIBLE);
+                tvStatus.setText(getString(R.string.profile_status_approved));
+                tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_ok,0,0,0);
+                break;
+            default:
+                flStatus.setVisibility(View.GONE);
+                break;
+        }
+    }
+
 
 
     private View.OnClickListener pickImageFront = new View.OnClickListener() {

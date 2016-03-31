@@ -84,6 +84,12 @@ public class HomeFragment extends BaseFragment {
         tvAddRecipient = (TextView) view.findViewById(R.id.tvAddRecipient);
         //tvMyInfo.setClickable(true);
         tvAddRecipient.setClickable(true);
+        tvAddRecipient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainActivity.switchFragment(RecipientDetailFragment.newInstance(-1), true);
+            }
+        });
 
         btnMyInfoEdit.setOnClickListener(onMyInfoClick);
         etSendAmount.addTextChangedListener(onAmountChangedWatcher);
@@ -168,7 +174,6 @@ public class HomeFragment extends BaseFragment {
     public void onEvent(OnSendMoneyClickEvent onSendMoneyClickEvent) {
         //TODO: change to actual value
         mainActivity.showPaymentConfirmationDialog("", 0, 0);
-
     }
 
     @Subscribe

@@ -34,10 +34,25 @@ public class RecipientDetailFragment extends BaseFragment {
             recipientID = bundle.getInt(BUNDLE_RECIPIENT_ID);
         }
         initViews(view);
+        fillInTheData();
         return view;
     }
 
     private void initViews(View view) {
+    }
+
+    private void fillInTheData() {
+        if (recipientID <0){
+            addNewRecipient();
+        }else{
+            retrieveFromServer();
+        }
+    }
+
+    private void addNewRecipient() {
+    }
+
+    private void retrieveFromServer() {
     }
 
     @Override
