@@ -53,6 +53,16 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecipientViewHolder> 
         return dataList.size();
     }
 
+    public void removeItem(int position){
+        if (position == lastExpandedPosition){
+            dataList.get(position).setExpanded(false);
+            notifyItemChanged(position);
+            lastExpandedPosition = -1;
+        }
+        dataList.remove(position);
+        notifyItemRemoved(position);
+    }
+
     @Override
     public void onItemExpanded(int position) {
         // if there was an already expanded item, close it

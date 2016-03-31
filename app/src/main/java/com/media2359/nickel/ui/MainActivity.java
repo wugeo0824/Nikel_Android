@@ -1,5 +1,7 @@
 package com.media2359.nickel.ui;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -11,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,9 +24,14 @@ import android.widget.TextView;
 import com.media2359.nickel.R;
 import com.media2359.nickel.ui.fragments.BaseFragment;
 import com.media2359.nickel.ui.fragments.ConfirmationFragment;
+import com.media2359.nickel.ui.fragments.HistoryFragment;
 import com.media2359.nickel.ui.fragments.HomeFragment;
 import com.media2359.nickel.ui.customview.PaymentConfirmationDialog;
 import com.media2359.nickel.ui.fragments.ProfileFragment;
+import com.media2359.nickel.ui.fragments.RecipientDetailFragment;
+import com.media2359.nickel.ui.fragments.RecipientListFragment;
+import com.media2359.nickel.ui.fragments.RewardsFragment;
+import com.media2359.nickel.ui.fragments.SettingsFragment;
 import com.media2359.nickel.ui.fragments.SpinnerFragment;
 
 /**
@@ -36,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     private DrawerLayout mDrawerLayout;
     private CoordinatorLayout coordinatorLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    private TextView tvTitle;
+    private TextView tvTitle, tvHeaderView;
     private Fragment mSpinnerFragment;
     private NavigationView navigationView;
 
@@ -48,9 +56,9 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
         initViews();
 
-        manager = getSupportFragmentManager();
-
-        switchFragment(new HomeFragment(), false);
+        if (null == savedInstanceState){
+            switchFragment(new HomeFragment(), false);
+        }
     }
 
 
@@ -61,6 +69,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     }
 
     private void initViews() {
+        manager = getSupportFragmentManager();
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("");
@@ -79,10 +91,12 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         ) {
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
+                //invalidateOptionsMenu();
             }
 
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
+                //invalidateOptionsMenu();
             }
         };
 
@@ -92,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         //mDrawerToggle.syncState();
-
+        tvHeaderView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvHeaderView);
         tvTitle = (TextView) findViewById(R.id.tvToolbarTitle);
 
     }
@@ -100,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setCheckedItem(R.id.nav_home); // default checked item is the first one
         navigationView.setNavigationItemSelectedListener(itemListener);
+
     }
 
     private NavigationView.OnNavigationItemSelectedListener itemListener = new NavigationView.OnNavigationItemSelectedListener() {
@@ -118,17 +133,23 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                 case R.id.nav_profile:
                     newFragment = new ProfileFragment();
                     break;
-//                case R.id.nav_recipients:
-//                    newFragment = new RecipientFragment();
-//                    break;
-                case R.id.nav_settings:
-                    //newFragment = new SettingsFragment();
-                    return false;
-                case R.id.nav_logout:
+                case R.id.nav_recipients:
+                    newFragment = new RecipientListFragment();
+                    break;
+                case R.id.nav_history:
+                    newFragment = new HistoryFragment();
+                    break;
+                case R.id.nav_rewards:
+                    newFragment = new RewardsFragment();
+                    break;
+                case R.id.nav_help:
+                    newFragment = new SettingsFragment();
+                    break;
+                case R.id.nav_sign_out:
+                    signOut();
                     return false;
                 default:
-                    newFragment = null;
-                    break;
+                    return false;
             }
 
             if (newFragment != null) {
@@ -136,13 +157,46 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
                     manager.popBackStack();
 
                 switchFragment(newFragment, true);
-                item.setChecked(true);
+                //item.setChecked(true);
+                navigationView.setCheckedItem(item.getItemId());
             }
 
             mDrawerLayout.closeDrawers();
             return true;
         }
     };
+
+    private void signOut() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Add the buttons
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                //TODO sign out
+                backToLogin();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+        // Set other dialog properties
+        builder.setCancelable(false);
+        builder.setTitle("Want to sign out?");
+        builder.setMessage("Click yes to sign out");
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    private void backToLogin() {
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+        finish();
+    }
 
     void clearFragmentStack() {
         for (int i = 0; i < manager.getBackStackEntryCount(); ++i)
@@ -162,8 +216,6 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
             transaction.addToBackStack(null);
         }
 
-        updateDrawerItem(fragment);
-
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.show(fragment);
         transaction.commit();
@@ -172,22 +224,19 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if (getCurrentFragment() !=null){
+        if(getCurrentFragment() != null){
             updateDrawerItem(getCurrentFragment());
         }
     }
 
     private void updateDrawerItem(Fragment fragment){
-        if (fragment instanceof ProfileFragment){
-            navigationView.setCheckedItem(R.id.nav_profile);
-        }else{
+        // TODO
+        if (fragment instanceof HomeFragment){
             navigationView.setCheckedItem(R.id.nav_home);
         }
     }
 
-    public void switchRecipientFragment(int position){
 
-    }
     public void showLoadingSpinner() {
         mSpinnerFragment = new SpinnerFragment();
         manager.beginTransaction().add(R.id.fl_container, mSpinnerFragment).commit();
@@ -205,6 +254,8 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         super.onPostCreate(savedInstanceState);
         if (mDrawerToggle != null)
             mDrawerToggle.syncState();
+
+        tvHeaderView.setText("Dian Sastro");
     }
 
 

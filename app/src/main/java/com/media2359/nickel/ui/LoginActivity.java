@@ -2,10 +2,12 @@ package com.media2359.nickel.ui;
 
 import android.animation.Animator;
 import android.animation.LayoutTransition;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -24,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
+import com.media2359.nickel.utils.DialogUtils;
 import com.media2359.nickel.utils.DisplayUtils;
 
 /**
@@ -54,6 +57,12 @@ public class LoginActivity extends AppCompatActivity {
         tvNeedAccount = (TextView) findViewById(R.id.tvNeedAccount);
         tvNeedAccount.setClickable(true);
         tvForgotPassword = (TextView) findViewById(R.id.tvForgotPassword);
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogUtils.showNickelDialog(LoginActivity.this,"Testing message");
+            }
+        });
         tvPrivacyPolicy = (TextView) findViewById(R.id.tvPrivacyPolicy);
         initPrivacyMessage();
         btnSignIn = (Button) findViewById(R.id.btnLogin);
@@ -183,7 +192,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showLogin(){
-
         tvNeedAccount.setText(getString(R.string.need_account));
         ivPasswordAgain.setVisibility(View.GONE);
         etPasswordAgain.setVisibility(View.GONE);
@@ -199,6 +207,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    ProgressDialog progressDialog;
     private View.OnClickListener onSignInClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -210,11 +219,33 @@ public class LoginActivity extends AppCompatActivity {
 //                return;
 
             //TODO sign in
-            Intent i = new Intent(LoginActivity.this,MainActivity.class);
-            startActivity(i);
-            finish();
+            progressDialog = showProgressDialog("Signing in", "Please wait...");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.dismiss();
+                    proceedToMainActivity();
+                }
+            }, 1500);
+
         }
     };
+
+    private ProgressDialog showProgressDialog(String title, String message){
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle(title);
+        progressDialog.setMessage(message);
+        progressDialog.setCancelable(false);
+        progressDialog.setIndeterminate(true);
+        progressDialog.show();
+        return progressDialog;
+    }
+
+    private void proceedToMainActivity(){
+        Intent i = new Intent(LoginActivity.this,MainActivity.class);
+        startActivity(i);
+        finish();
+    }
 
     private void showSignUp(){
         tvNeedAccount.setText(getString(R.string.have_account));
@@ -243,9 +274,14 @@ public class LoginActivity extends AppCompatActivity {
 //                return;
 
             //TODO join nickel
-            Intent i = new Intent(LoginActivity.this,MainActivity.class);
-            finish();
-            startActivity(i);
+            progressDialog = showProgressDialog("Registering","Please wait...");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.dismiss();
+                    proceedToMainActivity();
+                }
+            }, 1500);
 
         }
     };

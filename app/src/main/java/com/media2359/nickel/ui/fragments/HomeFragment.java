@@ -2,6 +2,7 @@ package com.media2359.nickel.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -10,11 +11,12 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
+import com.media2359.nickel.event.OnRecipientDeleteClickEvent;
 import com.media2359.nickel.event.OnRecipientEditClickEvent;
 import com.media2359.nickel.event.OnSendMoneyClickEvent;
 import com.media2359.nickel.model.DummyRecipient;
@@ -38,11 +40,18 @@ public class HomeFragment extends BaseFragment {
     private RecipientAdapter recipientAdapter;
     private TextView tvExchangeRate, tvFees, tvTotal, tvMyName, tvMyInfo, tvAddRecipient, tvGetAmount;
     private EditText etSendAmount;
-    private ImageButton btnMyInfoEdit;
+    private Button btnMyInfoEdit;
     private List<DummyRecipient> dataList = new ArrayList<>();
     private float exchangeRate = 9679.13f; // 1SGD = [exchangeRate] IDR
     private float getAmount = 0, fee = 7f, totalAmount = 0;
 
+
+    public static HomeFragment newInstance() {
+        Bundle args = new Bundle();
+        HomeFragment fragment = new HomeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -51,6 +60,7 @@ public class HomeFragment extends BaseFragment {
         if (getActivity() instanceof MainActivity)
             mainActivity = (MainActivity) getActivity();
         initViews(view);
+        loadMyProfile();
         getRecipients();
         return view;
     }
@@ -60,6 +70,7 @@ public class HomeFragment extends BaseFragment {
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv.setHasFixedSize(true);
         recipientAdapter = new RecipientAdapter(getActivity(), dataList);
+        rv.setItemAnimator(new DefaultItemAnimator());
         rv.setAdapter(recipientAdapter);
 
         tvExchangeRate = (TextView) view.findViewById(R.id.tvExchangeRate);
@@ -68,10 +79,10 @@ public class HomeFragment extends BaseFragment {
         tvTotal = (TextView) view.findViewById(R.id.tvTotalAmount);
         etSendAmount = (EditText) view.findViewById(R.id.etSendAmount);
         tvGetAmount = (TextView) view.findViewById(R.id.tvGetAmount);
-        btnMyInfoEdit = (ImageButton) view.findViewById(R.id.btnMyInfoEdit);
+        btnMyInfoEdit = (Button) view.findViewById(R.id.btnMyInfoEdit);
         tvMyInfo = (TextView) view.findViewById(R.id.tvMyInformation);
         tvAddRecipient = (TextView) view.findViewById(R.id.tvAddRecipient);
-        tvMyInfo.setClickable(true);
+        //tvMyInfo.setClickable(true);
         tvAddRecipient.setClickable(true);
 
         btnMyInfoEdit.setOnClickListener(onMyInfoClick);
@@ -150,7 +161,7 @@ public class HomeFragment extends BaseFragment {
     @Subscribe
     public void onEvent(OnRecipientEditClickEvent onRecipientEditClickEvent) {
         //TODO: change to actual ID
-        mainActivity.switchFragment(RecipientFragment.newInstance(onRecipientEditClickEvent.getPosition()), true);
+        mainActivity.switchFragment(RecipientDetailFragment.newInstance(onRecipientEditClickEvent.getPosition()), true);
     }
 
     @Subscribe
@@ -158,6 +169,27 @@ public class HomeFragment extends BaseFragment {
         //TODO: change to actual value
         mainActivity.showPaymentConfirmationDialog("", 0, 0);
 
+    }
+
+    @Subscribe
+    public void onEvent(OnRecipientDeleteClickEvent onDeleteEvent) {
+        //TODO: change to actual value
+        recipientAdapter.removeItem(onDeleteEvent.getPosition());
+    }
+
+    private void loadMyProfile() {
+        //TODO get my profile data
+        hideMyProfile();
+    }
+
+    private void hideMyProfile(){
+        tvMyInfo.setVisibility(View.GONE);
+        btnMyInfoEdit.setVisibility(View.GONE);
+    }
+
+    private void showMyProfile(){
+        tvMyInfo.setVisibility(View.VISIBLE);
+        btnMyInfoEdit.setVisibility(View.VISIBLE);
     }
 
     private void getRecipients() {
@@ -170,6 +202,14 @@ public class HomeFragment extends BaseFragment {
         c.setExpanded(false);
         d.setExpanded(false);
         dataList.clear();
+        dataList.add(a);
+        dataList.add(b);
+        dataList.add(c);
+        dataList.add(d);
+        dataList.add(a);
+        dataList.add(b);
+        dataList.add(c);
+        dataList.add(d);
         dataList.add(a);
         dataList.add(b);
         dataList.add(c);

@@ -46,14 +46,37 @@
             tools:text="BRI 129031095823" />
 
         <ImageButton
-            android:id="@+id/btnRecipientEdit"
+            android:visibility="invisible"
+            android:id="@+id/btnRecipientOptions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:background="@drawable/button_edit_profile"
+            android:background="@drawable/button_edit_profile_dark"
             android:padding="@dimen/keyline_16"
             android:src="@drawable/ico_edit_reversed" />
+
+        <Button
+            android:id="@+id/btnRecipientEdit"
+            android:layout_centerVertical="true"
+            android:background="@color/grey"
+            android:text="Edit"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:layout_toLeftOf="@+id/btnRecipientDelete"
+            android:layout_width="70dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/btnRecipientDelete"
+            android:background="@color/dark_pink"
+            android:text="DELETE"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_width="70dp"
+            android:layout_height="match_parent" />
 
     </RelativeLayout>
 

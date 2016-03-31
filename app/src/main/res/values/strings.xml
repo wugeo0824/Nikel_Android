@@ -17,6 +17,9 @@
     <string name="drawer_closed">close drawer</string>
     <string name="join_nickel">Join Nickel</string>
     <string name="send_money_to">Send Money to %s</string>
+    <string name="profile_status_pending">Application status: Pending</string>
+    <string name="open_account_instruction">Please proceed to UOB City Plaza for application proval</string>
+    <string name="profile_status_approved">Approved</string>
     
     <string name="take_photo_instruction">Please take a photo of the front of your I.D</string>
 

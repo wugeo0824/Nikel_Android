@@ -10,11 +10,17 @@
         android:layout_marginTop="@dimen/keyline_12"
         android:layout_marginBottom="@dimen/keyline_12">
 
+        <TextView
+            android:id="@+id/tv"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfDisplayName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+
             app:inputType="name"
             app:errorMessage="Please enter your full name"
             app:ivLeftImageRes="@drawable/ico_name"
