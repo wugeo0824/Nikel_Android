@@ -1,12 +1,11 @@
 package com.media2359.nickel.utils;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
@@ -16,7 +15,7 @@ import com.media2359.nickel.R;
  */
 public class DialogUtils {
 
-    public static void showNickelDialog(Activity context, String content){
+    public static void showNickelDialog(Activity context, String content) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
 
         LayoutInflater inflater = context.getLayoutInflater();
@@ -32,6 +31,7 @@ public class DialogUtils {
             public void run() {
                 alertDialog.dismiss();
             }
-        },1000);
+        }, 1000);
     }
+
 }

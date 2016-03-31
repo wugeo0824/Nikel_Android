@@ -3,12 +3,14 @@ package com.media2359.nickel.ui;
 import android.animation.Animator;
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -18,6 +20,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
@@ -61,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         tvForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogUtils.showNickelDialog(LoginActivity.this,"Testing message");
+                showResetPassword();
             }
         });
         tvPrivacyPolicy = (TextView) findViewById(R.id.tvPrivacyPolicy);
@@ -109,7 +112,58 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 })
                 .start();
+    }
 
+    AlertDialog resetDialog;
+    EditText etResetPhone;
+
+    private void showResetPassword() {
+
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_reset_password, null);
+        builder.setView(dialogView);
+        Button btnResetPassword = (Button) dialogView.findViewById(R.id.btnResetPassword);
+        etResetPhone = (EditText) dialogView.findViewById(R.id.etPhoneNumber);
+        btnResetPassword.setOnClickListener(onResetClick);
+
+        // Create the AlertDialog object and return it
+        builder.create();
+        resetDialog = builder.create();
+        resetDialog.show();
+    }
+
+    private View.OnClickListener onResetClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            if(etResetPhone.getText().length() > 5){
+                if (resetDialog !=null && resetDialog.isShowing())
+                    resetDialog.dismiss();
+
+                resetPassword();
+            }else{
+                etResetPhone.setError("Please enter full phone number");
+            }
+
+        }
+    };
+
+    private void resetPassword() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Submitting your request, please wait...");
+        progressDialog.show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+                DialogUtils.showNickelDialog(LoginActivity.this,"Submitted");
+            }
+        },1500);
     }
 
     private void hideOrShowAllElements(boolean hide){
