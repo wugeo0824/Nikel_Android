@@ -50,7 +50,7 @@ public class ImageInputHelper {
      * receive the callbacks to its own onActivityResult() and is responsible of calling the
      * onActivityResult() of the ImageInputHelper for handling result and being notified.
      */
-    private Activity mContext;
+    private Activity activity;
 
     /**
      * Fragment object that will be used while calling startActivityForResult(). Fragment then will
@@ -65,13 +65,13 @@ public class ImageInputHelper {
      */
     private ImageActionListener imageActionListener;
 
-    public ImageInputHelper(Activity mContext) {
-        this.mContext = mContext;
+    public ImageInputHelper(Activity activity) {
+        this.activity = activity;
     }
 
     public ImageInputHelper(Fragment fragment) {
         this.fragment = fragment;
-        this.mContext = fragment.getActivity();
+        this.activity = fragment.getActivity();
     }
 
     public void setImageActionListener(ImageActionListener imageActionListener) {
@@ -166,7 +166,7 @@ public class ImageInputHelper {
         Cursor cursor = null;
         try {
             String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = mContext.getContentResolver().query(contentUri, proj, null, null, null);
+            cursor = activity.getContentResolver().query(contentUri, proj, null, null, null);
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(column_index);
@@ -189,7 +189,7 @@ public class ImageInputHelper {
 
         if (tempFileFromSource == null) {
             try {
-                tempFileFromSource = File.createTempFile("choose", "png", mContext.getExternalCacheDir());
+                tempFileFromSource = File.createTempFile("choose", "png", activity.getExternalCacheDir());
                 tempUriFromSource = Uri.fromFile(tempFileFromSource);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -211,7 +211,7 @@ public class ImageInputHelper {
             requestCode = REQUEST_PICTURE_FROM_GALLERY_BACK;
 
         if (fragment == null) {
-            mContext.startActivityForResult(intent, requestCode);
+            activity.startActivityForResult(intent, requestCode);
         } else {
             fragment.startActivityForResult(intent, requestCode);
         }
@@ -226,7 +226,7 @@ public class ImageInputHelper {
 
         if (tempFileFromSource == null) {
             try {
-                tempFileFromSource = File.createTempFile("choose", "png", mContext.getExternalCacheDir());
+                tempFileFromSource = File.createTempFile("choose", "png", activity.getExternalCacheDir());
                 tempUriFromSource = Uri.fromFile(tempFileFromSource);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -244,13 +244,13 @@ public class ImageInputHelper {
             requestCode = REQUEST_PICTURE_FROM_CAMERA_BACK;
 
         if (fragment == null) {
-//            Intent intent = new Intent(mContext, CaptureActivity.class);
-//            mContext.startActivityForResult(intent, requestCode);
-            CaptureActivity.startCapturingIDCard(mContext,requestCode);
+//            Intent intent = new Intent(activity, CaptureActivity.class);
+//            activity.startActivityForResult(intent, requestCode);
+            CaptureActivity.startCapturingIDCard(activity,requestCode);
         } else {
 //            Intent intent = new Intent(fragment.getActivity(),CaptureActivity.class);
 //            fragment.startActivityForResult(intent, requestCode);
-            CaptureActivity.startCapturingIDCard(fragment.getActivity(),requestCode);
+            CaptureActivity.startCapturingIDCard(fragment,requestCode);
         }
     }
 
@@ -269,7 +269,7 @@ public class ImageInputHelper {
 //
 //        if (tempFileFromCrop == null) {
 //            try {
-//                tempFileFromCrop = File.createTempFile("crop", "png", mContext.getExternalCacheDir());
+//                tempFileFromCrop = File.createTempFile("crop", "png", activity.getExternalCacheDir());
 //                tempUriFromCrop = Uri.fromFile(tempFileFromCrop);
 //            } catch (IOException e) {
 //                e.printStackTrace();
@@ -290,7 +290,7 @@ public class ImageInputHelper {
 ////        intent.putExtra("return-data", true);
 //
 //        if (fragment == null) {
-//            mContext.startActivityForResult(intent, REQUEST_CROP_PICTURE);
+//            activity.startActivityForResult(intent, REQUEST_CROP_PICTURE);
 //        } else {
 //            fragment.startActivityForResult(intent, REQUEST_CROP_PICTURE);
 //        }

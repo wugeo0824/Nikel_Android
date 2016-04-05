@@ -38,9 +38,9 @@ import com.media2359.nickel.ui.fragments.TransactionHistoryFragment;
 public class MainActivity extends BaseActivity implements BaseFragment.FragmentVisibleListener, PaymentConfirmationDialog.ConfirmationDialogListener {
 
     private FragmentManager manager;
-    private MenuItem menuCancel;
+    //private MenuItem menuCancel;
     private DrawerLayout mDrawerLayout;
-    private CoordinatorLayout coordinatorLayout;
+    //private CoordinatorLayout coordinatorLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private TextView tvTitle, tvHeaderView;
     private Fragment mSpinnerFragment;

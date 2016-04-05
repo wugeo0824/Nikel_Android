@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -47,6 +48,7 @@ public class CaptureActivity extends AppCompatActivity {
     private static final int MY_PERMISSION_CAMERA = 9;
 
     public static final String EXTRA_IMAGE_TYPE = "image_type";
+    public static final String EXTRA_REQUEST_CODE = "request_code";
     public static final int IMAGE_PROFILE = 11;
     public static final int IMAGE_RECEIPT = 12;
 
@@ -63,13 +65,29 @@ public class CaptureActivity extends AppCompatActivity {
     public static void startCapturingIDCard(Activity activity, int requestCode) {
         Intent i = new Intent(activity, CaptureActivity.class);
         i.putExtra(EXTRA_IMAGE_TYPE, IMAGE_PROFILE);
-        activity.startActivityForResult(i,requestCode);
+        i.putExtra(EXTRA_REQUEST_CODE, requestCode);
+        activity.startActivityForResult(i, requestCode);
+    }
+
+    public static void startCapturingIDCard(Fragment fragment, int requestCode) {
+        Intent i = new Intent(fragment.getActivity(), CaptureActivity.class);
+        i.putExtra(EXTRA_IMAGE_TYPE, IMAGE_PROFILE);
+        i.putExtra(EXTRA_REQUEST_CODE, requestCode);
+        fragment.startActivityForResult(i, requestCode);
     }
 
     public static void startCapturingReceipt(Activity activity, int requestCode) {
         Intent i = new Intent(activity, CaptureActivity.class);
         i.putExtra(EXTRA_IMAGE_TYPE, IMAGE_RECEIPT);
-        activity.startActivityForResult(i,requestCode);
+        i.putExtra(EXTRA_REQUEST_CODE, requestCode);
+        activity.startActivityForResult(i, requestCode);
+    }
+
+    public static void startCapturingReceipt(Fragment fragment, int requestCode) {
+        Intent i = new Intent(fragment.getActivity(), CaptureActivity.class);
+        i.putExtra(EXTRA_IMAGE_TYPE, IMAGE_RECEIPT);
+        i.putExtra(EXTRA_REQUEST_CODE, requestCode);
+        fragment.startActivityForResult(i, requestCode);
     }
 
     @Override
@@ -150,22 +168,19 @@ public class CaptureActivity extends AppCompatActivity {
 
     private void initViews() {
 
+        idCardOverlay = (IDCardOverlay) findViewById(R.id.overlay_IDCard);
+        mCamera = getCameraInstance();
+        mCameraPreview = new CameraPreview(this, mCamera);
+        preview = (FrameLayout) findViewById(R.id.camera_preview);
+        preview.addView(mCameraPreview, 0);
 
-
-            idCardOverlay = (IDCardOverlay) findViewById(R.id.overlay_IDCard);
-
-            mCamera = getCameraInstance();
-            mCameraPreview = new CameraPreview(this, mCamera);
-            preview = (FrameLayout) findViewById(R.id.camera_preview);
-            preview.addView(mCameraPreview, 0);
-
-            captureButton = (Button) findViewById(R.id.button_capture);
-            captureButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mCamera.takePicture(null, null, mPicture);
-                }
-            });
+        captureButton = (Button) findViewById(R.id.button_capture);
+        captureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCamera.takePicture(null, null, mPicture);
+            }
+        });
 
         if (imageType == IMAGE_PROFILE) {
             // for ID card overlay
@@ -209,7 +224,6 @@ public class CaptureActivity extends AppCompatActivity {
     Camera.PictureCallback mPicture = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-
             SaveProfileImageAsync saveProfileImageAsync = new SaveProfileImageAsync();
             saveProfileImageAsync.execute(data);
         }
@@ -257,19 +271,22 @@ public class CaptureActivity extends AppCompatActivity {
 
                 if (success) {
                     Calendar today = Calendar.getInstance();
-                    File imageFile = new File(folder.getAbsolutePath() + File.separator + today.get(Calendar.DATE) + today.get(Calendar.SECOND) + "_nickel.png");
+                    //File imageFile = new File(folder.getAbsolutePath() + File.separator + today.get(Calendar.DATE) + today.get(Calendar.SECOND) + "_nickel.png");
+                    File imageFile = new File(folder.getAbsolutePath() + getIntent().getIntExtra(EXTRA_REQUEST_CODE, 1000) + "_nickel.png");
 
-                    imageFile.createNewFile();
+                    if (imageFile.createNewFile()) {
+                        // save image into gallery
+                        FileOutputStream fos = new FileOutputStream(imageFile);
+                        //fos.write(data);
+                        finalImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                        fos.close();
 
-                    // save image into gallery
-                    FileOutputStream fos = new FileOutputStream(imageFile);
-                    //fos.write(data);
-                    finalImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                    fos.close();
-
-                    Intent intent = new Intent();
-                    intent.putExtra(ImageInputHelper.DATA_PHOTO_FILE, imageFile.getPath());
-                    setResult(RESULT_OK, intent);
+                        Intent intent = new Intent();
+                        intent.putExtra(ImageInputHelper.DATA_PHOTO_FILE, imageFile.getPath());
+                        setResult(RESULT_OK, intent);
+                    } else {
+                        setResult(RESULT_CANCELED);
+                    }
 
                 } else {
                     Toast.makeText(getApplicationContext(), "Image Not saved",
