@@ -20,6 +20,10 @@
     <string name="profile_status_pending">Application status: Pending</string>
     <string name="open_account_instruction">Please proceed to UOB City Plaza for application proval</string>
     <string name="profile_status_approved">Approved</string>
+    <string name="payment_options">Payment Options</string>
+    <string name="UOB_machines">UOB Cash Deposit Machines</string>
+    <string name="pay_by_CStore">Convenience Store</string>
+    <string name="receipt">Receipt</string>
     
     <string name="take_photo_instruction">Please take a photo of the front of your I.D</string>
 
@@ -29,4 +33,5 @@
     <string name="privacy_message_1">By selecting to "Join Nickel", you are agreeing to our</string>
     <string name="user_agreement">User Agreement</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="uob_instruction">Please proceed to transfer SGD %d at the nearest UOB Cash Deposit Machines</string>
 </resources>

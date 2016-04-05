@@ -29,6 +29,9 @@
         <activity android:name="com.media2359.nickel.ui.CaptureActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name="com.media2359.nickel.ui.TransactionActivity"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name="com.media2359.nickel.ui.SplashActivity"
             android:label="@string/app_name"

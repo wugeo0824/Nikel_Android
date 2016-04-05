@@ -1,7 +1,9 @@
 package com.media2359.nickel.ui.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,16 +21,23 @@ import com.media2359.nickel.R;
 import com.media2359.nickel.event.OnRecipientDeleteClickEvent;
 import com.media2359.nickel.event.OnRecipientEditClickEvent;
 import com.media2359.nickel.event.OnSendMoneyClickEvent;
-import com.media2359.nickel.model.DummyRecipient;
+import com.media2359.nickel.model.Recipient;
+import com.media2359.nickel.model.Transaction;
+import com.media2359.nickel.model.TransactionManager;
 import com.media2359.nickel.ui.MainActivity;
 import com.media2359.nickel.ui.adapter.RecipientAdapter;
+import com.media2359.nickel.ui.customview.ThemedSwipeRefreshLayout;
+import com.media2359.nickel.utils.Const;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Xijun on 10/3/16.
@@ -36,14 +45,16 @@ import java.util.List;
 public class HomeFragment extends BaseFragment {
 
     private MainActivity mainActivity;
-    private RecyclerView rv;
+    private RecyclerView rvHome;
     private RecipientAdapter recipientAdapter;
     private TextView tvExchangeRate, tvFees, tvTotal, tvMyName, tvMyInfo, tvAddRecipient, tvGetAmount;
     private EditText etSendAmount;
     private Button btnMyInfoEdit;
-    private List<DummyRecipient> dataList = new ArrayList<>();
+    private List<Recipient> dataList = new ArrayList<>();
     private float exchangeRate = 9679.13f; // 1SGD = [exchangeRate] IDR
     private float getAmount = 0, fee = 7f, totalAmount = 0;
+    private ThemedSwipeRefreshLayout srl;
+    private Transaction currentTransaction;
 
 
     public static HomeFragment newInstance() {
@@ -66,18 +77,23 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initViews(View view) {
-        rv = (RecyclerView) view.findViewById(R.id.rvRecipients);
-        rv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rv.setHasFixedSize(true);
+        rvHome = (RecyclerView) view.findViewById(R.id.rvRecipients);
+        rvHome.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvHome.setHasFixedSize(true);
         recipientAdapter = new RecipientAdapter(getActivity(), dataList);
-        rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setAdapter(recipientAdapter);
+        rvHome.setItemAnimator(new DefaultItemAnimator());
+        rvHome.setAdapter(recipientAdapter);
+        rvHome.addOnScrollListener(OnScrollRV);
+
+        srl = (ThemedSwipeRefreshLayout) view.findViewById(R.id.srlHome);
+        srl.setOnRefreshListener(OnRefresh);
 
         tvExchangeRate = (TextView) view.findViewById(R.id.tvExchangeRate);
         //TODO: set the exchange rate
         tvFees = (TextView) view.findViewById(R.id.tvFeesAmount);
         tvTotal = (TextView) view.findViewById(R.id.tvTotalAmount);
         etSendAmount = (EditText) view.findViewById(R.id.etSendAmount);
+        //etSendAmount.setText("0");
         tvGetAmount = (TextView) view.findViewById(R.id.tvGetAmount);
         btnMyInfoEdit = (Button) view.findViewById(R.id.btnMyInfoEdit);
         tvMyInfo = (TextView) view.findViewById(R.id.tvMyInformation);
@@ -87,12 +103,34 @@ public class HomeFragment extends BaseFragment {
         tvAddRecipient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainActivity.switchFragment(RecipientDetailFragment.newInstance(-1), true);
+                mainActivity.switchFragment(RecipientDetailFragment.newInstance(null), true);
             }
         });
 
         btnMyInfoEdit.setOnClickListener(onMyInfoClick);
         etSendAmount.addTextChangedListener(onAmountChangedWatcher);
+    }
+
+    private RecyclerView.OnScrollListener OnScrollRV = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            if (isScrolledToTop(recyclerView)) {
+                srl.setEnabled(true);
+            } else {
+                srl.setEnabled(false);
+            }
+        }
+    };
+
+    private boolean isScrolledToTop(RecyclerView recyclerView) {
+        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private View.OnClickListener onMyInfoClick = new View.OnClickListener() {
@@ -152,6 +190,39 @@ public class HomeFragment extends BaseFragment {
         }
     };
 
+    private SwipeRefreshLayout.OnRefreshListener OnRefresh = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //TODO;
+                    getRecipients();
+                }
+            }, 1000);
+        }
+    };
+
+    private Transaction makeTransaction(Recipient recipient) {
+
+        Transaction.Builder builder = new Transaction.Builder();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy h:mm a", Locale.getDefault());
+        String today = sdf.format(new Date().getTime());
+        //TODO: real ID
+        currentTransaction = builder.withAmount(tvGetAmount.getText().toString())
+                .withDate(today)
+                .withExchangeRate(exchangeRate)
+                .withID("asijdaopkf")
+                .withRecipientName(recipient.getName())
+                .withStatus("This is payment status")
+                .withProgress(Const.TRANS_NEW_BORN)
+                .build();
+
+        TransactionManager.getManager().setCurrentTransaction(currentTransaction);
+        return currentTransaction;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -167,13 +238,17 @@ public class HomeFragment extends BaseFragment {
     @Subscribe
     public void onEvent(OnRecipientEditClickEvent onRecipientEditClickEvent) {
         //TODO: change to actual ID
-        mainActivity.switchFragment(RecipientDetailFragment.newInstance(onRecipientEditClickEvent.getPosition()), true);
+        Recipient recipient = dataList.get(onRecipientEditClickEvent.getPosition());
+        mainActivity.switchFragment(RecipientDetailFragment.newInstance(recipient), true);
     }
 
     @Subscribe
     public void onEvent(OnSendMoneyClickEvent onSendMoneyClickEvent) {
         //TODO: change to actual value
-        mainActivity.showPaymentConfirmationDialog("", 0, 0);
+        makeTransaction(dataList.get(onSendMoneyClickEvent.getPosition()));
+        //TODO: change status after api successfully called
+        currentTransaction.setTransProgress(Const.TRANS_PENDING_PAYMENT);
+        mainActivity.showPaymentConfirmationDialog(currentTransaction);
     }
 
     @Subscribe
@@ -187,26 +262,26 @@ public class HomeFragment extends BaseFragment {
         hideMyProfile();
     }
 
-    private void hideMyProfile(){
+    private void hideMyProfile() {
         tvMyInfo.setVisibility(View.GONE);
         btnMyInfoEdit.setVisibility(View.GONE);
     }
 
-    private void showMyProfile(){
+    private void showMyProfile() {
         tvMyInfo.setVisibility(View.VISIBLE);
         btnMyInfoEdit.setVisibility(View.VISIBLE);
     }
 
     private void getRecipients() {
-        DummyRecipient a = new DummyRecipient("Husband", "BRI 281973021894");
-        DummyRecipient b = new DummyRecipient("Mother", "BRI 0123874123");
-        DummyRecipient c = new DummyRecipient("Sister", "MYI 9012830912");
-        DummyRecipient d = new DummyRecipient("Han", "SGW 0911298301");
+        dataList.clear();
+        Recipient a = new Recipient("Husband", "BRI 281973021894", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
+        Recipient b = new Recipient("Mother", "BRI 0123874123", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
+        Recipient c = new Recipient("Sister", "MYI 9012830912", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
+        Recipient d = new Recipient("Han", "SGW 0911298301", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
         a.setExpanded(false);
         b.setExpanded(false);
         c.setExpanded(false);
         d.setExpanded(false);
-        dataList.clear();
         dataList.add(a);
         dataList.add(b);
         dataList.add(c);
@@ -220,7 +295,11 @@ public class HomeFragment extends BaseFragment {
         dataList.add(c);
         dataList.add(d);
         recipientAdapter.notifyDataSetChanged();
+        if (srl.isRefreshing()) {
+            srl.setRefreshing(false);
+        }
     }
+
 
     @Override
     public void onResume() {

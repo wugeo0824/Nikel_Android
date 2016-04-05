@@ -9,7 +9,10 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.media2359.nickel.R;
+import com.media2359.nickel.model.Transaction;
 import com.media2359.nickel.ui.MainActivity;
+
+import org.parceler.Parcels;
 
 /**
  * Created by Xijun on 28/3/16.
@@ -18,25 +21,26 @@ public class PaymentConfirmationDialog extends DialogFragment {
 
     private static final String TAG = "PaymentConfirmation";
 
-    public static final String BUNDLE_SEND_TO = "send_to";
-    public static final String BUNDLE_SEND_AMOUNT = "send_amount";
-    public static final String BUNDLE_EXCHANGE_RATE = "exchange_rate";
+    public static final String BUNDLE_TRANSACTION = "transaction";
     private String sendTo;
     private float sendAmount;
     private float exchangeRate;
 
     // Use this instance of the interface to deliver action events
     ConfirmationDialogListener mListener;
+    Transaction transaction;
 
-    public static PaymentConfirmationDialog newInstance(String sendTo, float sendAmount, float exchangeRate) {
+    public static PaymentConfirmationDialog newInstance(Transaction transaction) {
 
         Bundle args = new Bundle();
-        args.putString(BUNDLE_SEND_TO,sendTo);
-        args.putFloat(BUNDLE_SEND_AMOUNT,sendAmount);
-        args.putFloat(BUNDLE_EXCHANGE_RATE,exchangeRate);
+        args.putParcelable(BUNDLE_TRANSACTION, Parcels.wrap(transaction));
         PaymentConfirmationDialog fragment = new PaymentConfirmationDialog();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
     }
 
     @Override
@@ -44,9 +48,7 @@ public class PaymentConfirmationDialog extends DialogFragment {
 
         Bundle bundle = this.getArguments();
         if (bundle!=null){
-            sendTo = bundle.getString(BUNDLE_SEND_TO);
-            sendAmount = bundle.getFloat(BUNDLE_SEND_AMOUNT);
-            exchangeRate = bundle.getFloat(BUNDLE_EXCHANGE_RATE);
+            transaction = Parcels.unwrap(bundle.getParcelable(BUNDLE_TRANSACTION));
         }else{
             Log.d(TAG,"bundle info is null");
         }
@@ -78,6 +80,7 @@ public class PaymentConfirmationDialog extends DialogFragment {
         return builder.create();
     }
 
+
     // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
     @Override
     public void onAttach(Activity activity) {
@@ -97,8 +100,8 @@ public class PaymentConfirmationDialog extends DialogFragment {
     * implement this interface in order to receive event callbacks.
     * Each method passes the DialogFragment in case the host needs to query it. */
     public interface ConfirmationDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
-        public void onDialogNegativeClick(DialogFragment dialog);
+        void onDialogPositiveClick(DialogFragment dialog);
+        void onDialogNegativeClick(DialogFragment dialog);
     }
 
 

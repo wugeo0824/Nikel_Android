@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/home_background"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvTransactionID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:text="Transaction ID: 128973198n748"
+        android:textSize="19sp" />
+
+    <TextView
+        android:id="@+id/tvSending"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTransactionID"
+        android:layout_marginBottom="6dp"
+        android:text="I'm sending"
+        android:textSize="19sp" />
+
+    <TextView
+        android:id="@+id/tvGets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSending"
+        android:text="Recipient gets"
+        android:textSize="19sp" />
+
+    <TextView
+        android:id="@+id/tvOneSGD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvExchangeRate"
+        android:text="1 SGD ="
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvFees"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvFeesAmount"
+        android:text="Fees:"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvTotalAmount"
+        android:text="Total:"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvToRecipient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvRecipientDetail"
+        android:text="To Recipient"
+        android:textSize="19sp" />
+
+    <TextView
+        android:id="@+id/tvSendAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvTransactionID"
+        android:layout_marginBottom="6dp"
+        android:text="300.00 SGD"
+        android:textSize="19sp" />
+
+    <TextView
+        android:id="@+id/tvGetAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvSendAmount"
+        android:layout_marginBottom="6dp"
+        android:text="2,917,720 IDR"
+        android:textColor="@color/pink"
+        android:textSize="19sp" />
+
+    <TextView
+        android:id="@+id/tvExchangeRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvGetAmount"
+        android:layout_marginBottom="6dp"
+        android:text="9725,80 IDR"
+        android:textColor="@color/pink"
+        android:textSize="19sp" />
+
+    <TextView
+        android:id="@+id/tvFeesAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvExchangeRate"
+        android:layout_marginBottom="6dp"
+        android:text="7.00 SGD"
+        android:textSize="19sp" />
+
+    <TextView
+        android:id="@+id/tvTotalAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvFeesAmount"
+        android:layout_marginBottom="6dp"
+        android:text="307.00 SGD"
+        android:textSize="19sp" />
+
+    <TextView
+        android:id="@+id/tvRecipientDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tvTotalAmount"
+        android:layout_marginBottom="6dp"
+        android:gravity="right"
+        android:text="Husband \n BRI 1287913"
+        android:textColor="@color/pink"
+        android:textSize="19sp" />
+
+</RelativeLayout>

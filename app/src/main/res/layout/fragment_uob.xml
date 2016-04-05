@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="@dimen/keyline_16"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/uob_instruction"
+        android:id="@+id/tvInstruction"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Transfer to:"
+        android:id="@+id/tvTransferTo" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/dark_pink"
+        android:text="Account No: 12314123"
+        android:id="@+id/tvAccountNo" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:id="@+id/ivUOB"
+        android:src="@drawable/seven_eleven_logo"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:id="@+id/btnStepGuide"
+        android:paddingLeft="@dimen/keyline_16"
+        android:paddingRight="@dimen/keyline_16"
+        android:text="Step by Step Guide"
+        android:drawableLeft="@drawable/ico_bank"
+        android:layout_marginTop="@dimen/keyline_12"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:background="@drawable/button_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btnUOBMachines"
+        android:paddingLeft="@dimen/keyline_16"
+        android:paddingRight="@dimen/keyline_16"
+        android:text="Nearest Cash Deposit Machine"
+        android:drawableLeft="@drawable/ico_address3"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:background="@drawable/button_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btnTakeReceipt"
+        android:paddingLeft="@dimen/keyline_16"
+        android:paddingRight="@dimen/keyline_16"
+        android:text="Please take a picture of the Receipt"
+        android:drawableLeft="@drawable/ico_photo"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:background="@drawable/button_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

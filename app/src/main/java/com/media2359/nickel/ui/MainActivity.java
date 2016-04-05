@@ -22,22 +22,20 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
-import com.media2359.nickel.ui.fragments.BaseFragment;
-import com.media2359.nickel.ui.fragments.ConfirmationFragment;
-import com.media2359.nickel.ui.fragments.HistoryFragment;
-import com.media2359.nickel.ui.fragments.HomeFragment;
+import com.media2359.nickel.model.MyProfile;
+import com.media2359.nickel.model.Transaction;
 import com.media2359.nickel.ui.customview.PaymentConfirmationDialog;
+import com.media2359.nickel.ui.fragments.BaseFragment;
+import com.media2359.nickel.ui.fragments.HomeFragment;
 import com.media2359.nickel.ui.fragments.ProfileFragment;
-import com.media2359.nickel.ui.fragments.RecipientDetailFragment;
-import com.media2359.nickel.ui.fragments.RecipientListFragment;
 import com.media2359.nickel.ui.fragments.RewardsFragment;
-import com.media2359.nickel.ui.fragments.SettingsFragment;
 import com.media2359.nickel.ui.fragments.SpinnerFragment;
+import com.media2359.nickel.ui.fragments.TransactionHistoryFragment;
 
 /**
  * This handles the transaction logic
  */
-public class MainActivity extends AppCompatActivity implements BaseFragment.FragmentVisibleListener, PaymentConfirmationDialog.ConfirmationDialogListener {
+public class MainActivity extends BaseActivity implements BaseFragment.FragmentVisibleListener, PaymentConfirmationDialog.ConfirmationDialogListener {
 
     private FragmentManager manager;
     private MenuItem menuCancel;
@@ -55,8 +53,10 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         setContentView(R.layout.activity_main);
 
         initViews();
+        // pre-load the profile information
+        MyProfile.getCurrentProfile(getApplicationContext());
 
-        if (null == savedInstanceState){
+        if (null == savedInstanceState) {
             switchFragment(new HomeFragment(), false);
         }
     }
@@ -70,8 +70,6 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
     private void initViews() {
         manager = getSupportFragmentManager();
-
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -111,6 +109,21 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 
     }
 
+    public void setDrawerState(boolean isEnabled) {
+        if (isEnabled) {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            // mDrawerToggle.onDrawerStateChanged(DrawerLayout.STATE_SETTLING);
+            mDrawerToggle.setDrawerIndicatorEnabled(true);
+            mDrawerToggle.syncState();
+
+        } else {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            //mDrawerToggle.onDrawerStateChanged(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            mDrawerToggle.setDrawerIndicatorEnabled(false);
+            mDrawerToggle.syncState();
+        }
+    }
+
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setCheckedItem(R.id.nav_home); // default checked item is the first one
         navigationView.setNavigationItemSelectedListener(itemListener);
@@ -137,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
 //                    newFragment = new RecipientListFragment();
 //                    break;
                 case R.id.nav_history:
-                    newFragment = new HistoryFragment();
+                    newFragment = TransactionHistoryFragment.newInstance();
                     break;
                 case R.id.nav_rewards:
                     newFragment = new RewardsFragment();
@@ -224,14 +237,14 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(getCurrentFragment() != null){
+        if (getCurrentFragment() != null) {
             updateDrawerItem(getCurrentFragment());
         }
     }
 
-    private void updateDrawerItem(Fragment fragment){
+    private void updateDrawerItem(Fragment fragment) {
         // TODO
-        if (fragment instanceof HomeFragment){
+        if (fragment instanceof HomeFragment) {
             navigationView.setCheckedItem(R.id.nav_home);
         }
     }
@@ -258,6 +271,34 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         tvHeaderView.setText("Dian Sastro");
     }
 
+    PaymentConfirmationDialog paymentConfirmationDialog;
+
+    public void showPaymentConfirmationDialog(Transaction transaction) {
+        if (paymentConfirmationDialog != null) {
+            paymentConfirmationDialog.dismiss();
+        }
+        paymentConfirmationDialog = PaymentConfirmationDialog.newInstance(transaction);
+        paymentConfirmationDialog.show(getSupportFragmentManager(), "PaymentConfirmation");
+    }
+
+    /**
+     * Responds to the payment confirmation dialog
+     * Do necessary transactions
+     *
+     * @param dialog
+     */
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        //switchFragment(TransactionDetailFragment.newInstance("www.google.com.sg"), true);
+
+        PaymentConfirmationDialog paymentConfirmationDialog = (PaymentConfirmationDialog) dialog;
+        TransactionActivity.startTransactionActivity(this,paymentConfirmationDialog.getTransaction());
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        //TODO
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -276,13 +317,15 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (mDrawerToggle.onOptionsItemSelected(item))
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
+        }
 
         // Handle item selection
         switch (item.getItemId()) {
             case android.R.id.home:
-                return false;
+                onBackPressed();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -293,28 +336,4 @@ public class MainActivity extends AppCompatActivity implements BaseFragment.Frag
         tvTitle.setText(title);
     }
 
-    PaymentConfirmationDialog paymentConfirmationDialog;
-
-    public void showPaymentConfirmationDialog(String sendTo, float sendAmount, float exchangeRate){
-        if (paymentConfirmationDialog != null){
-            paymentConfirmationDialog.dismiss();
-        }
-        paymentConfirmationDialog = PaymentConfirmationDialog.newInstance("",0,0);
-        paymentConfirmationDialog.show(getSupportFragmentManager(),"PaymentConfirmation");
-    }
-
-    /**
-     * Responds to the payment confirmation dialog
-     * Do necessary transactions
-     * @param dialog
-     */
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-        switchFragment(ConfirmationFragment.newInstance("www.google.com.sg"),true);
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        //TODO
-    }
 }

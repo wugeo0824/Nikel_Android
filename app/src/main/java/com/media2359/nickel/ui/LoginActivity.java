@@ -46,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnSignIn;
     private EditText etPhone,etPassword,etPasswordAgain;
     private RelativeLayout rlLoginContainer;
+    private boolean animationPlayed = false;
+    private boolean isLoginShowing = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +82,15 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        playAnimation();
+        if (!animationPlayed){
+            playAnimation();
+        }else{
+            if (isLoginShowing){
+                showLogin();
+            }else
+                showSignUp();
+        }
+
     }
 
     private void playAnimation() {
@@ -98,12 +108,14 @@ public class LoginActivity extends AppCompatActivity {
                     public void onAnimationEnd(Animator animation) {
                         hideOrShowAllElements(false);
                         showLogin();
+                        animationPlayed = true;
                     }
 
                     @Override
                     public void onAnimationCancel(Animator animation) {
                         hideOrShowAllElements(false);
                         showLogin();
+                        animationPlayed = true;
                     }
 
                     @Override
@@ -133,6 +145,15 @@ public class LoginActivity extends AppCompatActivity {
         builder.create();
         resetDialog = builder.create();
         resetDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (resetDialog.isShowing()){
+            resetDialog.dismiss();
+        }else{
+            super.onBackPressed();
+        }
     }
 
     private View.OnClickListener onResetClick = new View.OnClickListener() {
@@ -265,6 +286,7 @@ public class LoginActivity extends AppCompatActivity {
                 showSignUp();
             }
         });
+        isLoginShowing = true;
     }
 
     ProgressDialog progressDialog;
@@ -321,6 +343,7 @@ public class LoginActivity extends AppCompatActivity {
                 showLogin();
             }
         });
+        isLoginShowing = false;
     }
 
     private View.OnClickListener onJoinClick = new View.OnClickListener() {

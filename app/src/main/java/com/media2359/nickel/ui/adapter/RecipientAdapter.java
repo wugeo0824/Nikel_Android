@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.media2359.nickel.R;
-import com.media2359.nickel.model.DummyRecipient;
-import com.media2359.nickel.ui.ViewHolder.RecipientViewHolder;
+import com.media2359.nickel.model.Recipient;
+import com.media2359.nickel.ui.viewholder.RecipientViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +19,10 @@ import java.util.List;
 public class RecipientAdapter extends RecyclerView.Adapter<RecipientViewHolder> implements RecipientViewHolder.ItemExpandCollapseListener{
 
     Context mContext;
-    List<DummyRecipient> dataList = new ArrayList<>();
+    List<Recipient> dataList = new ArrayList<>();
     int lastExpandedPosition = -1;
 
-    public RecipientAdapter(Context mContext, List<DummyRecipient> dataList) {
+    public RecipientAdapter(Context mContext, List<Recipient> dataList) {
         this.mContext = mContext;
         this.dataList = dataList;
     }
@@ -43,9 +43,9 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecipientViewHolder> 
 
     @Override
     public void onBindViewHolder(RecipientViewHolder holder, int position) {
-        DummyRecipient dummyRecipient = dataList.get(position);
+        Recipient recipient = dataList.get(position);
         //holder.setListener(this);
-        holder.bindItem(dummyRecipient);
+        holder.bindItem(recipient);
     }
 
     @Override

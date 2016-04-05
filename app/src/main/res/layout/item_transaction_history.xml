@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/card"
+    android:orientation="vertical"
+    android:padding="@dimen/keyline_16">
+
+    <TextView
+        android:id="@+id/tvTransactionID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:text="Transaction ID: 12987389dasd"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/tvTranDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:text="March 2, 2016"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/tvTranAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:text="500SGD"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/dark_pink" />
+
+    <TextView
+        android:id="@+id/tvTranStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Funds Ready for Collection" />
+
+    <com.media2359.nickel.ui.customview.TransactionProgress
+        android:id="@+id/tpHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="@dimen/keyline_12" />
+
+</LinearLayout>

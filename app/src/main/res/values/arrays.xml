@@ -6,6 +6,7 @@
     </string-array>
 
     <string-array name="document_types">
+        <item>Please select your document type</item>
         <item>Passport</item>
         <item>Work Pass</item>
         <item>Expert Pass</item>

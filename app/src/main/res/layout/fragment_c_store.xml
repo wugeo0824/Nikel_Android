@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/keyline_16">
+
+    <ImageView
+        android:id="@+id/ivBarcode"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:src="@drawable/barcode_tattoo_by_emmersallday" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:background="@color/grey" />
+
+    <TextView
+        android:id="@+id/tvInstruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:text="@string/uob_instruction"
+        android:textSize="19sp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:src="@drawable/seven_eleven_logo" />
+
+    <Button
+        android:id="@+id/btnStepGuide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline_12"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:background="@drawable/button_card"
+        android:drawableLeft="@drawable/ico_bank"
+        android:paddingLeft="@dimen/keyline_16"
+        android:paddingRight="@dimen/keyline_16"
+        android:text="Step by Step Guide" />
+
+    <Button
+        android:id="@+id/btnCStoreMap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:background="@drawable/button_card"
+        android:drawableLeft="@drawable/ico_address3"
+        android:paddingLeft="@dimen/keyline_16"
+        android:paddingRight="@dimen/keyline_16"
+        android:text="Nearest Convenience Store" />
+
+    <Button
+        android:id="@+id/btnTakeReceipt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:background="@drawable/button_card"
+        android:drawableLeft="@drawable/ico_photo"
+        android:paddingLeft="@dimen/keyline_16"
+        android:paddingRight="@dimen/keyline_16"
+        android:text="Please take a picture of the Receipt" />
+
+
+</LinearLayout>

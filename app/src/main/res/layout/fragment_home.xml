@@ -1,271 +1,272 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.media2359.nickel.ui.customview.ThemedSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/srlHome"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/home_background"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/rlHomeNumbers"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/card"
-        android:padding="@dimen/keyline_16">
+        android:layout_height="match_parent"
+        android:background="@color/home_background"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvISend"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/rlHomeNumbers"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/etSendAmount"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:gravity="center"
-            android:text="I'm sending" />
+            android:background="@drawable/card"
+            android:padding="@dimen/keyline_16">
 
-        <EditText
-            android:id="@+id/etSendAmount"
-            android:layout_width="175dp"
-            android:layout_height="45dp"
-            android:layout_alignLeft="@+id/tvGetAmount"
-            android:layout_alignRight="@+id/tvGetAmount"
-            android:layout_toLeftOf="@+id/tvSGD"
-            android:background="@drawable/edittext_oval"
-            android:gravity="center_vertical|right"
-            android:inputType="numberDecimal"
-            android:paddingRight="@dimen/keyline_12"
-            android:textColor="@color/black"
-            android:textSize="19sp"
-            tools:text="129038" />
+            <TextView
+                android:id="@+id/tvISend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/etSendAmount"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:text="I'm sending" />
+
+            <EditText
+                android:id="@+id/etSendAmount"
+                android:layout_width="175dp"
+                android:layout_height="45dp"
+                android:layout_alignLeft="@+id/tvGetAmount"
+                android:layout_alignRight="@+id/tvGetAmount"
+                android:layout_toLeftOf="@+id/tvSGD"
+                android:background="@drawable/edittext_oval"
+                android:gravity="center_vertical|right"
+                android:inputType="numberDecimal"
+                android:paddingRight="@dimen/keyline_12"
+                android:textColor="@color/black"
+                android:textSize="19sp"
+                tools:text="129038" />
+
+            <TextView
+                android:id="@+id/tvSGD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/etSendAmount"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:drawableLeft="@drawable/flag_sg"
+                android:gravity="center"
+                android:text="SGD" />
+
+            <TextView
+                android:id="@+id/tvRecipientGets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tvGetAmount"
+                android:layout_alignLeft="@+id/tvISend"
+                android:layout_below="@+id/tvISend"
+                android:layout_marginTop="@dimen/keyline_12"
+                android:gravity="center"
+                android:text="Recipient Gets" />
+
+            <TextView
+                android:id="@+id/tvGetAmount"
+                android:layout_width="175dp"
+                android:layout_height="45dp"
+                android:layout_below="@+id/etSendAmount"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="@dimen/keyline_12"
+                android:layout_toLeftOf="@+id/tvIDR"
+                android:background="@drawable/edittext_oval"
+                android:enabled="false"
+                android:gravity="center_vertical|right"
+                android:inputType="number"
+                android:paddingRight="@dimen/keyline_12"
+                android:textColor="@color/pink"
+                android:textSize="19sp"
+                tools:text="129389012" />
+
+            <TextView
+                android:id="@+id/tvIDR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tvRecipientGets"
+                android:layout_alignLeft="@+id/tvSGD"
+                android:layout_alignTop="@id/tvRecipientGets"
+                android:layout_below="@+id/tvSGD"
+                android:drawableLeft="@drawable/flag_id"
+                android:gravity="center"
+                android:text="IDR" />
+
+            <TextView
+                android:id="@+id/tvOneDollar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/tvISend"
+                android:layout_below="@id/tvRecipientGets"
+                android:layout_marginTop="@dimen/keyline_12"
+                android:text="1 SGD =" />
+
+            <TextView
+                android:id="@+id/tvExchangeRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tvOneDollar"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/tvIDR2"
+                android:text="9,682.00"
+                android:textColor="@color/pink"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvIDR2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/tvOneDollar"
+                android:layout_below="@+id/tvIDR"
+                android:text="IDR"
+                android:textColor="@color/black"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvFees"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/tvISend"
+                android:layout_below="@id/tvOneDollar"
+                android:layout_marginTop="@dimen/keyline_12"
+                android:text="Fees:" />
+
+            <TextView
+                android:id="@+id/tvFeesAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tvFees"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/tvSGD2"
+                android:text="7.00"
+                android:textColor="@color/pink"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvSGD2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/tvFees"
+                android:layout_below="@+id/tvIDR2"
+                android:text="SGD"
+                android:textColor="@color/black"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/tvISend"
+                android:layout_below="@id/tvFees"
+                android:layout_marginTop="@dimen/keyline_12"
+                android:text="Total:" />
+
+            <TextView
+                android:id="@+id/tvTotalAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tvTotal"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/tvSGD3"
+                android:text="7.00"
+                android:textColor="@color/pink"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tvSGD3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/tvTotal"
+                android:layout_below="@+id/tvSGD2"
+                android:text="SGD"
+                android:textColor="@color/black"
+                android:textSize="19sp" />
+
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/tvSGD"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/etSendAmount"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:drawableLeft="@drawable/flag_sg"
-            android:gravity="center"
-            android:text="SGD" />
+            android:id="@+id/tvMyInformation"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginLeft="@dimen/keyline_16"
+            android:drawableLeft="@drawable/ico_alert"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:text="My Information"
+            android:textColor="@color/text_color_normal" />
 
-        <TextView
-            android:id="@+id/tvRecipientGets"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/tvGetAmount"
-            android:layout_alignLeft="@+id/tvISend"
-            android:layout_below="@+id/tvISend"
-            android:layout_marginTop="@dimen/keyline_12"
-            android:gravity="center"
-            android:text="Recipient Gets" />
+        <Button
+            android:id="@+id/btnMyInfoEdit"
+            style="@style/CardButton"
+            android:text="Complete sender profile" />
 
-        <TextView
-            android:id="@+id/tvGetAmount"
-            android:layout_width="175dp"
-            android:layout_height="45dp"
-            android:layout_below="@+id/etSendAmount"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="@dimen/keyline_12"
-            android:layout_toLeftOf="@+id/tvIDR"
-            android:background="@drawable/edittext_oval"
-            android:enabled="false"
-            android:gravity="center_vertical|right"
-            android:inputType="number"
-            android:paddingRight="@dimen/keyline_12"
-            android:textColor="@color/pink"
-            android:textSize="19sp"
-            tools:text="129389012" />
-
-        <TextView
-            android:id="@+id/tvIDR"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/tvRecipientGets"
-            android:layout_alignLeft="@+id/tvSGD"
-            android:layout_alignTop="@id/tvRecipientGets"
-            android:layout_below="@+id/tvSGD"
-            android:drawableLeft="@drawable/flag_id"
-            android:gravity="center"
-            android:text="IDR" />
-
-        <TextView
-            android:id="@+id/tvOneDollar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tvISend"
-            android:layout_below="@id/tvRecipientGets"
-            android:layout_marginTop="@dimen/keyline_12"
-            android:text="1 SGD =" />
-
-        <TextView
-            android:id="@+id/tvExchangeRate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/tvOneDollar"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/tvIDR2"
-            android:text="9,682.00"
-            android:textColor="@color/pink"
-            android:textSize="19sp" />
-
-        <TextView
-            android:id="@+id/tvIDR2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/tvOneDollar"
-            android:layout_below="@+id/tvIDR"
-            android:text="IDR"
-            android:textColor="@color/black"
-            android:textSize="19sp" />
-
-        <TextView
-            android:id="@+id/tvFees"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tvISend"
-            android:layout_below="@id/tvOneDollar"
-            android:layout_marginTop="@dimen/keyline_12"
-            android:text="Fees:" />
-
-        <TextView
-            android:id="@+id/tvFeesAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/tvFees"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/tvSGD2"
-            android:text="7.00"
-            android:textColor="@color/pink"
-            android:textSize="19sp" />
-
-        <TextView
-            android:id="@+id/tvSGD2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/tvFees"
-            android:layout_below="@+id/tvIDR2"
-            android:text="SGD"
-            android:textColor="@color/black"
-            android:textSize="19sp" />
-
-        <TextView
-            android:id="@+id/tvTotal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tvISend"
-            android:layout_below="@id/tvFees"
-            android:layout_marginTop="@dimen/keyline_12"
-            android:text="Total:" />
-
-        <TextView
-            android:id="@+id/tvTotalAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/tvTotal"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/tvSGD3"
-            android:text="7.00"
-            android:textColor="@color/pink"
-            android:textSize="19sp" />
-
-        <TextView
-            android:id="@+id/tvSGD3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/tvTotal"
-            android:layout_below="@+id/tvSGD2"
-            android:text="SGD"
-            android:textColor="@color/black"
-            android:textSize="19sp" />
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/tvMyInformation"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_marginLeft="@dimen/keyline_16"
-        android:drawableLeft="@drawable/ico_alert"
-        android:drawablePadding="5dp"
-        android:gravity="center_vertical"
-        android:text="My Information"
-        android:textColor="@color/text_color_normal" />
-
-    <Button
-        android:id="@+id/btnMyInfoEdit"
-        android:text="Complete sender profile"
-        style="@style/CardButton"/>
-
-    <!--<RelativeLayout-->
+        <!--<RelativeLayout-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="60dp"-->
         <!--android:layout_margin="5dp"-->
         <!--android:background="@drawable/card">-->
 
         <!--<ImageView-->
-            <!--android:id="@+id/ivMyInfoLeft"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--android:layout_alignParentTop="true"-->
-            <!--android:layout_marginLeft="@dimen/keyline_16"-->
-            <!--android:layout_marginRight="@dimen/keyline_16"-->
-            <!--android:scaleType="centerInside"-->
-            <!--android:src="@drawable/ico_name_reversed" />-->
+        <!--android:id="@+id/ivMyInfoLeft"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_marginLeft="@dimen/keyline_16"-->
+        <!--android:layout_marginRight="@dimen/keyline_16"-->
+        <!--android:scaleType="centerInside"-->
+        <!--android:src="@drawable/ico_name_reversed" />-->
 
 
         <!--<TextView-->
-            <!--android:id="@+id/tvMyName"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_alignParentTop="true"-->
-            <!--android:layout_toRightOf="@id/ivMyInfoLeft"-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:text="Dian Sastro"-->
-            <!--android:textColor="@color/text_color_normal"-->
-            <!--android:textSize="16sp" />-->
+        <!--android:id="@+id/tvMyName"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_toRightOf="@id/ivMyInfoLeft"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:text="Dian Sastro"-->
+        <!--android:textColor="@color/text_color_normal"-->
+        <!--android:textSize="16sp" />-->
 
         <!--<ImageButton-->
-            <!--android:id="@+id/btnMyInfoEdit"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:background="@drawable/button_edit_profile"-->
-            <!--android:padding="@dimen/keyline_16"-->
-            <!--android:scaleType="centerInside"-->
-            <!--android:src="@drawable/ico_edit_reversed" />-->
+        <!--android:id="@+id/btnMyInfoEdit"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:background="@drawable/button_edit_profile"-->
+        <!--android:padding="@dimen/keyline_16"-->
+        <!--android:scaleType="centerInside"-->
+        <!--android:src="@drawable/ico_edit_reversed" />-->
 
-    <!--</RelativeLayout>-->
+        <!--</RelativeLayout>-->
 
-    <TextView
-        android:id="@+id/tvAddRecipient"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_marginLeft="@dimen/keyline_16"
-        android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/ico_add"
-        android:drawablePadding="5dp"
-        android:gravity="center_vertical"
-        android:text="Add New Recipients"
-        android:textColor="@drawable/text_on_pressed_dark" />
-    <Button
-        android:id="@+id/btnAddNewRecipient"
-        android:text="Add New Recipient"
-        android:visibility="gone"
-        style="@style/CardButton" />
+        <TextView
+            android:id="@+id/tvAddRecipient"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginLeft="@dimen/keyline_16"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ico_add"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:text="Add New Recipients"
+            android:textColor="@drawable/text_on_pressed_dark" />
 
-    <FrameLayout
-        android:id="@+id/flRecipientsContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/card">
+        <Button
+            android:id="@+id/btnAddNewRecipient"
+            style="@style/CardButton"
+            android:text="Add New Recipient"
+            android:visibility="gone" />
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvRecipients"
@@ -274,6 +275,6 @@
             android:background="@color/home_background"
             tools:listitem="@layout/item_recipient_row_expanded" />
 
-    </FrameLayout>
+    </LinearLayout>
 
-</LinearLayout>
+</com.media2359.nickel.ui.customview.ThemedSwipeRefreshLayout>

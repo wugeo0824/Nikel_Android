@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/nav_bar_color</color>
-    <color name="colorPrimaryDark">@color/black</color>
+    <color name="colorPrimary">#393939</color>
+    <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="white">#FFFFFF</color>
@@ -21,4 +21,21 @@
     <color name="color_black_b4">#666666</color>
     <color name="color_black_b5">#808080</color>
     <color name="color_black_b6">#999999</color>
+
+    <color name="darkGreyBlue">#274863</color>
+    <color name="darkGreyBlue20">#33274863</color>
+    <color name="lightGrey">#E9E9E9</color>
+    <color name="paleBlueSky">#b2eaff</color>
+    <color name="paleBlueSky40">#66b2eaff</color>
+    <color name="lightBlueGrey">#d9dfec</color>
+    <color name="orangePink">#fe6a5d</color>
+    <color name="butterScotch">#fab63d</color>
+    <color name="greenyBlue">#52c1a8</color>
+    <color name="cornFlowerBlue">#689ad4</color>
+    <color name="warmGrey">#7c7c7c</color>
+    <color name="denim">#3d6586</color>
+    <color name="paleWhite">#f5f5f5</color>
+    <color name="darkBlueGrey80">#CC182c3d</color>
+    <color name="windows_blue">#3279b4</color>
+
 </resources>

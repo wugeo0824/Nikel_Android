@@ -1,10 +1,15 @@
 package com.media2359.nickel.ui;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -18,14 +23,13 @@ import android.widget.Toast;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.ui.camera.CameraPreview;
+import com.media2359.nickel.ui.camera.IDCardOverlay;
 import com.media2359.nickel.ui.camera.ImageInputHelper;
+import com.media2359.nickel.utils.BitmapUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * The general steps for creating a custom camera interface for your application are as follows:
@@ -41,11 +45,32 @@ public class CaptureActivity extends AppCompatActivity {
 
     private static final String TAG = "CaptureActivity";
     private static final int MY_PERMISSION_CAMERA = 9;
+
+    public static final String EXTRA_IMAGE_TYPE = "image_type";
+    public static final int IMAGE_PROFILE = 11;
+    public static final int IMAGE_RECEIPT = 12;
+
     private Camera mCamera;
     private CameraPreview mCameraPreview;
     private Button captureButton;
     private FrameLayout preview;
+    private int imageType = -1;
+    private IDCardOverlay idCardOverlay;
 
+    private ProgressDialog progressDialog;
+
+
+    public static void startCapturingIDCard(Activity activity, int requestCode) {
+        Intent i = new Intent(activity, CaptureActivity.class);
+        i.putExtra(EXTRA_IMAGE_TYPE, IMAGE_PROFILE);
+        activity.startActivityForResult(i,requestCode);
+    }
+
+    public static void startCapturingReceipt(Activity activity, int requestCode) {
+        Intent i = new Intent(activity, CaptureActivity.class);
+        i.putExtra(EXTRA_IMAGE_TYPE, IMAGE_RECEIPT);
+        activity.startActivityForResult(i,requestCode);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,16 +78,11 @@ public class CaptureActivity extends AppCompatActivity {
         setContentView(R.layout.activity_capture);
     }
 
-//    private void hideStatusBar() {
-//        View decorView = getWindow().getDecorView();
-//        // Hide the status bar.
-//        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-//        decorView.setSystemUiVisibility(uiOptions);
-//    }
-
     @Override
     protected void onResume() {
         super.onResume();
+
+        imageType = getIntent().getIntExtra(EXTRA_IMAGE_TYPE, IMAGE_PROFILE);
 
         if (checkCameraHardware(getApplicationContext()))
             checkCameraPermission();
@@ -81,10 +101,10 @@ public class CaptureActivity extends AppCompatActivity {
         // Here, thisActivity is the current activity
         if (permissionCheck
                 != PackageManager.PERMISSION_GRANTED) {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA},
-                        MY_PERMISSION_CAMERA);
+            // No explanation needed, we can request the permission.
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    MY_PERMISSION_CAMERA);
 
         } else {
             initViews();
@@ -92,8 +112,7 @@ public class CaptureActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSION_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
@@ -121,26 +140,41 @@ public class CaptureActivity extends AppCompatActivity {
         releaseCamera();
     }
 
-    private void releaseCamera(){
-        if (mCamera != null){
+    private void releaseCamera() {
+        if (mCamera != null) {
             mCamera.release();        // release the camera for other applications
             mCamera = null;
         }
     }
 
-    private void initViews() {
-        mCamera = getCameraInstance();
-        mCameraPreview = new CameraPreview(this, mCamera);
-        preview = (FrameLayout) findViewById(R.id.camera_preview);
-        preview.addView(mCameraPreview, 0);
 
-        captureButton = (Button) findViewById(R.id.button_capture);
-        captureButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCamera.takePicture(null, null, mPicture);
-            }
-        });
+    private void initViews() {
+
+
+
+            idCardOverlay = (IDCardOverlay) findViewById(R.id.overlay_IDCard);
+
+            mCamera = getCameraInstance();
+            mCameraPreview = new CameraPreview(this, mCamera);
+            preview = (FrameLayout) findViewById(R.id.camera_preview);
+            preview.addView(mCameraPreview, 0);
+
+            captureButton = (Button) findViewById(R.id.button_capture);
+            captureButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCamera.takePicture(null, null, mPicture);
+                }
+            });
+
+        if (imageType == IMAGE_PROFILE) {
+            // for ID card overlay
+            idCardOverlay.setVisibility(View.VISIBLE);
+        } else {
+            // for receipt overlay
+            idCardOverlay.setVisibility(View.GONE);
+        }
+
     }
 
     /**
@@ -171,48 +205,84 @@ public class CaptureActivity extends AppCompatActivity {
         return c; // returns null if camera is unavailable
     }
 
+
     Camera.PictureCallback mPicture = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            File pictureFile = getOutputMediaFile();
-            if (pictureFile == null) {
-                return;
-            }
-            try {
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                fos.write(data);
-                fos.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-            Intent intent = new Intent();
-            intent.putExtra(ImageInputHelper.DATA_PHOTO_FILE, pictureFile.getPath());
-            setResult(RESULT_OK,intent);
-            finish();
+            SaveProfileImageAsync saveProfileImageAsync = new SaveProfileImageAsync();
+            saveProfileImageAsync.execute(data);
         }
     };
 
-    private static File getOutputMediaFile() {
-        File mediaStorageDir = new File(
-                Environment
-                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                "MyCameraApp");
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                Log.d("MyCameraApp", "failed to create directory");
-                return null;
-            }
-        }
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-                .format(new Date());
-        File mediaFile;
-        mediaFile = new File(mediaStorageDir.getPath() + File.separator
-                + "IMG_" + timeStamp + ".jpg");
+    private class SaveProfileImageAsync extends AsyncTask<byte[], Void, Void> {
 
-        return mediaFile;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(CaptureActivity.this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Processing...");
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+            finish();
+        }
+
+        @Override
+        protected Void doInBackground(byte[]... params) {
+
+            byte[] data = params[0];
+
+            try {
+
+                // crop Image
+                Bitmap finalImage = BitmapFactory.decodeByteArray(data, 0,
+                        data.length);
+                //finalImage = BitmapUtils.rotateImage(finalImage, BitmapUtils.getRotation(CaptureActivity.this));
+                finalImage = BitmapUtils.cropCenter(finalImage);
+
+
+                File folder = new File(Environment
+                        .getExternalStorageDirectory() + "/Nickel");
+
+                boolean success = true;
+                if (!folder.exists()) {
+                    success = folder.mkdirs();
+                }
+
+                if (success) {
+                    Calendar today = Calendar.getInstance();
+                    File imageFile = new File(folder.getAbsolutePath() + File.separator + today.get(Calendar.DATE) + today.get(Calendar.SECOND) + "_nickel.png");
+
+                    imageFile.createNewFile();
+
+                    // save image into gallery
+                    FileOutputStream fos = new FileOutputStream(imageFile);
+                    //fos.write(data);
+                    finalImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    fos.close();
+
+                    Intent intent = new Intent();
+                    intent.putExtra(ImageInputHelper.DATA_PHOTO_FILE, imageFile.getPath());
+                    setResult(RESULT_OK, intent);
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Image Not saved",
+                            Toast.LENGTH_SHORT).show();
+                    return null;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
     }
+
 }

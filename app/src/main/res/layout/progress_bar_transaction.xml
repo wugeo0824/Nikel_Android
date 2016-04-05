@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ProgressBar
+        android:id="@+id/progressBarTran"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_margin="@dimen/keyline_16"
+        android:progressDrawable="@drawable/progress_bar"
+        android:layout_gravity="center_vertical"
+        android:max="2"
+        android:progress="1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/progress_bar_height" />
+
+    <ImageView
+        android:id="@+id/ivProgress1"
+        android:background="@drawable/circle_green"
+        android:layout_gravity="center_vertical"
+        android:layout_width="@dimen/progress_ball_width"
+        android:layout_height="@dimen/progress_ball_width" />
+
+    <ImageView
+        android:id="@+id/ivProgress2"
+        android:background="@drawable/circle_green"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/progress_ball_width"
+        android:layout_height="@dimen/progress_ball_width" />
+
+    <ImageView
+        android:id="@+id/ivProgress3"
+        android:src="@drawable/circle_grey"
+        android:layout_gravity="center_vertical|right"
+        android:layout_width="@dimen/progress_ball_width"
+        android:layout_height="@dimen/progress_ball_width" />
+
+</FrameLayout>

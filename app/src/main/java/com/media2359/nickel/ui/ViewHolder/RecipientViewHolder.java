@@ -1,7 +1,8 @@
-package com.media2359.nickel.ui.ViewHolder;
+package com.media2359.nickel.ui.viewholder;
 
 import android.animation.LayoutTransition;
-import android.provider.ContactsContract;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +16,7 @@ import com.media2359.nickel.R;
 import com.media2359.nickel.event.OnRecipientDeleteClickEvent;
 import com.media2359.nickel.event.OnRecipientEditClickEvent;
 import com.media2359.nickel.event.OnSendMoneyClickEvent;
-import com.media2359.nickel.model.DummyRecipient;
+import com.media2359.nickel.model.Recipient;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,6 +30,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
     public ImageButton btnRecipientOptions;
     public FrameLayout btnSendMoney;
     public boolean expanded = false;
+    public boolean isGreyedOut = false;
     public RelativeLayout topHolder;
     private ItemExpandCollapseListener listener;
     private boolean optionsShown = false;
@@ -47,9 +49,9 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
         topHolder = (RelativeLayout) itemView.findViewById(R.id.topHolder);
     }
 
-    public void bindItem(DummyRecipient dummyRecipient) {
-        tvRecipientName.setText(dummyRecipient.getName());
-        tvRecipientBank.setText(dummyRecipient.getBank());
+    public void bindItem(final Recipient recipient) {
+        tvRecipientName.setText(recipient.getName());
+        tvRecipientBank.setText(recipient.getBankAccount());
         btnEditRecipient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,13 +60,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
             }
         });
 
-        btnSendMoney.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: send money
-                EventBus.getDefault().post(new OnSendMoneyClickEvent(getAdapterPosition()));
-            }
-        });
+        btnSendMoney.setOnClickListener(OnSendMoneyClick);
 
         btnRecipientOptions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,18 +77,60 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
             @Override
             public void onClick(View v) {
                 //TODO: delete recipient
-                EventBus.getDefault().post(new OnRecipientDeleteClickEvent(getAdapterPosition()));
+                showDeleteDialog(recipient.getName());
             }
         });
 
-        tvSendMoney.setText(String.format(itemView.getContext().getString(R.string.send_money_to), dummyRecipient.getName()));
+        tvSendMoney.setText(String.format(itemView.getContext().getString(R.string.send_money_to), recipient.getName()));
 
         itemView.setOnClickListener(switchLayout);
 
-        if (dummyRecipient.isExpanded()){
-            expand();
-        }else{
+
+        setEnabledOrNot(recipient.isGreyedOut());
+
+        if (!recipient.isGreyedOut()){
+            if (recipient.isExpanded()){
+                expand();
+            }else{
+                collapse();
+            }
+        }
+
+    }
+
+    private void showDeleteDialog(String contactName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+        builder.setTitle("Delete?");
+        builder.setMessage("Do you want to delete " + contactName + "?");
+        builder.setCancelable(false);
+        builder.setNegativeButton("No",null);
+        builder.setPositiveButton("Yes, delete it", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                EventBus.getDefault().post(new OnRecipientDeleteClickEvent(getAdapterPosition()));
+            }
+        });
+    }
+
+    private View.OnClickListener OnSendMoneyClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //TODO: send money
+            EventBus.getDefault().post(new OnSendMoneyClickEvent(getAdapterPosition()));
+        }
+    };
+
+    public void setEnabledOrNot(boolean greyedOut){
+        if (!greyedOut){
+            showOptionsButtons();
+            btnRecipientOptions.setEnabled(true);
             collapse();
+            itemView.setOnClickListener(switchLayout);
+        }else{
+            hideOptionsButtons();
+            btnRecipientOptions.setEnabled(false);
+            topHolder.setBackgroundColor(itemView.getResources().getColor(R.color.color_black_b5));
+            itemView.setOnClickListener(OnSendMoneyClick);
         }
     }
 

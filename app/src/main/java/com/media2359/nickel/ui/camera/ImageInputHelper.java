@@ -138,7 +138,7 @@ public class ImageInputHelper {
         File sourceFile = new File(getRealPathFromURI(data));
         Log.d(TAG, "sourceFile path is" + data.getPath());
         Calendar today = Calendar.getInstance();
-        File destFile = new File(root + "Nickel Profile" + File.separator + today.get(Calendar.DATE) + today.get(Calendar.SECOND) + "_nickel.png");
+        File destFile = new File(root + today.get(Calendar.DATE) + today.get(Calendar.SECOND) + "_nickel.png");
         try {
             destFile.createNewFile();
 
@@ -244,11 +244,13 @@ public class ImageInputHelper {
             requestCode = REQUEST_PICTURE_FROM_CAMERA_BACK;
 
         if (fragment == null) {
-            Intent intent = new Intent(mContext, CaptureActivity.class);
-            mContext.startActivityForResult(intent, requestCode);
+//            Intent intent = new Intent(mContext, CaptureActivity.class);
+//            mContext.startActivityForResult(intent, requestCode);
+            CaptureActivity.startCapturingIDCard(mContext,requestCode);
         } else {
-            Intent intent = new Intent(fragment.getActivity(),CaptureActivity.class);
-            fragment.startActivityForResult(intent, requestCode);
+//            Intent intent = new Intent(fragment.getActivity(),CaptureActivity.class);
+//            fragment.startActivityForResult(intent, requestCode);
+            CaptureActivity.startCapturingIDCard(fragment.getActivity(),requestCode);
         }
     }
 

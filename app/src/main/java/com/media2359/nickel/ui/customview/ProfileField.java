@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.MotionEventCompat;
 import android.text.InputType;
@@ -32,7 +33,7 @@ public class ProfileField extends RelativeLayout {
     private boolean shouldIntercept = false;
 
 //    TextView tvFieldTitle;
-    EditText etInputLayout;
+    TextInputEditText etInputLayout;
     ImageView ivFieldStatus;
     TextInputLayout inputLayout;
     ImageView ivLeftImage;
@@ -53,7 +54,7 @@ public class ProfileField extends RelativeLayout {
 
         inflate(context, R.layout.item_profile_field, this);
         inputLayout = (TextInputLayout) findViewById(R.id.inputLayout);
-        etInputLayout = (EditText) findViewById(R.id.etInputLayout);
+        etInputLayout = (TextInputEditText) findViewById(R.id.etInputLayout);
         ivFieldStatus = (ImageView) findViewById(R.id.ivFieldStatus);
         ivFieldStatus.setVisibility(INVISIBLE);
         ivLeftImage = (ImageView) findViewById(R.id.ivFieldLeft);
@@ -111,12 +112,14 @@ public class ProfileField extends RelativeLayout {
         }
     };
 
-    private void validateInput() {
+    public boolean validateInput() {
         if (etInputLayout.getText().toString().length() >3){
             showCompletedStatus(true);
+            return true;
         }else{
             showCompletedStatus(false);
             showErrorMessage(true,errorMessage);
+            return false;
         }
     }
 
@@ -148,6 +151,7 @@ public class ProfileField extends RelativeLayout {
 
     public void setEnabledEditing(boolean enabled) {
         etInputLayout.setFocusable(enabled);
+        etInputLayout.setEnabled(enabled);
         etInputLayout.setFocusableInTouchMode(enabled);
         if (!enabled) {
             etInputLayout.setOnClickListener(new OnClickListener() {
@@ -165,6 +169,18 @@ public class ProfileField extends RelativeLayout {
 
     public EditText getEditText(){
         return etInputLayout;
+    }
+
+    public void setInputAndLock(String input){
+        setInput(input);
+        setEnabledEditing(false);
+        if (shouldIntercept){
+            setShouldIntercept(false);
+        }
+    }
+
+    public void setInput(String input){
+        etInputLayout.setText(input);
     }
 
     private DatePickerDialog dateOfBirth;
@@ -191,14 +207,18 @@ public class ProfileField extends RelativeLayout {
 
     public void setShouldIntercept(boolean shouldIntercept) {
         this.shouldIntercept = shouldIntercept;
-        etInputLayout.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus && etInputLayout.getText().toString().length()<=0){
-                    showCalendar();
+        if (shouldIntercept){
+            etInputLayout.setOnFocusChangeListener(new OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus && etInputLayout.getText().toString().length()<=0){
+                        showCalendar();
+                    }
                 }
-            }
-        });
+            });
+        }else{
+            etInputLayout.setOnFocusChangeListener(null);
+        }
     }
 
     @Override

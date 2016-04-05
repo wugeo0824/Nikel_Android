@@ -214,6 +214,7 @@
         <Button
             android:id="@+id/btnSaveChanges"
             style="@style/PinkButton"
+            android:layout_marginBottom="@dimen/keyline_16"
             android:layout_below="@id/rlIDPhotoContainer"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/keyline_16"
