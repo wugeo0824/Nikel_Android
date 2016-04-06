@@ -20,6 +20,7 @@ public class Transaction {
     int transProgress;
     String recipientName;
     float exchangeRate;
+    String receiptPhotoUrl;
 
     @ParcelConstructor
     public Transaction(String transactionID, String transactionDate, String transactionAmount, String transactionStatus, int transProgress, String recipientName, float exchangeRate) {
@@ -40,6 +41,14 @@ public class Transaction {
         this.transProgress = builder.transProgress;
         this.recipientName = builder.recipientName;
         this.exchangeRate = builder.exchangeRate;
+    }
+
+    public String getReceiptPhotoUrl() {
+        return receiptPhotoUrl;
+    }
+
+    public void setReceiptPhotoUrl(String receiptPhotoUrl) {
+        this.receiptPhotoUrl = receiptPhotoUrl;
     }
 
     public String getTransactionID() {

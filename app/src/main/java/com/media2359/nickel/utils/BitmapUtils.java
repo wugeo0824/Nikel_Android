@@ -4,9 +4,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.view.Display;
 import android.view.Surface;
 import android.view.WindowManager;
+
+import com.media2359.nickel.R;
+
+import java.io.File;
 
 /**
  * Created by Xijun on 1/4/16.
@@ -86,4 +92,16 @@ public class BitmapUtils {
 
         return degrees;
     }
+
+    public static Bitmap getThumbnail(Context context, Uri uri){
+        File imageFile = new File(uri.getPath());
+        Bitmap thumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(imageFile.getPath()), context.getResources().getDimensionPixelSize(R.dimen.card_holder_width), context.getResources().getDimensionPixelSize(R.dimen.card_holder_height));
+        return thumbImage;
+    }
+
+    public static Bitmap getThumbnail(Context context, File imageFile){
+        Bitmap thumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(imageFile.getPath()), context.getResources().getDimensionPixelSize(R.dimen.card_holder_width), context.getResources().getDimensionPixelSize(R.dimen.card_holder_height));
+        return thumbImage;
+    }
+
 }

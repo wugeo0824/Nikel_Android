@@ -1,9 +1,11 @@
 package com.media2359.nickel.ui.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +23,7 @@ import com.media2359.nickel.R;
 import com.media2359.nickel.event.OnRecipientDeleteClickEvent;
 import com.media2359.nickel.event.OnRecipientEditClickEvent;
 import com.media2359.nickel.event.OnSendMoneyClickEvent;
+import com.media2359.nickel.model.MyProfile;
 import com.media2359.nickel.model.Recipient;
 import com.media2359.nickel.model.Transaction;
 import com.media2359.nickel.model.TransactionManager;
@@ -71,8 +74,6 @@ public class HomeFragment extends BaseFragment {
         if (getActivity() instanceof MainActivity)
             mainActivity = (MainActivity) getActivity();
         initViews(view);
-        loadMyProfile();
-        getRecipients();
         return view;
     }
 
@@ -136,8 +137,9 @@ public class HomeFragment extends BaseFragment {
     private View.OnClickListener onMyInfoClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mainActivity.overridePendingTransition(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left);
-            mainActivity.switchFragment(new ProfileFragment(), true);
+//            mainActivity.overridePendingTransition(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left);
+//            mainActivity.switchFragment(new ProfileFragment(), true);
+            mainActivity.switchFragmentAndSyncDrawer(new ProfileFragment(), R.id.nav_profile);
         }
     };
 
@@ -254,12 +256,33 @@ public class HomeFragment extends BaseFragment {
     @Subscribe
     public void onEvent(OnRecipientDeleteClickEvent onDeleteEvent) {
         //TODO: change to actual value
-        recipientAdapter.removeItem(onDeleteEvent.getPosition());
+        //recipientAdapter.removeItem(onDeleteEvent.getPosition());
+        showDeleteDialog(onDeleteEvent.getPosition(),dataList.get(onDeleteEvent.getPosition()).getName());
+    }
+
+    private void showDeleteDialog(final int position, String contactName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Delete?");
+        builder.setMessage("Do you want to delete " + contactName + "?");
+        builder.setCancelable(false);
+        builder.setNegativeButton("No",null);
+        builder.setPositiveButton("Yes, delete it", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                recipientAdapter.removeItem(position);
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void loadMyProfile() {
         //TODO get my profile data
-        hideMyProfile();
+        if (MyProfile.getCurrentProfile(getContext()) != null){
+            hideMyProfile();
+        }else{
+            showMyProfile();
+        }
     }
 
     private void hideMyProfile() {
@@ -305,6 +328,8 @@ public class HomeFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
+        loadMyProfile();
+        getRecipients();
     }
 
     @Override

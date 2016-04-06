@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initViews() {
         ivLogo = (ImageView) findViewById(R.id.ivLogo);
-        ivLogo.setAlpha(0f);
+        //ivLogo.setAlpha(0f);
         ivPasswordAgain = (ImageView) findViewById(R.id.ivPasswordAgain);
         tvNeedAccount = (TextView) findViewById(R.id.tvNeedAccount);
         tvNeedAccount.setClickable(true);
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         //int distanceY = DisplayUtils.getDisplayHeight(LoginActivity.this);
         //ivLogo.setY(distanceY);
         hideOrShowAllElements(true);
-        ivLogo.animate().rotationY(720f).alpha(1f).setDuration(ANIMATION_DURATION).setInterpolator(new DecelerateInterpolator())
+        ivLogo.animate().rotationY(720f).setDuration(ANIMATION_DURATION).setInterpolator(new DecelerateInterpolator())
                 .setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (resetDialog.isShowing()){
+        if (resetDialog!= null && resetDialog.isShowing()){
             resetDialog.dismiss();
         }else{
             super.onBackPressed();

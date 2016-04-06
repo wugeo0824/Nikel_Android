@@ -1,16 +1,11 @@
 package com.media2359.nickel.ui.fragments;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,10 +21,10 @@ import android.widget.Toast;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.model.MyProfile;
-import com.media2359.nickel.ui.MainActivity;
-import com.media2359.nickel.ui.camera.ImageInputHelper;
+import com.media2359.nickel.ui.CaptureActivity;
 import com.media2359.nickel.ui.customview.ProfileField;
-import com.media2359.nickel.utils.PreferrencesUtils;
+import com.media2359.nickel.utils.BitmapUtils;
+import com.media2359.nickel.utils.Const;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -37,13 +32,12 @@ import java.io.File;
 /**
  * Created by Xijun on 17/3/16.
  */
-public class ProfileFragment extends BaseFragment implements ImageInputHelper.ImageActionListener {
+public class ProfileFragment extends BaseFragment {
 
     private static final String TAG = "ProfileFragment";
 
     private ProfileField pfName, pfDOB, pfStreet, pfCity, pfPostal, pfDocumentID;
     private ImageView ivIDFront, ivIDBack;
-    private ImageInputHelper imageInputHelper;
     private FrameLayout flStatus;
     private TextView tvIDFront, tvIDBack, tvStatus;
     private Button btnSaveChanges;
@@ -60,8 +54,6 @@ public class ProfileFragment extends BaseFragment implements ImageInputHelper.Im
     }
 
     private void initViews(View view) {
-        imageInputHelper = new ImageInputHelper(this);
-        imageInputHelper.setImageActionListener(this);
 
         pfName = (ProfileField) view.findViewById(R.id.pfDisplayName);
         pfDOB = (ProfileField) view.findViewById(R.id.pfDOB);
@@ -103,44 +95,44 @@ public class ProfileFragment extends BaseFragment implements ImageInputHelper.Im
         }
     };
 
-    private boolean validFields(){
+    private boolean validFields() {
 
-        if (!pfName.validateInput()){
+        if (!pfName.validateInput()) {
             pfName.requestFocus();
             return false;
         }
 
-        if (!pfDOB.validateInput()){
+        if (!pfDOB.validateInput()) {
             pfDOB.requestFocus();
             return false;
         }
 
-        if (!pfStreet.validateInput()){
+        if (!pfStreet.validateInput()) {
             pfStreet.requestFocus();
             return false;
         }
 
-        if (!pfCity.validateInput()){
+        if (!pfCity.validateInput()) {
             pfCity.requestFocus();
             return false;
         }
 
-        if (!pfPostal.validateInput()){
+        if (!pfPostal.validateInput()) {
             pfPostal.requestFocus();
             return false;
         }
 
-        if (documentTypes.getSelectedItemPosition() <= 0){
+        if (documentTypes.getSelectedItemPosition() <= 0) {
             documentTypes.requestFocus();
             return false;
         }
 
-        if (!pfDocumentID.validateInput()){
+        if (!pfDocumentID.validateInput()) {
             pfDocumentID.requestFocus();
             return false;
         }
 
-        if (TextUtils.isEmpty(frontPhotoUrl) || TextUtils.isEmpty(backPhotoUrl)){
+        if (TextUtils.isEmpty(frontPhotoUrl) || TextUtils.isEmpty(backPhotoUrl)) {
             ivIDFront.requestFocus();
             return false;
         }
@@ -160,27 +152,27 @@ public class ProfileFragment extends BaseFragment implements ImageInputHelper.Im
         getActivity().onBackPressed();
     }
 
-    private void showSelectionDialog(final boolean isFront) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        builder.setTitle("Get your photo from Gallery?")
-                .setPositiveButton("Yes, open Gallery now", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        imageInputHelper.selectImageFromGallery(isFront);
-                    }
-                })
-                .setNegativeButton("No, take from Camera", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        imageInputHelper.takePhotoWithCamera(isFront);
-                    }
-                });
-
-        // Create the AlertDialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
+//    private void showSelectionDialog(final boolean isFront) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//
+//        builder.setTitle("Get your photo from Gallery?")
+//                .setPositiveButton("Yes, open Gallery now", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        imageInputHelper.selectImageFromGallery(isFront);
+//                    }
+//                })
+//                .setNegativeButton("No, take from Camera", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        imageInputHelper.takePhotoWithCamera(isFront);
+//                    }
+//                });
+//
+//        // Create the AlertDialog
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//    }
 
     @Override
     public void onResume() {
@@ -192,9 +184,9 @@ public class ProfileFragment extends BaseFragment implements ImageInputHelper.Im
         //TODO get my profile
         myProfile = MyProfile.getCurrentProfile(getActivity());
 
-        if (myProfile == null){
+        if (myProfile == null) {
             changeProfileStatus(MyProfile.STATUS_EMPTY);
-        }else{
+        } else {
             frontPhotoUrl = myProfile.getFrontPhotoUrl();
             backPhotoUrl = myProfile.getBackPhotoUrl();
             fillInMyProfile();
@@ -221,20 +213,20 @@ public class ProfileFragment extends BaseFragment implements ImageInputHelper.Im
         ivIDBack.setClickable(false);
     }
 
-    private void changeProfileStatus(int status){
-        switch (status){
+    private void changeProfileStatus(int status) {
+        switch (status) {
             case MyProfile.STATUS_EMPTY:
                 flStatus.setVisibility(View.GONE);
                 break;
             case MyProfile.STATUS_PENDING:
                 flStatus.setVisibility(View.VISIBLE);
                 tvStatus.setText(getString(R.string.profile_status_pending));
-                tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_alert,0,0,0);
+                tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_alert, 0, 0, 0);
                 break;
             case MyProfile.STATUS_APPROVED:
                 flStatus.setVisibility(View.VISIBLE);
                 tvStatus.setText(getString(R.string.profile_status_approved));
-                tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_ok,0,0,0);
+                tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_ok, 0, 0, 0);
                 break;
             default:
                 flStatus.setVisibility(View.GONE);
@@ -243,18 +235,19 @@ public class ProfileFragment extends BaseFragment implements ImageInputHelper.Im
     }
 
 
-
     private View.OnClickListener pickImageFront = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            showSelectionDialog(true);
+            //showSelectionDialog(true);
+            CaptureActivity.startCapturingIDCard(ProfileFragment.this, Const.REQUEST_PICTURE_FROM_CAMERA_FRONT);
         }
     };
 
     private View.OnClickListener pickImageBack = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            showSelectionDialog(false);
+            //showSelectionDialog(false);
+            CaptureActivity.startCapturingIDCard(ProfileFragment.this, Const.REQUEST_PICTURE_FROM_CAMERA_BACK);
         }
     };
 
@@ -264,58 +257,31 @@ public class ProfileFragment extends BaseFragment implements ImageInputHelper.Im
     }
 
     @Override
-    public void onImageSelectedFromGallery(Uri uri, File imageFile, boolean isFront) {
-        Bitmap thumbImage = getThumbnail(imageFile);
-        if (isFront) {
-            ivIDFront.setImageBitmap(thumbImage);
-            tvIDFront.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_ok, 0, 0, 0);
-        } else {
-            ivIDBack.setImageBitmap(thumbImage);
-            tvIDBack.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ico_ok), null, null, null);
-        }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        // TODO crop the image before upload
+        if ((requestCode == Const.REQUEST_PICTURE_FROM_CAMERA_FRONT) && (resultCode == Activity.RESULT_OK)) {
+            Log.d(TAG, "Image selected from camera");
+            String filePath = data.getStringExtra(Const.DATA_PHOTO_FILE);
+            File result = new File(filePath);
 
-    }
-
-    @Override
-    public void onImageTakenFromCamera(Uri uri, File imageFile, boolean isFront) {
-
-        Bitmap thumbImage = getThumbnail(imageFile);
-        if (isFront) {
-            frontPhotoUrl = uri.toString();
+            Bitmap thumbImage = BitmapUtils.getThumbnail(getActivity(), result);
+            frontPhotoUrl = Uri.fromFile(result).toString();
             Log.d(TAG, "onImageTakenFromCamera: front url is " + frontPhotoUrl);
             ivIDFront.setImageBitmap(thumbImage);
             tvIDFront.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ico_ok), null, null, null);
-        } else {
-            backPhotoUrl = uri.toString();
+
+        } else if ((requestCode == Const.REQUEST_PICTURE_FROM_CAMERA_BACK) && (resultCode == Activity.RESULT_OK)) {
+            Log.d(TAG, "Image selected from camera");
+            String filePath = data.getStringExtra(Const.DATA_PHOTO_FILE);
+            File result = new File(filePath);
+
+            Bitmap thumbImage = BitmapUtils.getThumbnail(getActivity(), result);
+            backPhotoUrl = Uri.fromFile(result).toString();
             Log.d(TAG, "onImageTakenFromCamera: back url is " + backPhotoUrl);
             ivIDBack.setImageBitmap(thumbImage);
             tvIDBack.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ico_ok), null, null, null);
         }
-    }
-
-//    @Override
-//    public void onImageCropped(Uri uri, File imageFile) {
-//
-//    }
-
-    private Bitmap getThumbnail(Uri uri){
-        File imageFile = new File(uri.getPath());
-        Bitmap thumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(imageFile.getPath()), getResources().getDimensionPixelSize(R.dimen.card_holder_width), getResources().getDimensionPixelSize(R.dimen.card_holder_height));
-        return thumbImage;
-    }
-
-    private Bitmap getThumbnail(File imageFile){
-        Bitmap thumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(imageFile.getPath()), getResources().getDimensionPixelSize(R.dimen.card_holder_width), getResources().getDimensionPixelSize(R.dimen.card_holder_height));
-        return thumbImage;
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        imageInputHelper.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

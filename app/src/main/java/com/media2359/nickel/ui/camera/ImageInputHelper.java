@@ -127,8 +127,9 @@ public class ImageInputHelper {
 
     private void copyImageToApplicationFolder(Uri data) {
 
-        String root = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
-        File createDir = new File(root + "Nickel Profile" + File.separator);
+        //String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String root = activity.getFilesDir().getAbsolutePath();
+        File createDir = new File(root + File.separator + "Nickel Profile" + File.separator);
         if (!createDir.exists()) {
             createDir.mkdir();
         }

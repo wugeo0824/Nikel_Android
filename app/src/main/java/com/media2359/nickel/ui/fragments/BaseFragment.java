@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
-import com.media2359.nickel.NickelApplication;
-import com.squareup.leakcanary.RefWatcher;
-
 /**
  * Created by Xijun on 17/3/16.
  */
@@ -20,7 +17,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(mListener!=null) {
+        if (mListener != null) {
             mListener.setPageTitle(getPageTitle());
         }
     }
@@ -45,8 +42,8 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = NickelApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = NickelApplication.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 
     /**
@@ -57,6 +54,7 @@ public abstract class BaseFragment extends Fragment {
 
         /**
          * This will be the title of the collapsed toolbar
+         *
          * @param title
          */
         void setPageTitle(String title);

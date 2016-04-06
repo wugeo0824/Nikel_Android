@@ -2,6 +2,7 @@ package com.media2359.nickel.ui.customview;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.TextInputEditText;
@@ -187,7 +188,7 @@ public class ProfileField extends RelativeLayout {
     private SimpleDateFormat dateFormatter;
 
     public void showCalendar(){
-        Calendar newCalendar = Calendar.getInstance();
+        //Calendar newCalendar = Calendar.getInstance();
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         dateOfBirth = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -196,7 +197,8 @@ public class ProfileField extends RelativeLayout {
                 newDate.set(year, monthOfYear, dayOfMonth);
                 etInputLayout.setText(dateFormatter.format(newDate.getTime()));
             }
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+            //initial year month day to be displayed
+        }, 2000, 1, 1);
 
         dateOfBirth.show();
     }

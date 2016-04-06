@@ -11,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -25,16 +24,15 @@ import android.widget.Toast;
 import com.media2359.nickel.R;
 import com.media2359.nickel.ui.camera.CameraPreview;
 import com.media2359.nickel.ui.camera.IDCardOverlay;
-import com.media2359.nickel.ui.camera.ImageInputHelper;
 import com.media2359.nickel.utils.BitmapUtils;
+import com.media2359.nickel.utils.Const;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Calendar;
 
 /**
  * The general steps for creating a custom camera interface for your application are as follows:
- * <p/>
+ * <p>
  * Detect and Access Camera - Create code to check for the existence of cameras and request access.
  * Create a Preview Class - Create a camera preview class that extends SurfaceView and implements the SurfaceHolder interface. This class previews the live images from the camera.
  * Build a Preview Layout - Once you have the camera preview class, create a view layout that incorporates the preview and the user interface controls you want.
@@ -51,6 +49,7 @@ public class CaptureActivity extends AppCompatActivity {
     public static final String EXTRA_REQUEST_CODE = "request_code";
     public static final int IMAGE_PROFILE = 11;
     public static final int IMAGE_RECEIPT = 12;
+    private static final int IMAGE_COMPRESSION_QUALITY = 90;
 
     private Camera mCamera;
     private CameraPreview mCameraPreview;
@@ -258,41 +257,52 @@ public class CaptureActivity extends AppCompatActivity {
                 Bitmap finalImage = BitmapFactory.decodeByteArray(data, 0,
                         data.length);
                 //finalImage = BitmapUtils.rotateImage(finalImage, BitmapUtils.getRotation(CaptureActivity.this));
-                finalImage = BitmapUtils.cropCenter(finalImage);
-
-
-                File folder = new File(Environment
-                        .getExternalStorageDirectory() + "/Nickel");
-
-                boolean success = true;
-                if (!folder.exists()) {
-                    success = folder.mkdirs();
+                if (imageType == IMAGE_PROFILE) {
+                    finalImage = BitmapUtils.cropCenter(finalImage);
                 }
 
-                if (success) {
-                    Calendar today = Calendar.getInstance();
-                    //File imageFile = new File(folder.getAbsolutePath() + File.separator + today.get(Calendar.DATE) + today.get(Calendar.SECOND) + "_nickel.png");
-                    File imageFile = new File(folder.getAbsolutePath() + getIntent().getIntExtra(EXTRA_REQUEST_CODE, 1000) + "_nickel.png");
+                //File folder = new File(Environment.getExternalStorageDirectory() + "/Nickel");
+                //File file = new File(getFilesDir(), "Nickel");
 
-                    if (imageFile.createNewFile()) {
-                        // save image into gallery
-                        FileOutputStream fos = new FileOutputStream(imageFile);
-                        //fos.write(data);
-                        finalImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                        fos.close();
+//                boolean success = true;
+//                if (!folder.exists()) {
+//                    success = folder.mkdirs();
+//                }
 
-                        Intent intent = new Intent();
-                        intent.putExtra(ImageInputHelper.DATA_PHOTO_FILE, imageFile.getPath());
-                        setResult(RESULT_OK, intent);
-                    } else {
-                        setResult(RESULT_CANCELED);
-                    }
+//                if (success) {
+                //Calendar today = Calendar.getInstance();
+                //File imageFile = new File(folder.getAbsolutePath() + File.separator + today.get(Calendar.DATE) + today.get(Calendar.SECOND) + "_nickel.png");
+//                    File imageFile;
+//                    if (imageType == IMAGE_PROFILE){
+//                        imageFile = new File(folder.getAbsolutePath() + File.separator + getIntent().getIntExtra(EXTRA_REQUEST_CODE, 1000) + "_nickel.png");
+//                    }else{
+//                        imageFile = new File(folder.getAbsolutePath() + File.separator + today.get(Calendar.DATE) + today.get(Calendar.SECOND) + "receipt_nickel.png");
+//                    }
 
+                File imageFile = new File(getFilesDir(), getIntent().getIntExtra(EXTRA_REQUEST_CODE, 1000) + "_nickel.png");
+                if (imageFile.exists()) {
+                    imageFile.delete();
+                }
+
+                if (imageFile.createNewFile()) {
+                    // save image into gallery
+                    //FileOutputStream fos = new FileOutputStream(imageFile);
+                    FileOutputStream fos = openFileOutput(imageFile.getName(), MODE_PRIVATE);
+                    finalImage.compress(Bitmap.CompressFormat.PNG, IMAGE_COMPRESSION_QUALITY, fos);
+                    fos.close();
+
+                    Intent intent = new Intent();
+                    intent.putExtra(Const.DATA_PHOTO_FILE, imageFile.getPath());
+                    setResult(RESULT_OK, intent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Image Not saved",
-                            Toast.LENGTH_SHORT).show();
-                    return null;
+                    setResult(RESULT_CANCELED);
                 }
+
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "Image Not saved",
+//                            Toast.LENGTH_SHORT).show();
+//                    return null;
+//                }
 
             } catch (Exception e) {
                 e.printStackTrace();

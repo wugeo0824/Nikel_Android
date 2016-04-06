@@ -77,7 +77,8 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
             @Override
             public void onClick(View v) {
                 //TODO: delete recipient
-                showDeleteDialog(recipient.getName());
+                //showDeleteDialog(recipient.getName());
+                EventBus.getDefault().post(new OnRecipientDeleteClickEvent(getAdapterPosition()));
             }
         });
 
@@ -98,19 +99,19 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
 
     }
 
-    private void showDeleteDialog(String contactName) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
-        builder.setTitle("Delete?");
-        builder.setMessage("Do you want to delete " + contactName + "?");
-        builder.setCancelable(false);
-        builder.setNegativeButton("No",null);
-        builder.setPositiveButton("Yes, delete it", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                EventBus.getDefault().post(new OnRecipientDeleteClickEvent(getAdapterPosition()));
-            }
-        });
-    }
+//    private void showDeleteDialog(String contactName) {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+//        builder.setTitle("Delete?");
+//        builder.setMessage("Do you want to delete " + contactName + "?");
+//        builder.setCancelable(false);
+//        builder.setNegativeButton("No",null);
+//        builder.setPositiveButton("Yes, delete it", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                EventBus.getDefault().post(new OnRecipientDeleteClickEvent(getAdapterPosition()));
+//            }
+//        });
+//    }
 
     private View.OnClickListener OnSendMoneyClick = new View.OnClickListener() {
         @Override

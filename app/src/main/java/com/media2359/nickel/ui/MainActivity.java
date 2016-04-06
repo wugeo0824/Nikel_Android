@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.IdRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
@@ -144,13 +145,21 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
                     }
                     break;
                 case R.id.nav_profile:
-                    newFragment = new ProfileFragment();
+                    if (getCurrentFragment() instanceof ProfileFragment){
+                        newFragment = null;
+                    }else{
+                        newFragment = new ProfileFragment();
+                    }
                     break;
 //                case R.id.nav_recipients:
 //                    newFragment = new RecipientListFragment();
 //                    break;
                 case R.id.nav_history:
-                    newFragment = TransactionHistoryFragment.newInstance();
+                    if (getCurrentFragment() instanceof TransactionHistoryFragment){
+                        newFragment = null;
+                    }else{
+                        newFragment = TransactionHistoryFragment.newInstance();
+                    }
                     break;
                 case R.id.nav_rewards:
                     newFragment = new RewardsFragment();
@@ -166,18 +175,23 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
             }
 
             if (newFragment != null) {
-                if (manager.getBackStackEntryCount() >= 1) //only maintain one entry on backStack
-                    manager.popBackStack();
-
-                switchFragment(newFragment, true);
-                //item.setChecked(true);
-                navigationView.setCheckedItem(item.getItemId());
+                switchFragmentAndSyncDrawer(newFragment,item.getItemId());
             }
 
             mDrawerLayout.closeDrawers();
             return true;
         }
     };
+
+    public void switchFragmentAndSyncDrawer(Fragment fragment, @IdRes int itemId){
+        if (manager.getBackStackEntryCount() >= 1) //only maintain one entry on backStack
+            manager.popBackStack();
+
+        overridePendingTransition(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_left);
+        switchFragment(fragment, true);
+        //item.setChecked(true);
+        navigationView.setCheckedItem(itemId);
+    }
 
     private void signOut() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
