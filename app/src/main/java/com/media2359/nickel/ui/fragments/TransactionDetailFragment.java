@@ -4,11 +4,14 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,12 +20,16 @@ import android.widget.Toast;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.model.Transaction;
+import com.media2359.nickel.model.TransactionManager;
 import com.media2359.nickel.ui.TransactionActivity;
 import com.media2359.nickel.ui.customview.TransactionProgress;
 import com.media2359.nickel.utils.Const;
 import com.media2359.nickel.utils.DialogUtils;
+import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
+
+import java.io.File;
 
 /**
  * Created by Xijun on 10/3/16.
@@ -41,13 +48,13 @@ public class TransactionDetailFragment extends BaseFragment {
     private Button btnSubmitReceipt, btnUOB, btnCStore;
     private ImageView ivReceipt;
     private LinearLayout llPaymentOptions;
-    private RelativeLayout rlReceiptUpload;
+    private FrameLayout flReceiptUpload;
     private TransactionActivity activity;
 
     public static TransactionDetailFragment newInstance(Transaction transaction) {
 
         Bundle args = new Bundle();
-        args.putParcelable(BUNDLE_TRANSACTION, Parcels.wrap(transaction));
+        //args.putParcelable(BUNDLE_TRANSACTION, Parcels.wrap(transaction));
         TransactionDetailFragment fragment = new TransactionDetailFragment();
         fragment.setArguments(args);
         return fragment;
@@ -82,15 +89,22 @@ public class TransactionDetailFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUIProgress();
+    }
+
     private void initData() {
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            transaction = Parcels.unwrap(bundle.getParcelable(BUNDLE_TRANSACTION));
-            Log.d(TAG, "initData: transaction progress is " + transaction.getTransProgress());
-        } else {
-            Toast.makeText(getActivity(), "Something went wrong...", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "initData: bundle is null");
-        }
+//        Bundle bundle = this.getArguments();
+//        if (bundle != null) {
+//            transaction = Parcels.unwrap(bundle.getParcelable(BUNDLE_TRANSACTION));
+//            Log.d(TAG, "initData: transaction progress is " + transaction.getTransProgress());
+//        } else {
+//            Toast.makeText(getActivity(), "Something went wrong...", Toast.LENGTH_SHORT).show();
+//            Log.d(TAG, "initData: bundle is null");
+//        }
+        transaction = TransactionManager.getManager().getCurrentTransaction();
     }
 
     private void initViews(View view) {
@@ -110,10 +124,9 @@ public class TransactionDetailFragment extends BaseFragment {
         ivReceipt = (ImageView) view.findViewById(R.id.ivReceipt);
         transactionProgress = (TransactionProgress) view.findViewById(R.id.progressDetail);
         llPaymentOptions = (LinearLayout) view.findViewById(R.id.llPaymentOptions);
-        rlReceiptUpload = (RelativeLayout) view.findViewById(R.id.rlReceiptUpload);
+        flReceiptUpload = (FrameLayout) view.findViewById(R.id.rlReceiptUpload);
 
         tvRecipient.setText(transaction.getRecipientName());
-        updateProgress();
 
         btnUOB.setOnClickListener(OnUOBClick);
         btnCStore.setOnClickListener(OnCStoreClick);
@@ -152,35 +165,48 @@ public class TransactionDetailFragment extends BaseFragment {
             public void run() {
                 progressDialog.dismiss();
                 DialogUtils.showNickelDialog(getActivity(), "Submitted");
+
+                TransactionManager.getManager().receiptUploaded();
+                updateUIProgress();
             }
         }, 1500);
     }
 
-    private void updateProgress() {
+    private void updateUIProgress() {
         transactionProgress.updateProgress(transaction.getTransProgress());
+        Transaction transaction = TransactionManager.getManager().getCurrentTransaction();
+
+        if (!TextUtils.isEmpty(transaction.getReceiptPhotoUrl())){
+            File image = new File(transaction.getReceiptPhotoUrl());
+            Picasso.with(getActivity()).load(image).fit().centerInside().into(ivReceipt);
+        }
 
         switch (transaction.getTransProgress()) {
-            case Const.TRANS_NEW_BORN:
+            case Transaction.TRANS_DRAFT:
                 Log.d(TAG, "updateProgress: wrong, should not be new born state");
                 Toast.makeText(getActivity(), "something went wrong, check the log", Toast.LENGTH_SHORT).show();
                 break;
-            case Const.TRANS_PENDING_PAYMENT:
+            case Transaction.TRANS_NEW_BORN:
                 llPaymentOptions.setVisibility(View.VISIBLE);
-                rlReceiptUpload.setVisibility(View.GONE);
+                flReceiptUpload.setVisibility(View.GONE);
                 btnSubmitReceipt.setEnabled(true);
                 break;
-            case Const.TRANS_UPLOAD_COMPLETE:
+            case Transaction.TRANS_PAYMENT_MADE:
                 llPaymentOptions.setVisibility(View.GONE);
-                rlReceiptUpload.setVisibility(View.VISIBLE);
+                flReceiptUpload.setVisibility(View.VISIBLE);
                 btnSubmitReceipt.setEnabled(true);
                 break;
-            case Const.TRANS_READY_COLLECTION:
+            case Transaction.TRANS_UPLOAD_COMPLETE:
                 llPaymentOptions.setVisibility(View.GONE);
-                rlReceiptUpload.setVisibility(View.VISIBLE);
-                btnSubmitReceipt.setEnabled(false);
+                flReceiptUpload.setVisibility(View.VISIBLE);
+                btnSubmitReceipt.setVisibility(View.GONE);
+                break;
+            case Transaction.TRANS_READY_COLLECTION:
+                llPaymentOptions.setVisibility(View.GONE);
+                flReceiptUpload.setVisibility(View.VISIBLE);
+                btnSubmitReceipt.setVisibility(View.GONE);
                 tvStatus.setText("Funds ready for collection!");
                 break;
-
         }
     }
 

@@ -2,6 +2,8 @@
 <com.media2359.nickel.ui.customview.ThemedSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/srlHome"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,8 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/home_background"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -20,7 +20,7 @@
             android:background="@drawable/card"
             android:padding="@dimen/keyline_16">
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvISend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
                 android:gravity="center"
                 android:text="I'm sending" />
 
-            <EditText
+            <com.media2359.nickel.ui.customview.CustomEditText
                 android:id="@+id/etSendAmount"
                 android:layout_width="175dp"
                 android:layout_height="45dp"
@@ -45,7 +45,7 @@
                 android:textSize="19sp"
                 tools:text="129038" />
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvSGD"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                 android:gravity="center"
                 android:text="SGD" />
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvRecipientGets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                 android:gravity="center"
                 android:text="Recipient Gets" />
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvGetAmount"
                 android:layout_width="175dp"
                 android:layout_height="45dp"
@@ -84,7 +84,7 @@
                 android:textSize="19sp"
                 tools:text="129389012" />
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvIDR"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
                 android:gravity="center"
                 android:text="IDR" />
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvOneDollar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
                 android:layout_marginTop="@dimen/keyline_12"
                 android:text="1 SGD =" />
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvExchangeRate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                 android:textColor="@color/pink"
                 android:textSize="19sp" />
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvIDR2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
                 android:textColor="@color/black"
                 android:textSize="19sp" />
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvFees"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
                 android:layout_marginTop="@dimen/keyline_12"
                 android:text="Fees:" />
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvFeesAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -147,7 +147,7 @@
                 android:textColor="@color/pink"
                 android:textSize="19sp" />
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvSGD2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -158,7 +158,7 @@
                 android:textColor="@color/black"
                 android:textSize="19sp" />
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -167,7 +167,7 @@
                 android:layout_marginTop="@dimen/keyline_12"
                 android:text="Total:" />
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvTotalAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -178,7 +178,7 @@
                 android:textColor="@color/pink"
                 android:textSize="19sp" />
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvSGD3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -191,7 +191,7 @@
 
         </RelativeLayout>
 
-        <TextView
+        <com.media2359.nickel.ui.customview.CustomTextView
             android:id="@+id/tvMyInformation"
             android:layout_width="match_parent"
             android:layout_height="36dp"
@@ -202,7 +202,7 @@
             android:text="My Information"
             android:textColor="@color/text_color_normal" />
 
-        <Button
+        <com.media2359.nickel.ui.customview.CustomButton
             android:id="@+id/btnMyInfoEdit"
             style="@style/CardButton"
             android:text="Complete sender profile" />
@@ -249,7 +249,7 @@
 
         <!--</RelativeLayout>-->
 
-        <TextView
+        <com.media2359.nickel.ui.customview.CustomTextView
             android:id="@+id/tvAddRecipient"
             android:layout_width="match_parent"
             android:layout_height="36dp"
@@ -261,7 +261,7 @@
             android:text="Add New Recipients"
             android:textColor="@drawable/text_on_pressed_dark" />
 
-        <Button
+        <com.media2359.nickel.ui.customview.CustomButton
             android:id="@+id/btnAddNewRecipient"
             style="@style/CardButton"
             android:text="Add New Recipient"

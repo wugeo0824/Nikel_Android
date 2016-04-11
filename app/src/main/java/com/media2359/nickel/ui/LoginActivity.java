@@ -2,8 +2,6 @@ package com.media2359.nickel.ui;
 
 import android.animation.Animator;
 import android.animation.LayoutTransition;
-import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -19,7 +17,6 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -31,7 +28,6 @@ import android.widget.TextView;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.utils.DialogUtils;
-import com.media2359.nickel.utils.DisplayUtils;
 
 /**
  * This handles login and sign up
@@ -41,10 +37,10 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
     private static final int ANIMATION_DURATION = 1500;
-    private ImageView ivLogo,ivPasswordAgain;
-    private TextView tvNeedAccount,tvForgotPassword,tvPrivacyPolicy;
+    private ImageView ivLogo, ivPasswordAgain;
+    private TextView tvNeedAccount, tvForgotPassword, tvPrivacyPolicy;
     private Button btnSignIn;
-    private EditText etPhone,etPassword,etPasswordAgain;
+    private EditText etPhone, etPassword, etPasswordAgain;
     private RelativeLayout rlLoginContainer;
     private boolean animationPlayed = false;
     private boolean isLoginShowing = true;
@@ -82,12 +78,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (!animationPlayed){
+        if (!animationPlayed) {
             playAnimation();
-        }else{
-            if (isLoginShowing){
+        } else {
+            if (isLoginShowing) {
                 showLogin();
-            }else
+            } else
                 showSignUp();
         }
 
@@ -96,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
     private void playAnimation() {
         //int distanceY = DisplayUtils.getDisplayHeight(LoginActivity.this);
         //ivLogo.setY(distanceY);
-        hideOrShowAllElements(true);
+        makeAllElementsHiding(true);
         ivLogo.animate().rotationY(720f).setDuration(ANIMATION_DURATION).setInterpolator(new DecelerateInterpolator())
                 .setListener(new Animator.AnimatorListener() {
                     @Override
@@ -106,14 +102,14 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        hideOrShowAllElements(false);
+                        makeAllElementsHiding(false);
                         showLogin();
                         animationPlayed = true;
                     }
 
                     @Override
                     public void onAnimationCancel(Animator animation) {
-                        hideOrShowAllElements(false);
+                        makeAllElementsHiding(false);
                         showLogin();
                         animationPlayed = true;
                     }
@@ -149,9 +145,9 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (resetDialog!= null && resetDialog.isShowing()){
+        if (resetDialog != null && resetDialog.isShowing()) {
             resetDialog.dismiss();
-        }else{
+        } else {
             super.onBackPressed();
         }
     }
@@ -160,12 +156,12 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            if(etResetPhone.getText().length() > 5){
-                if (resetDialog !=null && resetDialog.isShowing())
+            if (etResetPhone.getText().length() > 5) {
+                if (resetDialog != null && resetDialog.isShowing())
                     resetDialog.dismiss();
 
                 resetPassword();
-            }else{
+            } else {
                 etResetPhone.setError("Please enter full phone number");
             }
 
@@ -182,18 +178,18 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 progressDialog.dismiss();
-                DialogUtils.showNickelDialog(LoginActivity.this,"Submitted");
+                DialogUtils.showNickelDialog(LoginActivity.this, "Submitted");
             }
-        },1500);
+        }, 1500);
     }
 
-    private void hideOrShowAllElements(boolean hide){
-        if (hide){
+    private void makeAllElementsHiding(boolean hide) {
+        if (hide) {
             tvNeedAccount.setVisibility(View.INVISIBLE);
             rlLoginContainer.setVisibility(View.INVISIBLE);
             tvForgotPassword.setVisibility(View.INVISIBLE);
             btnSignIn.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             tvNeedAccount.setVisibility(View.VISIBLE);
             rlLoginContainer.setVisibility(View.VISIBLE);
             tvForgotPassword.setVisibility(View.VISIBLE);
@@ -202,13 +198,13 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private boolean validPhone(){
+    private boolean validPhone() {
         String input = etPhone.getText().toString();
         // TODO:
-        if(TextUtils.isEmpty(input)){
+        if (TextUtils.isEmpty(input)) {
             etPhone.setError("Please enter your phone number");
             return false;
-        }else if(input.length() < 8){
+        } else if (input.length() < 8) {
             etPhone.setError("Please enter full phone number");
             return false;
         }
@@ -216,9 +212,9 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    private boolean validPassword(){
+    private boolean validPassword() {
         String password = etPassword.getText().toString();
-        if(TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(password)) {
             etPassword.setError("Please enter your password");
             return false;
         }
@@ -272,7 +268,7 @@ public class LoginActivity extends AppCompatActivity {
         tvPrivacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
-    private void showLogin(){
+    private void showLogin() {
         tvNeedAccount.setText(getString(R.string.need_account));
         ivPasswordAgain.setVisibility(View.GONE);
         etPasswordAgain.setVisibility(View.GONE);
@@ -313,7 +309,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
-    private ProgressDialog showProgressDialog(String title, String message){
+    private ProgressDialog showProgressDialog(String title, String message) {
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(title);
         progressDialog.setMessage(message);
@@ -323,13 +319,13 @@ public class LoginActivity extends AppCompatActivity {
         return progressDialog;
     }
 
-    private void proceedToMainActivity(){
-        Intent i = new Intent(LoginActivity.this,MainActivity.class);
+    private void proceedToMainActivity() {
+        Intent i = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(i);
         finish();
     }
 
-    private void showSignUp(){
+    private void showSignUp() {
         tvNeedAccount.setText(getString(R.string.have_account));
         ivPasswordAgain.setVisibility(View.VISIBLE);
         etPasswordAgain.setVisibility(View.VISIBLE);
@@ -357,7 +353,7 @@ public class LoginActivity extends AppCompatActivity {
 //                return;
 
             //TODO join nickel
-            progressDialog = showProgressDialog("Registering","Please wait...");
+            progressDialog = showProgressDialog("Registering", "Please wait...");
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {

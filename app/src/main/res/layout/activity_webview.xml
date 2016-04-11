@@ -19,7 +19,7 @@
             android:background="@android:color/transparent"
             android:src="@drawable/ic_close_24dp" />
 
-        <TextView
+        <com.media2359.nickel.ui.customview.CustomTextView
             android:id="@+id/tv_web_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

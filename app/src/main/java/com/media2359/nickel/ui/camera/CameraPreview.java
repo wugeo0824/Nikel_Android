@@ -12,6 +12,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.media2359.nickel.utils.DisplayUtils;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +22,13 @@ import java.util.List;
  * Created by Xijun on 16/3/16.
  */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
-    private static final String TAG = "";
+    private static final String TAG = "CameraPreview";
 
     private SurfaceHolder mHolder;
     private Camera mCamera;
     private List<Camera.Size> mSupportedPreviewSizes;
     private Camera.Size mPreviewSize;
+    private int cameraRotation = 0;
 
     public CameraPreview(Context context, Camera camera) {
         super(context);
@@ -42,6 +45,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public void surfaceCreated(SurfaceHolder holder) {
         // The Surface has been created, now tell the camera where to draw the preview.
 
+        Log.d(TAG, "surfaceCreated: ");
         try {
             mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
             requestLayout();
@@ -55,6 +59,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public void surfaceDestroyed(SurfaceHolder holder) {
         // empty. Take care of releasing the Camera preview in your activity.
+        Log.d(TAG, "surfaceDestroyed: ");
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
@@ -93,46 +98,24 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 parameters.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
             }
 
-            Display display = ((WindowManager)getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 
-            //ROTATE PHOTO!
-            Camera.CameraInfo info = new Camera.CameraInfo();
-            Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, info);
-            int rotation = display.getRotation();
-            int degrees = 0;
-            switch (rotation) {
-                case Surface.ROTATION_0: degrees = 0; break; //Natural orientation
-                case Surface.ROTATION_90: degrees = 90; break; //Landscape left
-                case Surface.ROTATION_180: degrees = 180; break;//Upside down
-                case Surface.ROTATION_270: degrees = 270; break;//Landscape right
-            }
-
-            if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-                // frontFacing
-                rotation = (info.orientation + degrees) % 330;
-                rotation = (360 - rotation) % 360;
-            } else {
-                // Back-facing
-                rotation = (info.orientation - degrees + 360) % 360;
-            }
+            //ROTATE PREVIEW!
+            int rotation = DisplayUtils.getRotation(getContext(),mCamera);
             mCamera.setDisplayOrientation(rotation);
-
             parameters.setRotation(rotation);
+            setCameraRotation(rotation);
+
+            // metering area
+            if (parameters.getMaxNumMeteringAreas() > 0){ // check that metering areas are supported
+                List<Camera.Area> meteringAreas = new ArrayList<Camera.Area>();
+
+                Rect areaRect1 = new Rect(-100, -100, 100, 100);    // specify an area in center of image
+                meteringAreas.add(new Camera.Area(areaRect1, 600)); // set weight to 60%
+                parameters.setMeteringAreas(meteringAreas);
+            }
 
             mCamera.setParameters(parameters);
-
-
-//            if(rotation == Surface.ROTATION_0)
-//            {
-//                mCamera.setDisplayOrientation(90);
-//            }
-//
-//            if(rotation == Surface.ROTATION_270)
-//            {
-//                mCamera.setDisplayOrientation(180);
-//            }
         }
-
 
         // start preview with new settings
         try {
@@ -144,6 +127,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
+    public int getCameraRotation() {
+        return cameraRotation;
+    }
+
+    public void setCameraRotation(int cameraRotation) {
+        this.cameraRotation = cameraRotation;
+    }
 
     private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
         final double ASPECT_TOLERANCE = 0.2;

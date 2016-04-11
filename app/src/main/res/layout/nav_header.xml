@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="192dp"
-    android:background="?attr/colorPrimary"
+    android:background="@color/colorPrimary"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:orientation="vertical"
@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:src="@drawable/logo_big"/>
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvHeaderView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

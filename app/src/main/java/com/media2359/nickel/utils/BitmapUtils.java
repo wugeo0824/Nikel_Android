@@ -48,51 +48,6 @@ public class BitmapUtils {
         return rotatedBitmap;
     }
 
-    public static int getRotation(Context context) {
-        Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-
-        //ROTATE PHOTO!
-
-        int rotation = display.getRotation();
-        int degrees = 0;
-        switch (rotation) {
-            case Surface.ROTATION_0:
-                degrees = 90;
-                break; //Natural orientation
-//            case Surface.ROTATION_90:
-//                degrees = 270;
-//                break; //Landscape left
-//            case Surface.ROTATION_180:
-//                degrees = 0;
-//                break;//Upside down
-            case Surface.ROTATION_270:
-                degrees = 180;
-                break;//Landscape right
-            default:
-                degrees = 0;
-                break;
-        }
-
-//        if (isFacingFront) {
-//            // frontFacing
-//            rotation = (info.orientation + degrees) % 330;
-//            rotation = (360 - rotation) % 360;
-//        } else {
-//            // Back-facing
-//            rotation = (info.orientation - degrees + 360) % 360;
-//        }
-
-//        if (degrees == Surface.ROTATION_0) {
-//            rotation = 90;
-//        }
-//
-//        if (degrees == Surface.ROTATION_270) {
-//            rotation = 180;
-//        }
-
-        return degrees;
-    }
-
     public static Bitmap getThumbnail(Context context, Uri uri){
         File imageFile = new File(uri.getPath());
         Bitmap thumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(imageFile.getPath()), context.getResources().getDimensionPixelSize(R.dimen.card_holder_width), context.getResources().getDimensionPixelSize(R.dimen.card_holder_height));

@@ -1,6 +1,8 @@
 package com.media2359.nickel.utils;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ public class DialogUtils {
         TextView tvMessage = (TextView) dialogView.findViewById(R.id.tvDialogContent);
         tvMessage.setText(content);
         final AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         alertDialog.show();
 
         new Handler().postDelayed(new Runnable() {

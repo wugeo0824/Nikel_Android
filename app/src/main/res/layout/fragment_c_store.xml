@@ -19,7 +19,7 @@
         android:layout_marginBottom="@dimen/keyline_12"
         android:background="@color/grey" />
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvInstruction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         android:layout_marginBottom="@dimen/keyline_12"
         android:src="@drawable/seven_eleven_logo" />
 
-    <Button
+    <com.media2359.nickel.ui.customview.CustomButton
         android:id="@+id/btnStepGuide"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
         android:paddingRight="@dimen/keyline_16"
         android:text="Step by Step Guide" />
 
-    <Button
+    <com.media2359.nickel.ui.customview.CustomButton
         android:id="@+id/btnCStoreMap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
         android:paddingRight="@dimen/keyline_16"
         android:text="Nearest Convenience Store" />
 
-    <Button
+    <com.media2359.nickel.ui.customview.CustomButton
         android:id="@+id/btnTakeReceipt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -2,14 +2,17 @@ package com.media2359.nickel.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.media2359.nickel.model.MyProfile;
+import com.media2359.nickel.model.Transaction;
 
 /**
  * Created by Xijun on 14/3/16.
  */
-public class PreferrencesUtils {
+public class PreferencesUtils {
 
     private static final String PREF_FILE_NAME = "NickelPrefs";
     private static final String PREF_MY_PROFILE = "my_profile";
@@ -43,4 +46,5 @@ public class PreferrencesUtils {
         SharedPreferences preferences = getSharedPreferences(context);
         return new Gson().fromJson(preferences.getString(PREF_MY_PROFILE, null), MyProfile.class);
     }
+
 }

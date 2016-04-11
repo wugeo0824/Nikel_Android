@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvTransactionID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,7 +13,7 @@
         android:text="Transaction ID: 128973198n748"
         android:textSize="19sp" />
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvSending"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         android:text="I'm sending"
         android:textSize="19sp" />
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvGets"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:text="Recipient gets"
         android:textSize="19sp" />
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvOneSGD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
         android:text="1 SGD ="
         android:textSize="12sp" />
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvFees"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
         android:text="Fees:"
         android:textSize="12sp" />
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
         android:text="Total:"
         android:textSize="12sp" />
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvToRecipient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
         android:text="To Recipient"
         android:textSize="19sp" />
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvSendAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
         android:text="300.00 SGD"
         android:textSize="19sp" />
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvGetAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
         android:textColor="@color/pink"
         android:textSize="19sp" />
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvExchangeRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
         android:textColor="@color/pink"
         android:textSize="19sp" />
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvFeesAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
         android:text="7.00 SGD"
         android:textSize="19sp" />
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvTotalAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
         android:text="307.00 SGD"
         android:textSize="19sp" />
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvRecipientDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

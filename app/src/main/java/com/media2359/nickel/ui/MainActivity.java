@@ -1,31 +1,32 @@
 package com.media2359.nickel.ui;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.model.MyProfile;
-import com.media2359.nickel.model.Transaction;
-import com.media2359.nickel.ui.customview.PaymentConfirmationDialog;
 import com.media2359.nickel.ui.fragments.BaseFragment;
 import com.media2359.nickel.ui.fragments.HomeFragment;
 import com.media2359.nickel.ui.fragments.ProfileFragment;
@@ -36,7 +37,9 @@ import com.media2359.nickel.ui.fragments.TransactionHistoryFragment;
 /**
  * This handles the transaction logic
  */
-public class MainActivity extends BaseActivity implements BaseFragment.FragmentVisibleListener, PaymentConfirmationDialog.ConfirmationDialogListener {
+public class MainActivity extends BaseActivity implements BaseFragment.FragmentVisibleListener {
+
+    private static final int MY_PERMISSION_CAMERA = 91;
 
     private FragmentManager manager;
     //private MenuItem menuCancel;
@@ -53,6 +56,15 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (checkCameraHardware(getApplicationContext()))
+            checkCameraPermission();
+        else{
+            Toast.makeText(getApplicationContext(), "Sorry, this app needs a camera to work.", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(i);
+            finish();
+        }
+
         initViews();
         // pre-load the profile information
         MyProfile.getCurrentProfile(getApplicationContext());
@@ -60,8 +72,68 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         if (null == savedInstanceState) {
             switchFragment(new HomeFragment(), false);
         }
+
     }
 
+    /**
+     * Check if this device has a camera
+     */
+    private boolean checkCameraHardware(Context context) {
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+            // this device has a camera
+            return true;
+        } else {
+            // no camera on this device
+            return false;
+        }
+    }
+
+    private void checkCameraPermission() {
+        // Assume thisActivity is the current activity
+        int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA);
+
+        // Here, thisActivity is the current activity
+        if (permissionCheck
+                != PackageManager.PERMISSION_GRANTED) {
+            // explanation needed, we can request the permission.
+            showCameraRationale();
+        }
+    }
+
+    private void showCameraRationale() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("This app requires your phone camera to capture photos of your ID card and receipt. \n Please grant permission for this app to work properly.");
+        builder.setTitle("Alert!");
+        builder.setCancelable(true);
+        AlertDialog dialog = builder.create();
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSION_CAMERA);
+            }
+        });
+        dialog.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSION_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay!
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+        }
+    }
 
     @Override
     public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
@@ -145,9 +217,9 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
                     }
                     break;
                 case R.id.nav_profile:
-                    if (getCurrentFragment() instanceof ProfileFragment){
+                    if (getCurrentFragment() instanceof ProfileFragment) {
                         newFragment = null;
-                    }else{
+                    } else {
                         newFragment = new ProfileFragment();
                     }
                     break;
@@ -155,9 +227,9 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
 //                    newFragment = new RecipientListFragment();
 //                    break;
                 case R.id.nav_history:
-                    if (getCurrentFragment() instanceof TransactionHistoryFragment){
+                    if (getCurrentFragment() instanceof TransactionHistoryFragment) {
                         newFragment = null;
-                    }else{
+                    } else {
                         newFragment = TransactionHistoryFragment.newInstance();
                     }
                     break;
@@ -175,7 +247,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
             }
 
             if (newFragment != null) {
-                switchFragmentAndSyncDrawer(newFragment,item.getItemId());
+                switchFragmentAndSyncDrawer(newFragment, item.getItemId());
             }
 
             mDrawerLayout.closeDrawers();
@@ -183,7 +255,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         }
     };
 
-    public void switchFragmentAndSyncDrawer(Fragment fragment, @IdRes int itemId){
+    public void switchFragmentAndSyncDrawer(Fragment fragment, @IdRes int itemId) {
         if (manager.getBackStackEntryCount() >= 1) //only maintain one entry on backStack
             manager.popBackStack();
 
@@ -282,36 +354,11 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         if (mDrawerToggle != null)
             mDrawerToggle.syncState();
 
-        tvHeaderView.setText("Dian Sastro");
-    }
-
-    PaymentConfirmationDialog paymentConfirmationDialog;
-
-    public void showPaymentConfirmationDialog(Transaction transaction) {
-        if (paymentConfirmationDialog != null) {
-            paymentConfirmationDialog.dismiss();
+        if (MyProfile.getCurrentProfile(getApplicationContext()) == null){
+            tvHeaderView.setVisibility(View.INVISIBLE);
+        }else{
+            tvHeaderView.setText(MyProfile.getCurrentProfile(getApplicationContext()).getFullName());
         }
-        paymentConfirmationDialog = PaymentConfirmationDialog.newInstance(transaction);
-        paymentConfirmationDialog.show(getSupportFragmentManager(), "PaymentConfirmation");
-    }
-
-    /**
-     * Responds to the payment confirmation dialog
-     * Do necessary transactions
-     *
-     * @param dialog
-     */
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-        //switchFragment(TransactionDetailFragment.newInstance("www.google.com.sg"), true);
-
-        PaymentConfirmationDialog paymentConfirmationDialog = (PaymentConfirmationDialog) dialog;
-        TransactionActivity.startTransactionActivity(this,paymentConfirmationDialog.getTransaction());
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        //TODO
     }
 
     @Override

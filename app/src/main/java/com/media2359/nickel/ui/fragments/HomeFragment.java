@@ -26,11 +26,10 @@ import com.media2359.nickel.event.OnSendMoneyClickEvent;
 import com.media2359.nickel.model.MyProfile;
 import com.media2359.nickel.model.Recipient;
 import com.media2359.nickel.model.Transaction;
-import com.media2359.nickel.model.TransactionManager;
 import com.media2359.nickel.ui.MainActivity;
+import com.media2359.nickel.ui.TransactionActivity;
 import com.media2359.nickel.ui.adapter.RecipientAdapter;
 import com.media2359.nickel.ui.customview.ThemedSwipeRefreshLayout;
-import com.media2359.nickel.utils.Const;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -158,6 +157,10 @@ public class HomeFragment extends BaseFragment {
         public void afterTextChanged(Editable s) {
             etSendAmount.removeTextChangedListener(this);
 
+            if (srl.isFocusable()){
+                srl.setFocusable(false);
+                srl.setFocusableInTouchMode(false);
+            }
             //update the get amount
             if (!TextUtils.isEmpty(s.toString())) {
                 long sendAmount = Long.parseLong(s.toString().replaceAll(",", ""));
@@ -171,20 +174,22 @@ public class HomeFragment extends BaseFragment {
             }
 
             // add thousand separators
-            try {
-                String givenstring = s.toString();
-                Long longval;
-                if (givenstring.contains(",")) {
-                    givenstring = givenstring.replaceAll(",", "");
+            if (!TextUtils.isEmpty(s.toString())) {
+                try {
+                    String givenstring = s.toString();
+                    Long longval;
+                    if (givenstring.contains(",")) {
+                        givenstring = givenstring.replaceAll(",", "");
+                    }
+                    longval = Long.parseLong(givenstring);
+                    DecimalFormat formatter = new DecimalFormat("#,###,###");
+                    String formattedString = formatter.format(longval);
+                    etSendAmount.setText(formattedString);
+                    etSendAmount.setSelection(etSendAmount.getText().length());
+                    // to place the cursor at the end of text
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                longval = Long.parseLong(givenstring);
-                DecimalFormat formatter = new DecimalFormat("#,###,###");
-                String formattedString = formatter.format(longval);
-                etSendAmount.setText(formattedString);
-                etSendAmount.setSelection(etSendAmount.getText().length());
-                // to place the cursor at the end of text
-            } catch (Exception e) {
-                e.printStackTrace();
             }
 
             etSendAmount.addTextChangedListener(this);
@@ -218,11 +223,20 @@ public class HomeFragment extends BaseFragment {
                 .withID("asijdaopkf")
                 .withRecipientName(recipient.getName())
                 .withStatus("This is payment status")
-                .withProgress(Const.TRANS_NEW_BORN)
+                .withProgress(Transaction.TRANS_DRAFT)
                 .build();
 
-        TransactionManager.getManager().setCurrentTransaction(currentTransaction);
         return currentTransaction;
+    }
+
+    private boolean validTransaction() {
+        if (TextUtils.isEmpty(etSendAmount.getText().toString())) {
+            etSendAmount.setError("Please enter proper amount");
+            etSendAmount.requestFocus();
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -246,18 +260,51 @@ public class HomeFragment extends BaseFragment {
 
     @Subscribe
     public void onEvent(OnSendMoneyClickEvent onSendMoneyClickEvent) {
+        Recipient recipient = dataList.get(onSendMoneyClickEvent.getPosition());
         //TODO: change to actual value
-        makeTransaction(dataList.get(onSendMoneyClickEvent.getPosition()));
-        //TODO: change status after api successfully called
-        currentTransaction.setTransProgress(Const.TRANS_PENDING_PAYMENT);
-        mainActivity.showPaymentConfirmationDialog(currentTransaction);
+        if (validTransaction()) {
+            makeTransaction(recipient);
+            showPaymentConfirmationDialog(recipient.getName());
+        }
+    }
+
+    private void showPaymentConfirmationDialog(String recipientName) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Alert");
+        builder.setMessage("Proceed to send " + etSendAmount.getText().toString() + " SGD to " + recipientName + "?");
+        builder.setCancelable(false);
+        builder.setNegativeButton("No", null);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                confirmTransaction();
+            }
+        });
+        final AlertDialog dialog = builder.create();
+
+        //2. now setup to change color of the button
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface arg0) {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.pink));
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.text_color_inactive));
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void confirmTransaction() {
+        // TODO: call api
+        currentTransaction.setTransProgress(Transaction.TRANS_NEW_BORN);
+        TransactionActivity.startTransactionActivity(getActivity(), currentTransaction);
     }
 
     @Subscribe
     public void onEvent(OnRecipientDeleteClickEvent onDeleteEvent) {
         //TODO: change to actual value
         //recipientAdapter.removeItem(onDeleteEvent.getPosition());
-        showDeleteDialog(onDeleteEvent.getPosition(),dataList.get(onDeleteEvent.getPosition()).getName());
+        showDeleteDialog(onDeleteEvent.getPosition(), dataList.get(onDeleteEvent.getPosition()).getName());
     }
 
     private void showDeleteDialog(final int position, String contactName) {
@@ -265,7 +312,7 @@ public class HomeFragment extends BaseFragment {
         builder.setTitle("Delete?");
         builder.setMessage("Do you want to delete " + contactName + "?");
         builder.setCancelable(false);
-        builder.setNegativeButton("No",null);
+        builder.setNegativeButton("No", null);
         builder.setPositiveButton("Yes, delete it", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -278,9 +325,9 @@ public class HomeFragment extends BaseFragment {
 
     private void loadMyProfile() {
         //TODO get my profile data
-        if (MyProfile.getCurrentProfile(getContext()) != null){
+        if (MyProfile.getCurrentProfile(getContext()) != null) {
             hideMyProfile();
-        }else{
+        } else {
             showMyProfile();
         }
     }
@@ -305,10 +352,6 @@ public class HomeFragment extends BaseFragment {
         b.setExpanded(false);
         c.setExpanded(false);
         d.setExpanded(false);
-        dataList.add(a);
-        dataList.add(b);
-        dataList.add(c);
-        dataList.add(d);
         dataList.add(a);
         dataList.add(b);
         dataList.add(c);

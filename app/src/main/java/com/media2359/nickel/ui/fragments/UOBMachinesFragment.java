@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
+import com.media2359.nickel.model.Transaction;
+import com.media2359.nickel.model.TransactionManager;
 import com.media2359.nickel.ui.CaptureActivity;
 import com.media2359.nickel.utils.Const;
 
@@ -21,6 +23,7 @@ public class UOBMachinesFragment extends BaseFragment {
 
     private TextView tvInstruction;
     private Button btnGuide, btnMap, btnPhoto;
+    private Transaction transaction;
 
     public static UOBMachinesFragment newInstance() {
 
@@ -35,6 +38,7 @@ public class UOBMachinesFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_uob, container, false);
+        transaction = TransactionManager.getManager().getCurrentTransaction();
         initViews(view);
         return view;
     }

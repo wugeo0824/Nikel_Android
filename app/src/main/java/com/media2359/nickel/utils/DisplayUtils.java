@@ -2,7 +2,10 @@ package com.media2359.nickel.utils;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.hardware.Camera;
+import android.util.Log;
 import android.view.Display;
+import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -37,6 +40,33 @@ public class DisplayUtils {
         Point size = new Point();
         display.getSize(size);
         return size.x;
+    }
+
+    public static int getRotation(Context context, Camera camera){
+        Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, info);
+        int rotation = display.getRotation();
+
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0: degrees = 0; break; //Natural orientation
+            case Surface.ROTATION_90: degrees = 90; break; //Landscape left
+            case Surface.ROTATION_180: degrees = 180; break;//Upside down
+            case Surface.ROTATION_270: degrees = 270; break;//Landscape right
+        }
+
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            // frontFacing
+            rotation = (info.orientation + degrees) % 330;
+            rotation = (360 - rotation) % 360;
+        } else {
+            // Back-facing
+            rotation = (info.orientation - degrees + 360) % 360;
+        }
+
+        return rotation;
     }
 
     public static void hideKeyboard(View v){

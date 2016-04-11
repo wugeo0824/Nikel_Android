@@ -2,7 +2,7 @@ package com.media2359.nickel.model;
 
 import android.content.Context;
 
-import com.media2359.nickel.utils.PreferrencesUtils;
+import com.media2359.nickel.utils.PreferencesUtils;
 
 /**
  * Created by Xijun on 31/3/16.
@@ -37,7 +37,7 @@ public class MyProfile {
         this.backPhotoUrl = builder.backPhotoUrl;
 
         myProfile = this;
-        PreferrencesUtils.saveProfile(context, myProfile);
+        PreferencesUtils.saveProfile(context, myProfile);
     }
 
     /**
@@ -48,7 +48,7 @@ public class MyProfile {
      */
     public static MyProfile getCurrentProfile(Context context) {
         if (myProfile == null) {
-            myProfile = PreferrencesUtils.getProfile(context);
+            myProfile = PreferencesUtils.getProfile(context);
         }
         return myProfile;
     }

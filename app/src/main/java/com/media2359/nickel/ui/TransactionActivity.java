@@ -7,17 +7,21 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.model.Transaction;
+import com.media2359.nickel.model.TransactionManager;
 import com.media2359.nickel.ui.fragments.BaseFragment;
 import com.media2359.nickel.ui.fragments.TransactionDetailFragment;
+import com.media2359.nickel.utils.Const;
+import com.media2359.nickel.utils.TransactionHistoryUtils;
 
 import org.parceler.Parcels;
+
+import java.io.File;
 
 /**
  * Created by Xijun on 1/4/16.
@@ -43,15 +47,30 @@ public class TransactionActivity extends BaseActivity implements BaseFragment.Fr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transaction_detail);
-        transaction = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_TRANSACTION));
+        setContentView(R.layout.activity_transaction);
+        setCurrentTransaction();
         initViews();
         switchFragment(TransactionDetailFragment.newInstance(transaction), false);
 
     }
 
-    private void initViews() {
+    private void setCurrentTransaction(){
+        transaction = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_TRANSACTION));
 
+        if (transaction.getTransProgress() == Transaction.TRANS_DRAFT){
+            finish();
+        }else{
+            TransactionHistoryUtils.saveTransaction(getApplicationContext(),transaction);
+            TransactionManager.getManager().setCurrentTransaction(transaction);
+        }
+
+    }
+
+    public Transaction getCurrentTransaction() {
+        return transaction;
+    }
+
+    private void initViews() {
         manager = getSupportFragmentManager();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -98,8 +117,27 @@ public class TransactionActivity extends BaseActivity implements BaseFragment.Fr
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        TransactionHistoryUtils.saveTransaction(getApplicationContext(),TransactionManager.getManager().getCurrentTransaction());
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ((requestCode == Const.REQUEST_CODE_RECEIPT_PHOTO) && (resultCode == Activity.RESULT_OK)) {
+
+            String filePath = data.getStringExtra(Const.DATA_PHOTO_FILE);
+            File result = new File(filePath);
+            //Bitmap thumbImage = BitmapUtils.getThumbnail(this, result);
+            TransactionManager.getManager().paymentMadeAndPhotoTaken(result.getAbsolutePath());
+        }
     }
 
     @Override

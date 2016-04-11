@@ -72,10 +72,10 @@ public class TransactionHistoryFragment extends BaseFragment {
     private void mockData() {
         historyAdapter.notifyItemRangeRemoved(0, transactionsList.size());
         transactionsList.clear();
-        Transaction a = new Transaction("1238u9ashjd", "March 2, 2016", "500", "Funds Ready for Collection", Const.TRANS_READY_COLLECTION, "Husband", 1235);
-        Transaction b = new Transaction("2238u9ashjd", "March 12, 2016", "100", "Please DO xxxxxx", Const.TRANS_UPLOAD_COMPLETE, "Husband", 1235);
-        Transaction c = new Transaction("3238u9ashjd", "April 2, 2016", "540", "Please DO yyyyy", Const.TRANS_PENDING_PAYMENT, "Husband", 2354);
-        Transaction d = new Transaction("4238u9ashjd", "May 2, 2016", "1300", "Please DO zzzzz", Const.TRANS_NEW_BORN, "Husband", 8657);
+        Transaction a = new Transaction("1238u9ashjd", "March 2, 2016", "500", "Funds Ready for Collection", Transaction.TRANS_READY_COLLECTION, "Husband", 1235);
+        Transaction b = new Transaction("2238u9ashjd", "March 12, 2016", "100", "Please DO xxxxxx", Transaction.TRANS_UPLOAD_COMPLETE, "Husband", 1235);
+        Transaction c = new Transaction("3238u9ashjd", "April 2, 2016", "540", "Please DO yyyyy", Transaction.TRANS_PAYMENT_MADE, "Husband", 2354);
+        Transaction d = new Transaction("4238u9ashjd", "May 2, 2016", "1300", "Please DO zzzzz", Transaction.TRANS_NEW_BORN, "Husband", 8657);
         transactionsList.add(a);
         transactionsList.add(b);
         transactionsList.add(c);

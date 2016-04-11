@@ -22,7 +22,7 @@
             app:contentInsetStart="0dp"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvToolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

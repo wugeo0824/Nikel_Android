@@ -9,7 +9,7 @@
         android:orientation="vertical"
         android:padding="@dimen/keyline_16">
 
-        <TextView
+        <com.media2359.nickel.ui.customview.CustomTextView
             android:id="@+id/tvInstruction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,9 +44,10 @@
             android:id="@+id/llPaymentOptions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="vertical">
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvPaymentOptions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,7 +56,7 @@
                 android:text="@string/payment_options"
                 android:textSize="18sp" />
 
-            <Button
+            <com.media2359.nickel.ui.customview.CustomButton
                 android:id="@+id/btnPaymentUOB"
                 style="@style/CardButton"
                 android:layout_width="match_parent"
@@ -64,7 +65,7 @@
                 android:drawableLeft="@drawable/ico_bank"
                 android:text="@string/UOB_machines" />
 
-            <Button
+            <com.media2359.nickel.ui.customview.CustomButton
                 android:id="@+id/btnPaymentCStore"
                 style="@style/CardButton"
                 android:layout_width="match_parent"
@@ -75,18 +76,16 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <FrameLayout
             android:id="@+id/rlReceiptUpload"
-            android:visibility="gone"
+            android:layout_marginTop="@dimen/keyline_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvReceipt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="@dimen/keyline_12"
                 android:text="@string/receipt"
                 android:textSize="18sp" />
 
@@ -94,31 +93,22 @@
                 android:id="@+id/ivReceipt"
                 android:layout_width="150dp"
                 android:layout_height="200dp"
-                android:layout_below="@+id/tvReceipt"
-                android:layout_marginRight="@dimen/keyline_16"
-                android:layout_toLeftOf="@+id/centerAnchor"
+                android:layout_marginBottom="30dp"
+                android:layout_gravity="center_horizontal"
                 android:src="@drawable/id_missing_back" />
 
-            <View
-                android:id="@+id/centerAnchor"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_centerInParent="true" />
-
-            <Button
+            <com.media2359.nickel.ui.customview.CustomButton
                 android:id="@+id/btnSubmitReceipt"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/keyline_16"
-                android:layout_toRightOf="@+id/centerAnchor"
-                android:background="@drawable/button_card"
+                style="@style/PinkButton"
+                android:layout_gravity="center_horizontal|bottom"
                 android:text="Submit" />
 
+        </FrameLayout>
 
-        </RelativeLayout>
 
-        <TextView
+        <com.media2359.nickel.ui.customview.CustomTextView
             android:id="@+id/tvPaymentStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

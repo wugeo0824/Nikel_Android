@@ -12,7 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.media2359.nickel.R;
-import com.media2359.nickel.utils.Const;
+import com.media2359.nickel.model.Transaction;
 
 /**
  * Created by Xijun on 4/4/16.
@@ -53,43 +53,48 @@ public class TransactionProgress extends RelativeLayout {
 
     public void updateProgress(int progress) {
         switch (progress) {
-            case Const.TRANS_PENDING_PAYMENT:
+            case Transaction.TRANS_PAYMENT_MADE:
                 ivBall1.setImageResource(R.drawable.circle_green);
                 ivBall2.setImageResource(R.drawable.circle_grey);
                 ivBall3.setImageResource(R.drawable.circle_grey);
-                pb.setProgress(0);
+                //pb.setProgress(25);
+                animateProgress(25);
                 break;
-            case Const.TRANS_UPLOAD_COMPLETE:
+            case Transaction.TRANS_UPLOAD_COMPLETE:
                 ivBall1.setImageResource(R.drawable.circle_green);
                 ivBall2.setImageResource(R.drawable.circle_green);
                 ivBall3.setImageResource(R.drawable.circle_grey);
-                pb.setProgress(1);
+                //pb.setProgress(75);
+                animateProgress(75);
                 break;
-            case Const.TRANS_READY_COLLECTION:
+            case Transaction.TRANS_READY_COLLECTION:
                 ivBall1.setImageResource(R.drawable.circle_green);
                 ivBall2.setImageResource(R.drawable.circle_green);
                 ivBall3.setImageResource(R.drawable.circle_green);
-                pb.setProgress(2);
+                //pb.setProgress(100);
+                animateProgress(100);
                 break;
-            case Const.TRANS_NEW_BORN:
-                ivBall1.setImageResource(R.drawable.circle_grey);
+            case Transaction.TRANS_NEW_BORN:
+                ivBall1.setImageResource(R.drawable.circle_green);
                 ivBall2.setImageResource(R.drawable.circle_grey);
                 ivBall3.setImageResource(R.drawable.circle_grey);
-                pb.setProgress(0);
+                //pb.setProgress(25);
+                animateProgress(25);
                 break;
             default:
                 ivBall1.setImageResource(R.drawable.circle_grey);
                 ivBall2.setImageResource(R.drawable.circle_grey);
                 ivBall3.setImageResource(R.drawable.circle_grey);
                 pb.setProgress(0);
+                //animateProgress(25);
                 break;
         }
     }
 
-    public void animateProgress(final int progress) {
+    private void animateProgress(final int progress) {
         pb.setProgress(0);
         ObjectAnimator animation = ObjectAnimator.ofInt(pb, "progress", 0, progress);
-        animation.setDuration(1000); // Duration of the animation
+        animation.setDuration(500); // Duration of the animation
         animation.setInterpolator(new DecelerateInterpolator());
         animation.addListener(new Animator.AnimatorListener() {
             @Override
@@ -99,12 +104,14 @@ public class TransactionProgress extends RelativeLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                updateProgress(progress);
+                //updateProgress(progress);
+                pb.setProgress(progress);
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-                updateProgress(progress);
+                //updateProgress(progress);
+                pb.setProgress(progress);
             }
 
             @Override

@@ -4,11 +4,12 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvDialogContent"
         android:text="Payment Received \n Thanks"
         android:gravity="center"
         android:textSize="20sp"
+        android:textColor="@color/white"
         android:paddingBottom="@dimen/keyline_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.media2359.nickel.R;
@@ -26,9 +27,13 @@ import com.media2359.nickel.ui.camera.CameraPreview;
 import com.media2359.nickel.ui.camera.IDCardOverlay;
 import com.media2359.nickel.utils.BitmapUtils;
 import com.media2359.nickel.utils.Const;
+import com.media2359.nickel.utils.DisplayUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.ref.WeakReference;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * The general steps for creating a custom camera interface for your application are as follows:
@@ -57,6 +62,7 @@ public class CaptureActivity extends AppCompatActivity {
     private FrameLayout preview;
     private int imageType = -1;
     private IDCardOverlay idCardOverlay;
+    private int rotation;
 
     private ProgressDialog progressDialog;
 
@@ -172,6 +178,7 @@ public class CaptureActivity extends AppCompatActivity {
         mCameraPreview = new CameraPreview(this, mCamera);
         preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mCameraPreview, 0);
+        TextView tvTop = (TextView) findViewById(R.id.tvTop);
 
         captureButton = (Button) findViewById(R.id.button_capture);
         captureButton.setOnClickListener(new View.OnClickListener() {
@@ -183,12 +190,17 @@ public class CaptureActivity extends AppCompatActivity {
 
         if (imageType == IMAGE_PROFILE) {
             // for ID card overlay
-            idCardOverlay.setVisibility(View.VISIBLE);
+            //idCardOverlay.setVisibility(View.VISIBLE);
+            tvTop.setText("Please place your ID inside the frame");
         } else {
             // for receipt overlay
-            idCardOverlay.setVisibility(View.GONE);
+            //idCardOverlay.setVisibility(View.GONE);
+            tvTop.setText("Please place your Receipt inside the frame");
         }
 
+        progressDialog = new ProgressDialog(CaptureActivity.this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Processing...");
     }
 
     /**
@@ -225,24 +237,26 @@ public class CaptureActivity extends AppCompatActivity {
         public void onPictureTaken(byte[] data, Camera camera) {
             SaveProfileImageAsync saveProfileImageAsync = new SaveProfileImageAsync();
             saveProfileImageAsync.execute(data);
+            mCamera.stopPreview();
+            rotation = mCameraPreview.getCameraRotation();
         }
     };
 
     private class SaveProfileImageAsync extends AsyncTask<byte[], Void, Void> {
 
+        private WeakReference<ProgressDialog> progressDialogWeakReference;
+
         @Override
         protected void onPreExecute() {
+            progressDialogWeakReference = new WeakReference<ProgressDialog>(progressDialog);
+            progressDialogWeakReference.get().show();
             super.onPreExecute();
-            progressDialog = new ProgressDialog(CaptureActivity.this);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setMessage("Processing...");
-            progressDialog.show();
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            progressDialogWeakReference.get().dismiss();
             super.onPostExecute(aVoid);
-            progressDialog.dismiss();
             finish();
         }
 
@@ -254,9 +268,10 @@ public class CaptureActivity extends AppCompatActivity {
             try {
 
                 // crop Image
-                Bitmap finalImage = BitmapFactory.decodeByteArray(data, 0,
-                        data.length);
-                //finalImage = BitmapUtils.rotateImage(finalImage, BitmapUtils.getRotation(CaptureActivity.this));
+                Bitmap finalImage =BitmapFactory.decodeByteArray(data, 0, data.length);
+
+                finalImage = BitmapUtils.rotateImage(finalImage, rotation);
+
                 if (imageType == IMAGE_PROFILE) {
                     finalImage = BitmapUtils.cropCenter(finalImage);
                 }
@@ -278,8 +293,13 @@ public class CaptureActivity extends AppCompatActivity {
 //                    }else{
 //                        imageFile = new File(folder.getAbsolutePath() + File.separator + today.get(Calendar.DATE) + today.get(Calendar.SECOND) + "receipt_nickel.png");
 //                    }
+                File imageFile;
+                if (imageType == IMAGE_PROFILE){
+                    imageFile = new File(getFilesDir(), getIntent().getIntExtra(EXTRA_REQUEST_CODE, 1000) + "_nickel.png");
+                }else{
+                    imageFile = new File(getFilesDir(), new Date().getTime() + getIntent().getIntExtra(EXTRA_REQUEST_CODE, 1000) + "_nickel.png");
+                }
 
-                File imageFile = new File(getFilesDir(), getIntent().getIntExtra(EXTRA_REQUEST_CODE, 1000) + "_nickel.png");
                 if (imageFile.exists()) {
                     imageFile.delete();
                 }
@@ -290,6 +310,7 @@ public class CaptureActivity extends AppCompatActivity {
                     FileOutputStream fos = openFileOutput(imageFile.getName(), MODE_PRIVATE);
                     finalImage.compress(Bitmap.CompressFormat.PNG, IMAGE_COMPRESSION_QUALITY, fos);
                     fos.close();
+                    finalImage.recycle();
 
                     Intent intent = new Intent();
                     intent.putExtra(Const.DATA_PHOTO_FILE, imageFile.getPath());

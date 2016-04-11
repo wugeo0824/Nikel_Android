@@ -13,6 +13,15 @@ import org.parceler.ParcelConstructor;
 @Parcel(Parcel.Serialization.BEAN)
 public class Transaction {
 
+    /**
+     * The 5 stages of a transaction progress
+     */
+    public static final int TRANS_DRAFT = -1; // transaction is drafted, not confirmed
+    public static final int TRANS_NEW_BORN = 0; // transaction is locked in, but payment has not made, so no receipt photo
+    public static final int TRANS_PAYMENT_MADE = 1; // payment made, receipt photo taken but not uploaded
+    public static final int TRANS_UPLOAD_COMPLETE = 2; // receipt photo uploaded
+    public static final int TRANS_READY_COLLECTION = 3; // sms confirmation received, transaction complete
+
     String transactionID;
     String transactionDate;
     String transactionAmount;

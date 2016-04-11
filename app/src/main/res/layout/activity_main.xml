@@ -32,7 +32,7 @@
                 app:contentInsetEnd="0dp"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
-                <TextView
+                <com.media2359.nickel.ui.customview.CustomTextView
                     android:id="@+id/tvToolbarTitle"
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -53,6 +53,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        android:background="@drawable/splash_bg"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="#ffffff"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/menu_drawer" />
 

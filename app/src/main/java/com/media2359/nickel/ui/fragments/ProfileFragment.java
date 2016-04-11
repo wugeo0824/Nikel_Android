@@ -124,6 +124,7 @@ public class ProfileFragment extends BaseFragment {
 
         if (documentTypes.getSelectedItemPosition() <= 0) {
             documentTypes.requestFocus();
+            documentTypes.performClick();
             return false;
         }
 
@@ -134,6 +135,7 @@ public class ProfileFragment extends BaseFragment {
 
         if (TextUtils.isEmpty(frontPhotoUrl) || TextUtils.isEmpty(backPhotoUrl)) {
             ivIDFront.requestFocus();
+            Toast.makeText(getActivity(), "Please provide photos of your ID", Toast.LENGTH_SHORT).show();
             return false;
         }
 

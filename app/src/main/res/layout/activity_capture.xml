@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvTop"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -49,13 +49,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_gravity="left"
+            android:layout_gravity="left|center_vertical"
             android:background="@android:color/transparent"
             android:text="@string/cancel"
             android:textAllCaps="false"
             android:textColor="@color/text_color_normal" />
 
-        <Button
+        <com.media2359.nickel.ui.customview.CustomButton
             android:id="@+id/button_capture"
             android:layout_width="50dp"
             android:layout_height="50dp"
