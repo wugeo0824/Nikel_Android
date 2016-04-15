@@ -24,21 +24,20 @@
                 android:id="@+id/tvISend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/etSendAmount"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:gravity="center"
+                android:textSize="12sp"
                 android:text="I'm sending" />
 
             <com.media2359.nickel.ui.customview.CustomEditText
                 android:id="@+id/etSendAmount"
-                android:layout_width="175dp"
+                android:layout_width="wrap_content"
                 android:layout_height="45dp"
-                android:layout_alignLeft="@+id/tvGetAmount"
-                android:layout_alignRight="@+id/tvGetAmount"
+                android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@+id/tvSGD"
-                android:background="@drawable/edittext_oval"
-                android:gravity="center_vertical|right"
+                android:layout_below="@+id/tvISend"
+                android:gravity="center_vertical|left"
                 android:inputType="numberDecimal"
                 android:paddingRight="@dimen/keyline_12"
                 android:textColor="@color/black"
@@ -50,36 +49,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/etSendAmount"
+                android:background="#353535"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:drawableLeft="@drawable/flag_sg"
                 android:gravity="center"
+                android:textColor="@color/white"
+                android:padding="14dp"
                 android:text="SGD" />
 
             <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvRecipientGets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/tvGetAmount"
                 android:layout_alignLeft="@+id/tvISend"
-                android:layout_below="@+id/tvISend"
-                android:layout_marginTop="@dimen/keyline_12"
+                android:layout_below="@+id/etSendAmount"
                 android:gravity="center"
+                android:textSize="12sp"
                 android:text="Recipient Gets" />
 
             <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvGetAmount"
                 android:layout_width="175dp"
                 android:layout_height="45dp"
-                android:layout_below="@+id/etSendAmount"
+                android:layout_below="@+id/tvRecipientGets"
+                android:layout_alignParentLeft="true"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="@dimen/keyline_12"
                 android:layout_toLeftOf="@+id/tvIDR"
-                android:background="@drawable/edittext_oval"
-                android:enabled="false"
-                android:gravity="center_vertical|right"
-                android:inputType="number"
-                android:paddingRight="@dimen/keyline_12"
+                android:gravity="center_vertical|left"
                 android:textColor="@color/pink"
                 android:textSize="19sp"
                 tools:text="129389012" />
@@ -88,12 +85,16 @@
                 android:id="@+id/tvIDR"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/tvRecipientGets"
+                android:layout_alignBottom="@+id/tvGetAmount"
                 android:layout_alignLeft="@+id/tvSGD"
                 android:layout_alignTop="@id/tvRecipientGets"
                 android:layout_below="@+id/tvSGD"
                 android:drawableLeft="@drawable/flag_id"
                 android:gravity="center"
+                android:layout_alignRight="@+id/tvSGD"
+                android:textColor="@color/white"
+                android:background="#515151"
+                android:padding="14dp"
                 android:text="IDR" />
 
             <com.media2359.nickel.ui.customview.CustomTextView
@@ -101,9 +102,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/tvISend"
-                android:layout_below="@id/tvRecipientGets"
+                android:textSize="16sp"
+                android:layout_below="@id/tvGetAmount"
                 android:layout_marginTop="@dimen/keyline_12"
-                android:text="1 SGD =" />
+                android:text="Rate" />
 
             <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvExchangeRate"
@@ -112,9 +114,8 @@
                 android:layout_alignTop="@+id/tvOneDollar"
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/tvIDR2"
-                android:text="9,682.00"
-                android:textColor="@color/pink"
-                android:textSize="19sp" />
+                android:text="1 SGD ="
+                android:textSize="16sp" />
 
             <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvIDR2"
@@ -123,9 +124,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@+id/tvOneDollar"
                 android:layout_below="@+id/tvIDR"
-                android:text="IDR"
-                android:textColor="@color/black"
-                android:textSize="19sp" />
+                android:text="9760.90 IDR"
+                android:textColor="@color/pink"
+                android:textSize="16sp" />
 
             <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvFees"
@@ -134,7 +135,8 @@
                 android:layout_alignLeft="@+id/tvISend"
                 android:layout_below="@id/tvOneDollar"
                 android:layout_marginTop="@dimen/keyline_12"
-                android:text="Fees:" />
+                android:textSize="16sp"
+                android:text="Fees (included)" />
 
             <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvFeesAmount"
@@ -144,8 +146,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/tvSGD2"
                 android:text="7.00"
-                android:textColor="@color/pink"
-                android:textSize="19sp" />
+                android:textSize="16sp" />
 
             <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvSGD2"
@@ -156,38 +157,38 @@
                 android:layout_below="@+id/tvIDR2"
                 android:text="SGD"
                 android:textColor="@color/black"
-                android:textSize="19sp" />
+                android:textSize="16sp" />
 
-            <com.media2359.nickel.ui.customview.CustomTextView
-                android:id="@+id/tvTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/tvISend"
-                android:layout_below="@id/tvFees"
-                android:layout_marginTop="@dimen/keyline_12"
-                android:text="Total:" />
+            <!--<com.media2359.nickel.ui.customview.CustomTextView-->
+                <!--android:id="@+id/tvTotal"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignLeft="@+id/tvISend"-->
+                <!--android:layout_below="@id/tvFees"-->
+                <!--android:layout_marginTop="@dimen/keyline_12"-->
+                <!--android:text="Total:" />-->
 
-            <com.media2359.nickel.ui.customview.CustomTextView
-                android:id="@+id/tvTotalAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/tvTotal"
-                android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@+id/tvSGD3"
-                android:text="7.00"
-                android:textColor="@color/pink"
-                android:textSize="19sp" />
+            <!--<com.media2359.nickel.ui.customview.CustomTextView-->
+                <!--android:id="@+id/tvTotalAmount"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignTop="@+id/tvTotal"-->
+                <!--android:layout_marginRight="5dp"-->
+                <!--android:layout_toLeftOf="@+id/tvSGD3"-->
+                <!--android:text="7.00"-->
+                <!--android:textColor="@color/pink"-->
+                <!--android:textSize="19sp" />-->
 
-            <com.media2359.nickel.ui.customview.CustomTextView
-                android:id="@+id/tvSGD3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/tvTotal"
-                android:layout_below="@+id/tvSGD2"
-                android:text="SGD"
-                android:textColor="@color/black"
-                android:textSize="19sp" />
+            <!--<com.media2359.nickel.ui.customview.CustomTextView-->
+                <!--android:id="@+id/tvSGD3"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_alignTop="@+id/tvTotal"-->
+                <!--android:layout_below="@+id/tvSGD2"-->
+                <!--android:text="SGD"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="19sp" />-->
 
         </RelativeLayout>
 

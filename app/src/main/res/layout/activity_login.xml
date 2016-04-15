@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/ivLogo"
-        android:layout_width="200dp"
+        android:layout_width="120dp"
         android:layout_height="match_parent"
         android:layout_above="@+id/centerAnchor"
         android:layout_alignParentTop="true"
@@ -17,7 +17,7 @@
         android:layout_marginBottom="120dp"
         android:layout_marginTop="@dimen/login_logo_top_margin"
         android:scaleType="fitCenter"
-        android:src="@drawable/logo_big" />
+        android:src="@drawable/logo_whole_small" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvNeedAccount"

@@ -49,7 +49,7 @@ public class HomeFragment extends BaseFragment {
     private MainActivity mainActivity;
     private RecyclerView rvHome;
     private RecipientAdapter recipientAdapter;
-    private TextView tvExchangeRate, tvFees, tvTotal, tvMyName, tvMyInfo, tvAddRecipient, tvGetAmount;
+    private TextView tvExchangeRate, tvFees, tvMyName, tvMyInfo, tvAddRecipient, tvGetAmount;
     private EditText etSendAmount;
     private Button btnMyInfoEdit;
     private List<Recipient> dataList = new ArrayList<>();
@@ -91,7 +91,6 @@ public class HomeFragment extends BaseFragment {
         tvExchangeRate = (TextView) view.findViewById(R.id.tvExchangeRate);
         //TODO: set the exchange rate
         tvFees = (TextView) view.findViewById(R.id.tvFeesAmount);
-        tvTotal = (TextView) view.findViewById(R.id.tvTotalAmount);
         etSendAmount = (EditText) view.findViewById(R.id.etSendAmount);
         //etSendAmount.setText("0");
         tvGetAmount = (TextView) view.findViewById(R.id.tvGetAmount);
@@ -167,10 +166,8 @@ public class HomeFragment extends BaseFragment {
                 getAmount = sendAmount * exchangeRate;
                 tvGetAmount.setText("" + getAmount);
                 totalAmount = sendAmount + fee;
-                tvTotal.setText("" + totalAmount);
             } else {
                 tvGetAmount.setText("");
-                tvTotal.setText("" + fee);
             }
 
             // add thousand separators

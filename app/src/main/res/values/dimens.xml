@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="login_vertical_margin">20dp</dimen>
+    <dimen name="login_vertical_margin">30dp</dimen>
 
     <dimen name="font_size_body">14sp</dimen>
 
@@ -18,7 +18,7 @@
     <dimen name="card_holder_width">190dp</dimen>
 
     <dimen name="progress_ball_width">32dp</dimen>
-    <dimen name="progress_bar_height">8dp</dimen>
+    <dimen name="progress_bar_height">4dp</dimen>
 
     <dimen name="login_logo_top_margin">50dp</dimen>
 </resources>

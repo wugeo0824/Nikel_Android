@@ -1,38 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ProgressBar
-        android:id="@+id/progressBarTran"
+        android:id="@+id/progressBar1"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_margin="@dimen/keyline_16"
         android:progressDrawable="@drawable/progress_bar"
-        android:layout_gravity="center_vertical"
-        android:max="100"
-        android:progress="1"
+        android:max="50"
+        android:progress="25"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/ivProgress1"
+        android:layout_toLeftOf="@+id/ivProgress2"
         android:layout_width="match_parent"
+        android:layout_height="@dimen/progress_bar_height" />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:progressDrawable="@drawable/progress_bar"
+        android:max="50"
+        android:progress="0"
+        android:layout_width="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/ivProgress2"
+        android:layout_toLeftOf="@+id/ivProgress3"
         android:layout_height="@dimen/progress_bar_height" />
 
     <ImageView
         android:id="@+id/ivProgress1"
         android:background="@drawable/circle_green"
-        android:layout_gravity="center_vertical"
+        android:layout_alignParentLeft="true"
+        android:scaleType="fitXY"
         android:layout_width="@dimen/progress_ball_width"
         android:layout_height="@dimen/progress_ball_width" />
 
     <ImageView
         android:id="@+id/ivProgress2"
         android:background="@drawable/circle_grey"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:scaleType="fitXY"
         android:layout_width="@dimen/progress_ball_width"
         android:layout_height="@dimen/progress_ball_width" />
 
     <ImageView
         android:id="@+id/ivProgress3"
         android:src="@drawable/circle_grey"
-        android:layout_gravity="center_vertical|right"
+        android:layout_alignParentRight="true"
+        android:scaleType="fitXY"
         android:layout_width="@dimen/progress_ball_width"
         android:layout_height="@dimen/progress_ball_width" />
 
-</FrameLayout>
+</RelativeLayout>

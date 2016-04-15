@@ -204,7 +204,7 @@ public class LoginActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(input)) {
             etPhone.setError("Please enter your phone number");
             return false;
-        } else if (input.length() < 8) {
+        } else if (input.length() < 5) {
             etPhone.setError("Please enter full phone number");
             return false;
         }
@@ -290,11 +290,11 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-//            if (!validPhone())
-//                return;
-//
-//            if (!validPassword())
-//                return;
+            if (!validPhone())
+                return;
+
+            if (!validPassword())
+                return;
 
             //TODO sign in
             progressDialog = showProgressDialog("Signing in", "Please wait...");

@@ -86,6 +86,12 @@
             app:ivLeftImageRes="@drawable/ico_address3"
             app:tvHint="Postal Code" />
 
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_below="@+id/pfPostalCode"-->
+            <!--android:background="@color/color_black_b5" />-->
+
         <ImageView
             android:id="@+id/ivDocType"
             android:layout_width="18dp"
@@ -107,6 +113,12 @@
 
         </android.support.v7.widget.AppCompatSpinner>
 
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_below="@+id/spinnerDocType"-->
+            <!--android:background="@color/color_black_b5" />-->
+
 
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfDocumentID"
@@ -117,6 +129,12 @@
             app:errorMessage="Please enter full document ID"
             app:ivLeftImageRes="@drawable/ico_document"
             app:tvHint="Document ID" />
+
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_below="@+id/pfDocumentID"-->
+            <!--android:background="@color/color_black_b5" />-->
 
 
         <ImageView

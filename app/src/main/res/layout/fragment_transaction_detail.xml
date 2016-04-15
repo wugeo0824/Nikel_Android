@@ -44,7 +44,6 @@
             android:id="@+id/llPaymentOptions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:orientation="vertical">
 
             <com.media2359.nickel.ui.customview.CustomTextView
@@ -95,14 +94,15 @@
                 android:layout_height="200dp"
                 android:layout_marginBottom="30dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/id_missing_back" />
+                android:background="@drawable/placeholder_receipt" />
 
             <com.media2359.nickel.ui.customview.CustomButton
                 android:id="@+id/btnSubmitReceipt"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                style="@style/PinkButton"
+                android:background="@drawable/button_submit_receipt"
                 android:layout_gravity="center_horizontal|bottom"
+                android:textColor="@color/white"
                 android:text="Submit" />
 
         </FrameLayout>
