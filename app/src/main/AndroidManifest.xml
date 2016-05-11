@@ -18,24 +18,24 @@
         android:supportsRtl="true"
         android:hardwareAccelerated="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.media2359.nickel.ui.MainActivity"
+        <activity android:name=".activities.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="com.media2359.nickel.ui.WebViewActivity"
+        <activity android:name=".activities.WebViewActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="com.media2359.nickel.ui.LoginActivity"
+        <activity android:name=".activities.LoginActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="com.media2359.nickel.ui.CaptureActivity"
+        <activity android:name=".activities.CaptureActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="com.media2359.nickel.ui.TransactionActivity"
+        <activity android:name=".activities.TransactionActivity"
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name="com.media2359.nickel.ui.SplashActivity"
+            android:name=".activities.SplashActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SplashActivity">

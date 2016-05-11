@@ -71,14 +71,14 @@ public class TransactionProgress extends RelativeLayout {
                 ivBall2.setImageResource(R.drawable.circle_green);
                 ivBall3.setImageResource(R.drawable.circle_grey);
                 //pb.setProgress(75);
-                animateProgress(75);
+                animateProgress(PROGRESS_75);
                 break;
             case Transaction.TRANS_READY_COLLECTION:
                 ivBall1.setImageResource(R.drawable.circle_green);
                 ivBall2.setImageResource(R.drawable.circle_green);
                 ivBall3.setImageResource(R.drawable.circle_green);
                 //pb.setProgress(100);
-                animateProgress(100);
+                animateProgress(PROGRESS_100);
                 break;
             case Transaction.TRANS_NEW_BORN:
                 ivBall1.setImageResource(R.drawable.circle_green);
@@ -199,6 +199,7 @@ public class TransactionProgress extends RelativeLayout {
 
     private void animate100(){
         pb1.setProgress(0);
+        pb2.setProgress(0);
         ObjectAnimator animation1 = ObjectAnimator.ofInt(pb1, "progress", 0, 50);
         animation1.setDuration(500); // Duration of the animation
         animation1.setInterpolator(new LinearInterpolator());

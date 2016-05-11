@@ -8,7 +8,7 @@
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:progressDrawable="@drawable/progress_bar"
         android:max="50"
-        android:progress="25"
+        android:progress="0"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/ivProgress1"
         android:layout_toLeftOf="@+id/ivProgress2"

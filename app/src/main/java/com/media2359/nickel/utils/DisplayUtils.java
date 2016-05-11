@@ -42,12 +42,13 @@ public class DisplayUtils {
         return size.x;
     }
 
-    public static int getRotation(Context context, Camera camera){
+    public static int getRotation(Context context){
         Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 
         Camera.CameraInfo info = new Camera.CameraInfo();
         Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, info);
         int rotation = display.getRotation();
+
 
         int degrees = 0;
         switch (rotation) {
@@ -59,7 +60,7 @@ public class DisplayUtils {
 
         if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             // frontFacing
-            rotation = (info.orientation + degrees) % 330;
+            rotation = (info.orientation + degrees) % 360;
             rotation = (360 - rotation) % 360;
         } else {
             // Back-facing

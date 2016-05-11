@@ -1,8 +1,6 @@
 package com.media2359.nickel.ui.viewholder;
 
 import android.animation.LayoutTransition;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +30,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
     public boolean expanded = false;
     public boolean isGreyedOut = false;
     public RelativeLayout topHolder;
-    private ItemExpandCollapseListener listener;
+    private ItemExpandCollapseListener expandCollapseListener;
     private boolean optionsShown = false;
 
     public RecipientViewHolder(View itemView) {
@@ -56,7 +54,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
             @Override
             public void onClick(View v) {
                 //TODO: edit recipient
-                EventBus.getDefault().post(new OnRecipientEditClickEvent(getAdapterPosition()));
+                //EventBus.getDefault().post(new OnRecipientEditClickEvent(getAdapterPosition()));
             }
         });
 
@@ -78,7 +76,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
             public void onClick(View v) {
                 //TODO: delete recipient
                 //showDeleteDialog(recipient.getName());
-                EventBus.getDefault().post(new OnRecipientDeleteClickEvent(getAdapterPosition()));
+                //EventBus.getDefault().post(new OnRecipientDeleteClickEvent(getAdapterPosition()));
             }
         });
 
@@ -99,25 +97,11 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
 
     }
 
-//    private void showDeleteDialog(String contactName) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
-//        builder.setTitle("Delete?");
-//        builder.setMessage("Do you want to delete " + contactName + "?");
-//        builder.setCancelable(false);
-//        builder.setNegativeButton("No",null);
-//        builder.setPositiveButton("Yes, delete it", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                EventBus.getDefault().post(new OnRecipientDeleteClickEvent(getAdapterPosition()));
-//            }
-//        });
-//    }
-
     private View.OnClickListener OnSendMoneyClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             //TODO: send money
-            EventBus.getDefault().post(new OnSendMoneyClickEvent(getAdapterPosition()));
+            //EventBus.getDefault().post(new OnSendMoneyClickEvent(getAdapterPosition()));
         }
     };
 
@@ -149,12 +133,12 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
         optionsShown = false;
     }
 
-    public ItemExpandCollapseListener getListener() {
-        return listener;
+    public ItemExpandCollapseListener getExpandCollapseListener() {
+        return expandCollapseListener;
     }
 
-    public void setListener(ItemExpandCollapseListener listener) {
-        this.listener = listener;
+    public void setExpandCollapseListener(ItemExpandCollapseListener expandCollapseListener) {
+        this.expandCollapseListener = expandCollapseListener;
     }
 
     private View.OnClickListener switchLayout = new View.OnClickListener() {
@@ -173,7 +157,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
         btnRecipientOptions.setVisibility(View.VISIBLE);
         btnSendMoney.setVisibility(View.VISIBLE);
         expanded = true;
-        listener.onItemExpanded(getAdapterPosition());
+        expandCollapseListener.onItemExpanded(getAdapterPosition());
     }
 
     public void collapse() {
@@ -185,7 +169,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
         btnRecipientOptions.setVisibility(View.INVISIBLE);
         btnSendMoney.setVisibility(View.GONE);
         expanded = false;
-        listener.onItemCollapsed(getAdapterPosition());
+        expandCollapseListener.onItemCollapsed(getAdapterPosition());
     }
 
     private void expandOrCollapse() {
@@ -195,7 +179,6 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
             expand();
         }
     }
-
 
     /**
      * Empowers adapter

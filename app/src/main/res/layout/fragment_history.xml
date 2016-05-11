@@ -1,14 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.media2359.nickel.ui.customview.ThemedSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/srlHistory"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvHistory"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/item_transaction_history" />
+    <ProgressBar
+        android:id="@+id/loadingView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:indeterminate="true" />
 
-</com.media2359.nickel.ui.customview.ThemedSwipeRefreshLayout>
+    <com.media2359.nickel.ui.customview.ThemedSwipeRefreshLayout
+        android:id="@+id/contentView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvHistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_transaction_history" />
+
+    </com.media2359.nickel.ui.customview.ThemedSwipeRefreshLayout>
+
+    <com.media2359.nickel.ui.customview.CustomTextView
+        android:id="@+id/emptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:text="There is no transaction history yet." />
+
+    <com.media2359.nickel.ui.customview.CustomTextView
+        android:id="@+id/errorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:text="There is something wrong happened." />
+
+</FrameLayout>

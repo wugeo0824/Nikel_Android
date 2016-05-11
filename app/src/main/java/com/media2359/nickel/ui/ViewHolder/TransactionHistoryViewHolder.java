@@ -25,6 +25,10 @@ public class TransactionHistoryViewHolder extends RecyclerView.ViewHolder {
         init();
     }
 
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        itemView.setOnClickListener(onClickListener);
+    }
+
     private void init() {
         tvTranID = (TextView) itemView.findViewById(R.id.tvTransactionID);
         tvTranDate = (TextView) itemView.findViewById(R.id.tvTranDate);
@@ -40,7 +44,7 @@ public class TransactionHistoryViewHolder extends RecyclerView.ViewHolder {
         tvTranStatus.setText(transaction.getTransactionStatus());
         //TODO
         transactionProgress.updateProgress(transaction.getTransProgress());
-        itemView.setOnClickListener(OnDetailClick);
+        //itemView.setOnClickListener(OnDetailClick);
     }
 
     private View.OnClickListener OnDetailClick = new View.OnClickListener() {
