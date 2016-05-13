@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,6 +30,7 @@ import com.media2359.nickel.camera.CameraPreview;
 import com.media2359.nickel.camera.IDCardOverlay;
 import com.media2359.nickel.utils.BitmapUtils;
 import com.media2359.nickel.utils.Const;
+import com.media2359.nickel.utils.PreferencesUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -61,10 +63,12 @@ public class CaptureActivity extends AppCompatActivity {
     private Button captureButton;
     private FrameLayout preview;
     private int imageType = -1;
+    private int requestCode = -1;
     private IDCardOverlay idCardOverlay;
     private int rotation;
 
     private ProgressDialog progressDialog;
+    SaveProfileImageAsync saveProfileImageAsync;
 
 
     public static void startCapturingIDCard(Activity activity, int requestCode) {
@@ -106,6 +110,7 @@ public class CaptureActivity extends AppCompatActivity {
         super.onResume();
 
         imageType = getIntent().getIntExtra(EXTRA_IMAGE_TYPE, IMAGE_PROFILE);
+        requestCode = getIntent().getIntExtra(EXTRA_REQUEST_CODE, -1);
 
         if (checkCameraHardware(getApplicationContext()))
             checkCameraPermission();
@@ -161,6 +166,11 @@ public class CaptureActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         releaseCamera();
+        if (saveProfileImageAsync != null) {
+            saveProfileImageAsync.cancel(false);
+            saveProfileImageAsync = null;
+        }
+        this.finish();
     }
 
     private void releaseCamera() {
@@ -201,6 +211,7 @@ public class CaptureActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(CaptureActivity.this);
         progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
         progressDialog.setMessage("Processing...");
     }
 
@@ -236,7 +247,7 @@ public class CaptureActivity extends AppCompatActivity {
     Camera.PictureCallback mPicture = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            SaveProfileImageAsync saveProfileImageAsync = new SaveProfileImageAsync();
+            saveProfileImageAsync = new SaveProfileImageAsync();
             saveProfileImageAsync.execute(data);
             mCamera.stopPreview();
             rotation = mCameraPreview.getCameraRotation();
@@ -250,9 +261,11 @@ public class CaptureActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            progressDialogWeakReference = new WeakReference<ProgressDialog>(progressDialog);
-            progressDialogWeakReference.get().show();
             super.onPreExecute();
+            progressDialogWeakReference = new WeakReference<ProgressDialog>(progressDialog);
+            if (progressDialogWeakReference.get() != null){
+                progressDialogWeakReference.get().show();
+            }
         }
 
         @Override
@@ -268,6 +281,9 @@ public class CaptureActivity extends AppCompatActivity {
             byte[] data = params[0];
 
             try {
+
+                if (isCancelled())
+                    return null;
 
                 // crop Image
                 Bitmap finalImage =BitmapFactory.decodeByteArray(data, 0, data.length);
@@ -299,6 +315,16 @@ public class CaptureActivity extends AppCompatActivity {
                     fos.flush();
                     fos.close();
                     finalImage.recycle();
+
+                    if (imageType == IMAGE_PROFILE){
+                        if (requestCode == Const.REQUEST_PICTURE_FROM_CAMERA_FRONT){
+                            PreferencesUtils.saveIDFront(getApplicationContext(), Uri.fromFile(imageFile).toString());
+                        }else if(requestCode == Const.REQUEST_PICTURE_FROM_CAMERA_BACK){
+                            PreferencesUtils.saveIDBack(getApplicationContext(), Uri.fromFile(imageFile).toString());
+                        }else if(requestCode == Const.REQUEST_CODE_RECEIPT_PHOTO) {
+                            // TODO save the receipt photo for that transaction
+                        }
+                    }
 
                     Intent intent = new Intent();
                     intent.putExtra(Const.DATA_PHOTO_FILE, imageFile.getPath());

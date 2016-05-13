@@ -15,4 +15,8 @@ public class Const {
     public static final int REQUEST_PICTURE_FROM_GALLERY_BACK = 232;
     public static final int REQUEST_PICTURE_FROM_CAMERA_FRONT = 241;
     public static final int REQUEST_PICTURE_FROM_CAMERA_BACK = 242;
+
+    public final static int IN_ITEM_MAX_PROGRESS = 100;
+    public final static int IN_ITEM_PROGRESS_ONE = 33;
+    public final static int IN_ITEM_PROGRESS_TWO = 66;
 }

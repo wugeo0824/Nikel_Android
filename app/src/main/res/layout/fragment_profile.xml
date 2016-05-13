@@ -157,7 +157,7 @@
             android:layout_toRightOf="@+id/ivPhotoID"
             android:gravity="center_vertical"
             android:text="Photo of ID"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <RelativeLayout
             android:id="@+id/rlIDPhotoContainer"
@@ -185,8 +185,8 @@
                 android:drawableLeft="@drawable/ico_alert"
                 android:drawablePadding="@dimen/keyline_12"
                 android:gravity="center"
-                android:text="Front"
-                android:textSize="16sp" />
+                android:text="@string/front_missing"
+                android:textSize="13sp" />
 
             <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvIDBack"
@@ -196,8 +196,8 @@
                 android:drawableLeft="@drawable/ico_alert"
                 android:drawablePadding="@dimen/keyline_12"
                 android:gravity="center"
-                android:text="Back"
-                android:textSize="16sp" />
+                android:text="@string/back_missing"
+                android:textSize="13sp" />
 
             <ImageView
                 android:id="@+id/ivIDFront"

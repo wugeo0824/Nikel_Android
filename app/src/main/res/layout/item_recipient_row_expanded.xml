@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/topHolder"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/card">
 
         <ImageView
             android:id="@+id/ivRecipientLeft"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/keyline_16"
             android:layout_marginRight="@dimen/keyline_16"
             android:scaleType="centerInside"
@@ -29,10 +29,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:layout_marginBottom="4dp"
             android:layout_marginTop="@dimen/keyline_12"
             android:layout_toRightOf="@id/ivRecipientLeft"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="18sp"
             tools:text="Husband" />
 
         <com.media2359.nickel.ui.customview.CustomTextView
@@ -41,42 +42,51 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/tvRecipientName"
             android:layout_below="@+id/tvRecipientName"
+            android:layout_marginBottom="@dimen/keyline_12"
             android:textColor="@color/text_color_inactive"
-            android:textSize="14sp"
+            android:textSize="12sp"
             tools:text="BRI 129031095823" />
 
         <ImageButton
-            android:visibility="invisible"
             android:id="@+id/btnRecipientOptions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:background="@drawable/button_edit_profile_dark"
             android:padding="@dimen/keyline_16"
-            android:src="@drawable/ico_edit_reversed" />
+            android:src="@drawable/ico_edit_reversed"
+            android:visibility="invisible" />
 
         <com.media2359.nickel.ui.customview.CustomButton
             android:id="@+id/btnRecipientEdit"
-            android:layout_centerVertical="true"
-            android:background="@color/grey"
-            android:text="Edit"
-            android:visibility="gone"
-            android:textColor="@color/white"
-            android:layout_toLeftOf="@+id/btnRecipientDelete"
             android:layout_width="70dp"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/btnRecipientDelete"
+            android:background="#515151"
+            android:drawableTop="@drawable/icn_edit"
+            android:padding="@dimen/keyline_12"
+            android:text="Edit"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:visibility="gone" />
 
         <com.media2359.nickel.ui.customview.CustomButton
             android:id="@+id/btnRecipientDelete"
-            android:background="@color/dark_pink"
-            android:text="DELETE"
-            android:textColor="@color/white"
-            android:layout_centerVertical="true"
-            android:visibility="gone"
-            android:layout_alignParentRight="true"
             android:layout_width="70dp"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="#868686"
+            android:drawableTop="@drawable/icn_delete"
+            android:padding="@dimen/keyline_12"
+            android:text="Delete"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -87,8 +97,8 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/card_expanded"
-        android:visibility="gone"
-        android:clickable="true">
+        android:clickable="true"
+        android:visibility="gone">
 
         <com.media2359.nickel.ui.customview.CustomTextView
             android:id="@+id/tvSendMoney"

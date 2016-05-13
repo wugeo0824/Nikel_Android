@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 23
@@ -32,8 +33,11 @@ dependencies {
     compile 'com.hannesdorfmann.mosby:mvp:2.0.1'
     compile 'com.hannesdorfmann.mosby:viewstate:2.0.1'
 
+    //job queue manager
+    compile 'com.birbit:android-priority-jobqueue:2.0.0-alpha2'
+
     //butter knife
-    compile 'com.jakewharton:butterknife:7.0.1'
+//    compile 'com.jakewharton:butterknife:7.0.1'
 
     //includes Retrofit
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'

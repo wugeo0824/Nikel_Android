@@ -24,6 +24,15 @@
     <string name="UOB_machines">UOB Cash Deposit Machines</string>
     <string name="pay_by_CStore">Convenience Store</string>
     <string name="receipt">Receipt</string>
+    <string name="reset">RESET</string>
+    <string name="front_missing">Front Missing</string>
+    <string name="back_missing">Back Missing</string>
+    <string name="in_progress">IN PROGRESS</string>
+    <string name="completed">COMPLETED</string>
+    <string name="recipient">Recipient</string>
+
+    <string name="complete_sender_profile">Complete sender profile</string>
+    <string name="add_new_recipient">Add new recipient</string>
     
     <string name="take_photo_instruction">Please take a photo of the front of your I.D</string>
 

@@ -3,12 +3,15 @@ package com.media2359.nickel.model;
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;
 
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+
 /**
  * Created by Xijun on 21/3/16.
  */
 
 @Parcel(Parcel.Serialization.BEAN)
-public class Recipient {
+public class Recipient extends RealmObject{
 
     String name;
     String nickName;
@@ -20,6 +23,11 @@ public class Recipient {
     String bankAccount;
     boolean expanded = false;
     boolean greyedOut = false;
+
+    Transaction currentTransaction;
+
+    public Recipient() {
+    }
 
     @ParcelConstructor
     public Recipient(String name, String nickName, String phoneNumber, String street, String city, String postalCode, String bankName, String bankAccount) {
@@ -87,5 +95,17 @@ public class Recipient {
 
     public String getBankName() {
         return bankName;
+    }
+
+    public boolean isInProgress() {
+        return (currentTransaction != null);
+    }
+
+    public Transaction getCurrentTransaction() {
+        return currentTransaction;
+    }
+
+    public void setCurrentTransaction(Transaction currentTransaction) {
+        this.currentTransaction = currentTransaction;
     }
 }

@@ -267,7 +267,6 @@ public class ProfileFragment extends BaseFragment {
             String filePath = data.getStringExtra(Const.DATA_PHOTO_FILE);
             File result = new File(filePath);
 
-
             Bitmap thumbImage = BitmapUtils.getThumbnail(getActivity(), result);
             frontPhotoUrl = Uri.fromFile(result).toString();
             //PreferencesUtils.saveIDFront(getContext(),frontPhotoUrl);

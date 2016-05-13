@@ -134,13 +134,19 @@ public class LoginActivity extends AppCompatActivity {
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_reset_password, null);
         builder.setView(dialogView);
-        Button btnResetPassword = (Button) dialogView.findViewById(R.id.btnResetPassword);
-        etResetPhone = (EditText) dialogView.findViewById(R.id.etPhoneNumber);
-        btnResetPassword.setOnClickListener(onResetClick);
+
 
         // Create the AlertDialog object and return it
-        builder.create();
         resetDialog = builder.create();
+        TextView btnResetPassword = (TextView) dialogView.findViewById(R.id.btnResetPassword);
+        etResetPhone = (EditText) dialogView.findViewById(R.id.etPhoneNumber);
+        btnResetPassword.setOnClickListener(onResetClick);
+        dialogView.findViewById(R.id.btnCancelReset).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetDialog.dismiss();
+            }
+        });
         resetDialog.show();
     }
 

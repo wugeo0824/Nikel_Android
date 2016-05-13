@@ -50,15 +50,15 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
     public void bindItem(final Recipient recipient) {
         tvRecipientName.setText(recipient.getName());
         tvRecipientBank.setText(recipient.getBankAccount());
-        btnEditRecipient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: edit recipient
-                //EventBus.getDefault().post(new OnRecipientEditClickEvent(getAdapterPosition()));
-            }
-        });
+//        btnEditRecipient.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //TODO: edit recipient
+//                //EventBus.getDefault().post(new OnRecipientEditClickEvent(getAdapterPosition()));
+//            }
+//        });
 
-        btnSendMoney.setOnClickListener(OnSendMoneyClick);
+//        btnSendMoney.setOnClickListener(OnSendMoneyClick);
 
         btnRecipientOptions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,14 +71,14 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
             }
         });
 
-        btnDeleteRecipient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: delete recipient
-                //showDeleteDialog(recipient.getName());
-                //EventBus.getDefault().post(new OnRecipientDeleteClickEvent(getAdapterPosition()));
-            }
-        });
+//        btnDeleteRecipient.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //TODO: delete recipient
+//                //showDeleteDialog(recipient.getName());
+//                //EventBus.getDefault().post(new OnRecipientDeleteClickEvent(getAdapterPosition()));
+//            }
+//        });
 
         tvSendMoney.setText(String.format(itemView.getContext().getString(R.string.send_money_to), recipient.getName()));
 
@@ -97,25 +97,25 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
 
     }
 
-    private View.OnClickListener OnSendMoneyClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            //TODO: send money
-            //EventBus.getDefault().post(new OnSendMoneyClickEvent(getAdapterPosition()));
-        }
-    };
+//    private View.OnClickListener OnSendMoneyClick = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            //TODO: send money
+//            //EventBus.getDefault().post(new OnSendMoneyClickEvent(getAdapterPosition()));
+//        }
+//    };
 
     public void setEnabledOrNot(boolean greyedOut){
         if (!greyedOut){
             showOptionsButtons();
             btnRecipientOptions.setEnabled(true);
             collapse();
-            itemView.setOnClickListener(switchLayout);
+            //itemView.setOnClickListener(switchLayout);
         }else{
             hideOptionsButtons();
             btnRecipientOptions.setEnabled(false);
             topHolder.setBackgroundColor(itemView.getResources().getColor(R.color.color_black_b5));
-            itemView.setOnClickListener(OnSendMoneyClick);
+            //itemView.setOnClickListener(OnSendMoneyClick);
         }
     }
 

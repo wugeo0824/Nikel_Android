@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/topHolder"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@color/nav_bar_color">
+
+    <ImageView
+        android:id="@+id/ivRecipientLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/keyline_16"
+        android:layout_marginRight="@dimen/keyline_16"
+        android:scaleType="centerInside"
+        android:src="@drawable/ico_name_reversed" />
+
+
+    <com.media2359.nickel.ui.customview.CustomTextView
+        android:id="@+id/tvRecipientName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="@dimen/keyline_12"
+        android:layout_toRightOf="@id/ivRecipientLeft"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        tools:text="Husband" />
+
+    <com.media2359.nickel.ui.customview.CustomTextView
+        android:id="@+id/tvRecipientBank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvRecipientName"
+        android:layout_below="@+id/tvRecipientName"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:textColor="@color/text_color_inactive"
+        android:textSize="12sp"
+        tools:text="BRI 129031095823" />
+
+    <ImageButton
+        android:id="@+id/btnRecipientNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/button_edit_profile_dark"
+        android:padding="@dimen/keyline_12"
+        android:src="@drawable/ic_chevron_right_24dp" />
+
+    <com.media2359.nickel.ui.customview.CustomTextView
+        android:id="@+id/tvTransactionAmount"
+        android:layout_width="@dimen/in_item_progress_width"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="@dimen/keyline_12"
+        android:layout_toLeftOf="@+id/btnRecipientNext"
+        android:gravity="center"
+        android:text="500.00 SGD"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <com.media2359.nickel.ui.customview.InItemProgressBar
+        android:id="@+id/pbInItemProgress"
+        android:layout_width="@dimen/in_item_progress_width"
+        android:layout_height="@dimen/in_item_progress_height"
+        android:layout_below="@+id/tvTransactionAmount"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:layout_toLeftOf="@+id/btnRecipientNext" />
+
+
+</RelativeLayout>

@@ -18,16 +18,12 @@ import com.media2359.nickel.model.Transaction;
 
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 /**
  * Created by Xijun on 25/4/16.
  */
 public class HistoryMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<Transaction>, HistoryView, HistoryPresenter>
         implements HistoryView, SwipeRefreshLayout.OnRefreshListener, HistoryMVPAdapter.HistoryItemClickListener {
 
-    @Bind(R.id.rvHistory)
     RecyclerView rvHistory;
 
     HistoryMVPAdapter historyAdapter;
@@ -50,9 +46,9 @@ public class HistoryMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
         contentView.setOnRefreshListener(this);
         historyAdapter = new HistoryMVPAdapter(getActivity(),this);
+        rvHistory = (RecyclerView) view.findViewById(R.id.rvHistory);
         rvHistory.setHasFixedSize(true);
         rvHistory.setItemAnimator(new DefaultItemAnimator());
         rvHistory.setAdapter(historyAdapter);

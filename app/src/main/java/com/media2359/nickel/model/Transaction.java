@@ -3,15 +3,20 @@ package com.media2359.nickel.model;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 
+import com.media2359.nickel.utils.Const;
+
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;
+
+import io.realm.RealmObject;
+import io.realm.annotations.Required;
 
 /**
  * Created by Xijun on 1/4/16.
  */
 
 @Parcel(Parcel.Serialization.BEAN)
-public class Transaction {
+public class Transaction extends RealmObject{
 
     /**
      * The 5 stages of a transaction progress
@@ -22,17 +27,23 @@ public class Transaction {
     public static final int TRANS_UPLOAD_COMPLETE = 2; // receipt photo uploaded
     public static final int TRANS_READY_COLLECTION = 3; // sms confirmation received, transaction complete
 
+    @Required
     String transactionID;
+    @Required
     String transactionDate;
+    @Required
     String transactionAmount;
     String transactionStatus;
     int transProgress;
     String recipientName;
-    float exchangeRate;
+    double exchangeRate;
     String receiptPhotoUrl;
 
+    public Transaction() {
+    }
+
     @ParcelConstructor
-    public Transaction(String transactionID, String transactionDate, String transactionAmount, String transactionStatus, int transProgress, String recipientName, float exchangeRate) {
+    public Transaction(String transactionID, String transactionDate, String transactionAmount, String transactionStatus, int transProgress, String recipientName, double exchangeRate) {
         this.transactionID = transactionID;
         this.transactionDate = transactionDate;
         this.transactionAmount = transactionAmount;
@@ -88,8 +99,17 @@ public class Transaction {
         return recipientName;
     }
 
-    public float getExchangeRate() {
+    public double getExchangeRate() {
         return exchangeRate;
+    }
+
+    public int getInItemProgress() {
+        if (transProgress <= 1)
+            return Const.IN_ITEM_PROGRESS_ONE;
+        else if (transProgress == 2)
+            return Const.IN_ITEM_PROGRESS_TWO;
+        else
+            return Const.IN_ITEM_MAX_PROGRESS;
     }
 
     /**
@@ -103,7 +123,7 @@ public class Transaction {
         private String transactionStatus;
         private int transProgress;
         private String recipientName;
-        private float exchangeRate;
+        private double exchangeRate;
 
         public Builder() {
         }
@@ -138,7 +158,7 @@ public class Transaction {
             return this;
         }
 
-        public Builder withExchangeRate(float exchangeRate){
+        public Builder withExchangeRate(double exchangeRate){
             this.exchangeRate = exchangeRate;
             return this;
         }
@@ -146,6 +166,5 @@ public class Transaction {
         public Transaction build() {
             return new Transaction(this);
         }
-
     }
 }

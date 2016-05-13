@@ -6,21 +6,41 @@
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvTransactionID"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="3dp"
+        android:text="Transaction ID: "
+        android:textSize="@dimen/font_size_body" />
+
+    <com.media2359.nickel.ui.customview.CustomTextView
+        android:id="@+id/tvTransactionIDValue"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/keyline_12"
-        android:text="Transaction ID: 128973198n748"
-        android:textSize="19sp" />
+        android:layout_toRightOf="@+id/tvTransactionID"
+        android:text="128973198n748"
+        android:textColor="@color/pink"
+        android:textSize="@dimen/font_size_body" />
+
+    <com.media2359.nickel.ui.customview.CustomTextView
+        android:id="@+id/tvTransactionDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTransactionID"
+        android:layout_marginBottom="23dp"
+        android:text="April 2nd, 2016 | 10:00 am"
+        android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvSending"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTransactionID"
-        android:layout_marginBottom="6dp"
+        android:layout_below="@+id/tvTransactionDate"
+        android:layout_marginBottom="@dimen/transaction_number_row_margin"
         android:text="I'm sending"
-        android:textSize="19sp" />
+        android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvGets"
@@ -28,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvSending"
         android:text="Recipient gets"
-        android:textSize="19sp" />
+        android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvOneSGD"
@@ -36,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/tvExchangeRate"
         android:text="1 SGD ="
-        android:textSize="12sp" />
+        android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvFees"
@@ -44,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/tvFeesAmount"
         android:text="Fees:"
-        android:textSize="12sp" />
+        android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvTotal"
@@ -52,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/tvTotalAmount"
         android:text="Total:"
-        android:textSize="12sp" />
+        android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvToRecipient"
@@ -60,17 +80,17 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/tvRecipientDetail"
         android:text="To Recipient"
-        android:textSize="19sp" />
+        android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvSendAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/tvTransactionID"
-        android:layout_marginBottom="6dp"
+        android:layout_below="@+id/tvTransactionDate"
+        android:layout_marginBottom="@dimen/transaction_number_row_margin"
         android:text="300.00 SGD"
-        android:textSize="19sp" />
+        android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvGetAmount"
@@ -78,10 +98,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/tvSendAmount"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="@dimen/transaction_number_row_margin"
         android:text="2,917,720 IDR"
         android:textColor="@color/pink"
-        android:textSize="19sp" />
+        android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvExchangeRate"
@@ -89,10 +109,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/tvGetAmount"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="@dimen/transaction_number_row_margin"
         android:text="9725,80 IDR"
         android:textColor="@color/pink"
-        android:textSize="19sp" />
+        android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvFeesAmount"
@@ -100,9 +120,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/tvExchangeRate"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="@dimen/transaction_number_row_margin"
         android:text="7.00 SGD"
-        android:textSize="19sp" />
+        android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvTotalAmount"
@@ -110,9 +130,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/tvFeesAmount"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="@dimen/transaction_number_row_margin"
         android:text="307.00 SGD"
-        android:textSize="19sp" />
+        android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvRecipientDetail"
@@ -124,6 +144,6 @@
         android:gravity="right"
         android:text="Husband \n BRI 1287913"
         android:textColor="@color/pink"
-        android:textSize="19sp" />
+        android:textSize="@dimen/font_size_body" />
 
 </RelativeLayout>

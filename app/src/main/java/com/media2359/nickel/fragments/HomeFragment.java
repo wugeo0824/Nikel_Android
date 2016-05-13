@@ -1,6 +1,5 @@
 package com.media2359.nickel.fragments;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,32 +12,24 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
-import com.media2359.nickel.event.OnRecipientDeleteClickEvent;
-import com.media2359.nickel.event.OnRecipientEditClickEvent;
-import com.media2359.nickel.event.OnSendMoneyClickEvent;
-import com.media2359.nickel.model.MyProfile;
-import com.media2359.nickel.model.Recipient;
-import com.media2359.nickel.model.Transaction;
 import com.media2359.nickel.activities.MainActivity;
 import com.media2359.nickel.activities.TransactionActivity;
 import com.media2359.nickel.adapter.RecipientAdapter;
+import com.media2359.nickel.model.MyProfile;
+import com.media2359.nickel.model.Recipient;
+import com.media2359.nickel.model.Transaction;
 import com.media2359.nickel.ui.customview.ThemedSwipeRefreshLayout;
-import com.media2359.nickel.ui.viewholder.RecipientViewHolder;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+import com.media2359.nickel.utils.DisplayUtils;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -47,22 +38,27 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 /**
  * Created by Xijun on 10/3/16.
  */
-public class HomeFragment extends BaseFragment implements RecipientAdapter.onItemClickListener{
+public class HomeFragment extends BaseFragment implements RecipientAdapter.onItemClickListener {
 
     private MainActivity mainActivity;
     private RecyclerView rvHome;
     private RecipientAdapter recipientAdapter;
     private TextView tvExchangeRate, tvFees, tvMyName, tvMyInfo, tvAddRecipient, tvGetAmount;
     private EditText etSendAmount;
-    private Button btnMyInfoEdit;
+    private RelativeLayout btnMyInfoEdit, btnAddNewRecipient;
     private List<Recipient> dataList = new ArrayList<>();
-    private float exchangeRate = 9679.13f; // 1SGD = [exchangeRate] IDR
-    private float getAmount = 0, fee = 7f, totalAmount = 0;
+    private double exchangeRate = 9679.13d; // 1SGD = [exchangeRate] IDR
+    private double getAmount = 0d, fee = 7d, totalAmount = 0d;
     private ThemedSwipeRefreshLayout srl;
     private Transaction currentTransaction;
+
+    private Realm realm;
 
 
     public static HomeFragment newInstance() {
@@ -101,7 +97,8 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         etSendAmount = (EditText) view.findViewById(R.id.etSendAmount);
         //etSendAmount.setText("0");
         tvGetAmount = (TextView) view.findViewById(R.id.tvGetAmount);
-        btnMyInfoEdit = (Button) view.findViewById(R.id.btnMyInfoEdit);
+        btnMyInfoEdit = (RelativeLayout) view.findViewById(R.id.btnMyInfoEdit);
+        btnAddNewRecipient = (RelativeLayout) view.findViewById(R.id.btnAddNewRecipient);
         tvMyInfo = (TextView) view.findViewById(R.id.tvMyInformation);
         tvAddRecipient = (TextView) view.findViewById(R.id.tvAddRecipient);
         //tvMyInfo.setClickable(true);
@@ -115,6 +112,34 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
 
         btnMyInfoEdit.setOnClickListener(onMyInfoClick);
         etSendAmount.addTextChangedListener(onAmountChangedWatcher);
+
+        // hide the keyboard when user clicks done button
+        etSendAmount.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        etSendAmount.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE && event != null && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    DisplayUtils.hideKeyboard(v);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(getActivity()).build();
+        Realm.deleteRealm(realmConfiguration);
+        realm = Realm.getInstance(realmConfiguration);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        realm.close();
     }
 
     private RecyclerView.OnScrollListener OnScrollRV = new RecyclerView.OnScrollListener() {
@@ -138,7 +163,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
             return false;
         }
     }
-    
+
 
     private View.OnClickListener onMyInfoClick = new View.OnClickListener() {
         @Override
@@ -147,6 +172,9 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         }
     };
 
+    /**
+     * Adds thousands separator to the amount ","
+     */
     private TextWatcher onAmountChangedWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -162,15 +190,15 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         public void afterTextChanged(Editable s) {
             etSendAmount.removeTextChangedListener(this);
 
-            if (srl.isFocusable()){
+            if (srl.isFocusable()) {
                 srl.setFocusable(false);
                 srl.setFocusableInTouchMode(false);
             }
             //update the get amount
             if (!TextUtils.isEmpty(s.toString())) {
                 long sendAmount = Long.parseLong(s.toString().replaceAll(",", ""));
-                getAmount = sendAmount * exchangeRate;
-                tvGetAmount.setText("" + getAmount);
+                getAmount = Math.round(sendAmount * exchangeRate * 100.0) / 100.0;
+                tvGetAmount.setText(getFormattedString(getAmount));
                 totalAmount = sendAmount + fee;
             } else {
                 tvGetAmount.setText("");
@@ -179,14 +207,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
             // add thousand separators
             if (!TextUtils.isEmpty(s.toString())) {
                 try {
-                    String givenstring = s.toString();
-                    Long longval;
-                    if (givenstring.contains(",")) {
-                        givenstring = givenstring.replaceAll(",", "");
-                    }
-                    longval = Long.parseLong(givenstring);
-                    DecimalFormat formatter = new DecimalFormat("#,###,###");
-                    String formattedString = formatter.format(longval);
+                    String formattedString = getFormattedString(s.toString());
                     etSendAmount.setText(formattedString);
                     etSendAmount.setSelection(etSendAmount.getText().length());
                     // to place the cursor at the end of text
@@ -199,6 +220,28 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
 
         }
     };
+
+    private String getFormattedString(String input) {
+        Long longval;
+        if (input.contains(",")) {
+            input = input.replaceAll(",", "");
+        }
+        longval = Long.parseLong(input);
+        return getFormattedString(longval);
+    }
+
+    private String getFormattedString(Long input) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        String formattedString = formatter.format(input);
+        return formattedString;
+    }
+
+    private String getFormattedString(double input) {
+        DecimalFormat formatter = new DecimalFormat("#,###.00");
+        formatter.setDecimalSeparatorAlwaysShown(true);
+        String formattedString = formatter.format(input);
+        return formattedString;
+    }
 
     private SwipeRefreshLayout.OnRefreshListener OnRefresh = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
@@ -275,6 +318,11 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         }
     }
 
+    @Override
+    public void onTransactionClick(int position) {
+        TransactionActivity.startTransactionActivity(getActivity(), dataList.get(position).getCurrentTransaction());
+    }
+
     private void showPaymentConfirmationDialog(String recipientName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Alert");
@@ -301,9 +349,32 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         dialog.show();
     }
 
+    /**
+     * When user clicks yes on payment confirmation dialog
+     * This should save the transaction in local storage, call the api to upload the open the transaction in server
+     */
     private void confirmTransaction() {
         // TODO: call api
+
+        // update the transaction status
         currentTransaction.setTransProgress(Transaction.TRANS_NEW_BORN);
+
+
+    }
+
+    /**
+     * when the transaction is successfully created in server
+     */
+    private void transactionCreated() {
+
+        // save the current transaction into persisted storage
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealm(currentTransaction);
+            }
+        });
+
         TransactionActivity.startTransactionActivity(getActivity(), currentTransaction);
     }
 
@@ -345,6 +416,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
 
     private void getRecipients() {
         dataList.clear();
+
         Recipient a = new Recipient("Husband", "BRI 281973021894", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
         Recipient b = new Recipient("Mother", "BRI 0123874123", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
         Recipient c = new Recipient("Sister", "MYI 9012830912", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
@@ -353,6 +425,10 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         b.setExpanded(false);
         c.setExpanded(false);
         d.setExpanded(false);
+
+        Transaction aadd = new Transaction("1238u9ashjd", "March 2, 2016", "500.00", "Funds Ready for Collection", Transaction.TRANS_NEW_BORN, "Husband", 1235);
+        a.setCurrentTransaction(aadd);
+
         dataList.add(a);
         dataList.add(b);
         dataList.add(c);
@@ -361,9 +437,28 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         dataList.add(b);
         dataList.add(c);
         dataList.add(d);
+
         recipientAdapter.notifyDataSetChanged();
+
         if (srl.isRefreshing()) {
             srl.setRefreshing(false);
+        }
+
+        showListOfRecipient(!dataList.isEmpty());
+    }
+
+    private void showListOfRecipient(boolean show) {
+        if (show) {
+            rvHome.setVisibility(View.VISIBLE);
+            btnAddNewRecipient.setVisibility(View.GONE);
+            tvAddRecipient.setText(getString(R.string.add_new_recipient));
+            tvAddRecipient.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_add, 0, 0, 0);
+
+        } else {
+            rvHome.setVisibility(View.GONE);
+            btnAddNewRecipient.setVisibility(View.VISIBLE);
+            tvAddRecipient.setText(getString(R.string.recipient));
+            tvAddRecipient.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_alert, 0, 0, 0);
         }
     }
 

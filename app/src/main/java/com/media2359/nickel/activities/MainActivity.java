@@ -388,10 +388,10 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            case R.id.menuRefresh:
-                if (getCurrentFragment() instanceof HomeFragment){
-
-                }
+//            case R.id.menuRefresh:
+//                if (getCurrentFragment() instanceof HomeFragment){
+//
+//                }
             default:
                 return super.onOptionsItemSelected(item);
         }
