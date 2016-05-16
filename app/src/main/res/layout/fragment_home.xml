@@ -73,7 +73,7 @@
                 android:layout_below="@+id/etSendAmount"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:text="Recipient Gets"
+                android:text="Recipient gets"
                 android:textSize="@dimen/font_size_home_body" />
 
             <com.media2359.nickel.ui.customview.CustomTextView
