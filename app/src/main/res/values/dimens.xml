@@ -5,8 +5,11 @@
 
     <dimen name="login_vertical_margin">30dp</dimen>
 
+    <dimen name="recipient_home_row_height">57dp</dimen>
+
     <dimen name="font_size_body">14sp</dimen>
     <dimen name="font_size_home_body">12sp</dimen>
+    <dimen name="font_size_toolbar_title">18sp</dimen>
 
     <dimen name="radius">20dp</dimen>
     <dimen name="card_overlay_width">310dp</dimen>

@@ -196,7 +196,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
             }
             //update the get amount
             if (!TextUtils.isEmpty(s.toString())) {
-                long sendAmount = Long.parseLong(s.toString().replaceAll(",", ""));
+                double sendAmount = Double.parseDouble(s.toString().replaceAll(",", ""));
                 getAmount = Math.round(sendAmount * exchangeRate * 100.0) / 100.0;
                 tvGetAmount.setText(getFormattedString(getAmount));
                 totalAmount = sendAmount + fee;
@@ -324,7 +324,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     }
 
     private void showPaymentConfirmationDialog(String recipientName) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.PaymentAlterDialog);
         builder.setTitle("Alert");
         builder.setMessage("Proceed to send " + etSendAmount.getText().toString() + " SGD to " + recipientName + "?");
         builder.setCancelable(false);
@@ -359,7 +359,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         // update the transaction status
         currentTransaction.setTransProgress(Transaction.TRANS_NEW_BORN);
 
-
+        TransactionActivity.startTransactionActivity(getActivity(), currentTransaction);
     }
 
     /**

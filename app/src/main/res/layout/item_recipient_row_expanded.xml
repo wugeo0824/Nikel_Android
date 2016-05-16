@@ -10,7 +10,8 @@
         android:id="@+id/topHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/card">
+        android:background="@drawable/card"
+        android:minHeight="@dimen/recipient_home_row_height">
 
         <ImageView
             android:id="@+id/ivRecipientLeft"
@@ -26,7 +27,7 @@
 
         <com.media2359.nickel.ui.customview.CustomTextView
             android:id="@+id/tvRecipientName"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginBottom="4dp"
@@ -38,11 +39,10 @@
 
         <com.media2359.nickel.ui.customview.CustomTextView
             android:id="@+id/tvRecipientBank"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/tvRecipientName"
             android:layout_below="@+id/tvRecipientName"
-            android:layout_marginBottom="@dimen/keyline_12"
             android:textColor="@color/text_color_inactive"
             android:textSize="12sp"
             tools:text="BRI 129031095823" />
@@ -54,6 +54,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/button_edit_profile_dark"
+            android:minHeight="@dimen/recipient_home_row_height"
             android:padding="@dimen/keyline_16"
             android:src="@drawable/ico_edit_reversed"
             android:visibility="invisible" />
@@ -66,10 +67,11 @@
             android:layout_toLeftOf="@+id/btnRecipientDelete"
             android:background="#515151"
             android:drawableTop="@drawable/icn_edit"
+            android:minHeight="@dimen/recipient_home_row_height"
             android:padding="@dimen/keyline_12"
             android:text="Edit"
-            android:textColor="@color/white"
             android:textAllCaps="false"
+            android:textColor="@color/white"
             android:textSize="12sp"
             android:visibility="gone" />
 
@@ -81,6 +83,7 @@
             android:layout_centerVertical="true"
             android:background="#868686"
             android:drawableTop="@drawable/icn_delete"
+            android:minHeight="@dimen/recipient_home_row_height"
             android:padding="@dimen/keyline_12"
             android:text="Delete"
             android:textAllCaps="false"
@@ -94,7 +97,7 @@
         android:id="@+id/btnSendMoney"
         style="?android:attr/buttonStyle"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/card_expanded"
         android:clickable="true"

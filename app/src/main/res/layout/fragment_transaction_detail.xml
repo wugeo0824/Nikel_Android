@@ -1,128 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/home_background"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <com.media2359.nickel.ui.customview.CustomTextView
+        android:id="@+id/tvInstruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/keyline_16"
+        android:drawableLeft="@drawable/ico_alert"
+        android:gravity="center"
+        android:text="Please submit receipt when internet is available."
+        android:textSize="@dimen/font_size_body" />
+
+    <com.media2359.nickel.ui.customview.TransactionProgress
+        android:id="@+id/progressDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/home_background"
-        android:orientation="vertical">
+        android:layout_below="@+id/tvInstruction"
+        android:layout_marginBottom="@dimen/keyline_12"
+        android:layout_marginLeft="@dimen/keyline_16"
+        android:layout_marginRight="@dimen/keyline_16"
+        android:layout_marginTop="@dimen/keyline_12" />
+
+    <include
+        android:id="@+id/rlTransNumbers"
+        layout="@layout/include_transaction_numbers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progressDetail"
+        android:layout_marginTop="@dimen/keyline_12" />
+
+    <LinearLayout
+        android:id="@+id/llPaymentOptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlTransNumbers"
+        android:orientation="vertical"
+        android:padding="@dimen/keyline_16">
 
         <com.media2359.nickel.ui.customview.CustomTextView
-            android:id="@+id/tvInstruction"
+            android:id="@+id/tvPaymentOptions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/keyline_16"
-            android:layout_gravity="center_horizontal"
-            android:drawableLeft="@drawable/ico_alert"
-            android:gravity="center"
-            android:text="Please submit receipt when internet is available."
-            android:textSize="@dimen/font_size_body" />
-
-        <com.media2359.nickel.ui.customview.TransactionProgress
-            android:id="@+id/progressDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/keyline_12"
-            android:layout_marginLeft="@dimen/keyline_16"
-            android:layout_marginRight="@dimen/keyline_16"
-            android:layout_marginTop="@dimen/keyline_12" />
-
-        <View
-            android:id="@+id/divider_barcode"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/grey" />
-
-        <include
-            android:id="@+id/rlTransNumbers"
-            layout="@layout/include_transaction_numbers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvInstruction"
-            android:layout_marginTop="@dimen/keyline_12" />
-
-        <LinearLayout
-            android:id="@+id/llPaymentOptions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/keyline_16"
-            android:orientation="vertical">
-
-            <com.media2359.nickel.ui.customview.CustomTextView
-                android:id="@+id/tvPaymentOptions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/keyline_12"
-                android:layout_marginBottom="@dimen/keyline_12"
-                android:layout_marginLeft="4dp"
-                android:text="@string/payment_options"
-                android:textSize="18sp" />
-
-            <com.media2359.nickel.ui.customview.CustomButton
-                android:id="@+id/btnPaymentUOB"
-                style="@style/CardButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/keyline_12"
-                android:drawableLeft="@drawable/logo_uob_white"
-                android:text="@string/UOB_machines" />
-
-            <com.media2359.nickel.ui.customview.CustomButton
-                android:id="@+id/btnPaymentCStore"
-                style="@style/CardButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/keyline_12"
-                android:drawableLeft="@drawable/logo_whole_small"
-                android:text="@string/pay_by_CStore" />
-
-        </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/rlReceiptUpload"
+            android:layout_marginLeft="4dp"
             android:layout_marginTop="@dimen/keyline_12"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:text="@string/payment_options"
+            android:textSize="13sp" />
 
-            <com.media2359.nickel.ui.customview.CustomTextView
-                android:id="@+id/tvReceipt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/receipt"
-                android:textSize="18sp" />
-
-            <ImageView
-                android:id="@+id/ivReceipt"
-                android:layout_width="150dp"
-                android:layout_height="200dp"
-                android:layout_marginBottom="30dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/placeholder_receipt" />
-
-            <com.media2359.nickel.ui.customview.CustomButton
-                android:id="@+id/btnSubmitReceipt"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_submit_receipt"
-                android:layout_gravity="center_horizontal|bottom"
-                android:textColor="@color/white"
-                android:text="Submit" />
-
-        </FrameLayout>
-
-
-        <com.media2359.nickel.ui.customview.CustomTextView
-            android:id="@+id/tvPaymentStatus"
+        <com.media2359.nickel.ui.customview.CustomButton
+            android:id="@+id/btnPaymentUOB"
+            style="@style/CardButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btnPaymentCStore"
-            android:layout_marginTop="@dimen/keyline_16"
-            android:gravity="center"
-            android:text="Funds will be available by 10AM on \n Monday December 7th"
-            android:textSize="12sp" />
+            android:layout_marginTop="@dimen/keyline_12"
+            android:background="@drawable/button_card"
+            android:drawableLeft="@drawable/logo_uob_white"
+            android:text="@string/UOB_machines" />
+
+        <com.media2359.nickel.ui.customview.CustomButton
+            android:id="@+id/btnPaymentCStore"
+            style="@style/CardButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/keyline_12"
+            android:background="@drawable/button_card"
+            android:drawableLeft="@drawable/logo_7_eleven_03"
+            android:text="@string/pay_by_CStore" />
 
     </LinearLayout>
 
-</ScrollView>
+    <FrameLayout
+        android:id="@+id/rlReceiptUpload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/keyline_12"
+        android:paddingLeft="@dimen/keyline_16"
+        android:paddingRight="@dimen/keyline_16">
+
+        <com.media2359.nickel.ui.customview.CustomTextView
+            android:id="@+id/tvReceipt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/receipt"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/ivReceipt"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/placeholder_receipt" />
+
+        <com.media2359.nickel.ui.customview.CustomButton
+            android:id="@+id/btnSubmitReceipt"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:background="@drawable/button_submit_receipt"
+            android:text="Submit"
+            android:textColor="@color/white" />
+
+    </FrameLayout>
+
+
+    <com.media2359.nickel.ui.customview.CustomTextView
+        android:id="@+id/tvPaymentStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#606060"
+        android:gravity="center"
+        android:padding="@dimen/keyline_12"
+        android:text="Funds will be available by 10AM on \n Monday December 7th"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+</RelativeLayout>
+

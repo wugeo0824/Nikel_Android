@@ -110,7 +110,7 @@ public class TransactionDetailFragment extends BaseFragment {
         tvGetAmount = (TextView) view.findViewById(R.id.tvGetAmount);
         tvExchangeRate = (TextView) view.findViewById(R.id.tvExchangeRate);
         tvFee = (TextView) view.findViewById(R.id.tvFeesAmount);
-        tvTotal = (TextView) view.findViewById(R.id.tvTotalAmount);
+        //tvTotal = (TextView) view.findViewById(R.id.tvTotalAmount);
         tvRecipient = (TextView) view.findViewById(R.id.tvRecipientDetail);
         tvStatus = (TextView) view.findViewById(R.id.tvPaymentStatus);
         btnUOB = (Button) view.findViewById(R.id.btnPaymentUOB);

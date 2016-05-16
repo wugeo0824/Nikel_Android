@@ -11,7 +11,7 @@
         android:layout_height="70dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/keyline_12"
-        android:src="@drawable/barcode_tattoo_by_emmersallday" />
+        android:src="@drawable/logo_whole_small" />
 
     <View
         android:layout_width="match_parent"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/keyline_12"
-        android:src="@drawable/seven_eleven_logo" />
+        android:src="@drawable/logo_7_eleven_03" />
 
     <com.media2359.nickel.ui.customview.CustomButton
         android:id="@+id/btnStepGuide"

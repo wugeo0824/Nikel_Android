@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/keyline_12"
         android:id="@+id/ivUOB"
-        android:src="@drawable/seven_eleven_logo"
+        android:src="@drawable/logo_7_eleven_03"
         android:layout_gravity="center_horizontal" />
 
     <com.media2359.nickel.ui.customview.CustomButton
