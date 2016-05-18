@@ -39,7 +39,7 @@ import java.util.Date;
 
 /**
  * The general steps for creating a custom camera interface for your application are as follows:
- * <p>
+ * <p/>
  * Detect and Access Camera - Create code to check for the existence of cameras and request access.
  * Create a Preview Class - Create a camera preview class that extends SurfaceView and implements the SurfaceHolder interface. This class previews the live images from the camera.
  * Build a Preview Layout - Once you have the camera preview class, create a view layout that incorporates the preview and the user interface controls you want.
@@ -60,14 +60,17 @@ public class CaptureActivity extends AppCompatActivity {
 
     private Camera mCamera;
     private CameraPreview mCameraPreview;
-    private Button captureButton;
+    private Button captureButton, cancelButton;
     private FrameLayout preview;
     private int imageType = -1;
     private int requestCode = -1;
     private IDCardOverlay idCardOverlay;
     private int rotation;
 
+    private CameraHandlerThread mThread = null;
+
     private ProgressDialog progressDialog;
+
     SaveProfileImageAsync saveProfileImageAsync;
 
 
@@ -103,6 +106,7 @@ public class CaptureActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture);
+        initViews();
     }
 
     @Override
@@ -115,7 +119,7 @@ public class CaptureActivity extends AppCompatActivity {
         if (checkCameraHardware(getApplicationContext()))
             checkCameraPermission();
         else {
-            Toast.makeText(CaptureActivity.this, "Sorry, this device does not have a camera", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Sorry, this device does not have a camera", Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -135,7 +139,9 @@ public class CaptureActivity extends AppCompatActivity {
                     MY_PERMISSION_CAMERA);
 
         } else {
-            initViews();
+            newOpenCamera();
+            //initViews();
+            //oldOpenCamera();
         }
     }
 
@@ -149,15 +155,17 @@ public class CaptureActivity extends AppCompatActivity {
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                    initViews();
+                    //initViews();
+                    newOpenCamera();
+                    //oldOpenCamera();
 
                 } else {
                     //TODO
+                    Toast.makeText(getApplicationContext(), "Camera permission is not granted", Toast.LENGTH_SHORT).show();
                     finish();
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
-                return;
             }
         }
     }
@@ -165,11 +173,20 @@ public class CaptureActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        releaseCamera();
+        //releaseCamera();
+        newReleaseCamera();
+
         if (saveProfileImageAsync != null) {
             saveProfileImageAsync.cancel(false);
             saveProfileImageAsync = null;
         }
+
+        if (mThread != null) {
+            CameraHandlerThread mock = mThread;
+            mThread = null;
+            mock.interrupt();
+        }
+
         this.finish();
     }
 
@@ -185,11 +202,15 @@ public class CaptureActivity extends AppCompatActivity {
     private void initViews() {
 
         idCardOverlay = (IDCardOverlay) findViewById(R.id.overlay_IDCard);
-        mCamera = getCameraInstance();
-        mCameraPreview = new CameraPreview(this, mCamera);
         preview = (FrameLayout) findViewById(R.id.camera_preview);
-        preview.addView(mCameraPreview, 0);
         TextView tvTop = (TextView) findViewById(R.id.tvTop);
+        cancelButton = (Button) findViewById(R.id.btnCancel);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         captureButton = (Button) findViewById(R.id.button_capture);
         captureButton.setOnClickListener(new View.OnClickListener() {
@@ -208,11 +229,6 @@ public class CaptureActivity extends AppCompatActivity {
             //idCardOverlay.setVisibility(View.GONE);
             tvTop.setText("Please place your Receipt inside the frame");
         }
-
-        progressDialog = new ProgressDialog(CaptureActivity.this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Processing...");
     }
 
     /**
@@ -225,6 +241,38 @@ public class CaptureActivity extends AppCompatActivity {
         } else {
             // no camera on this device
             return false;
+        }
+    }
+
+    private void oldOpenCamera() {
+        mCamera = getCameraInstance();
+        mCameraPreview = new CameraPreview(CaptureActivity.this, mCamera);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                preview.addView(mCameraPreview, 0);
+            }
+        });
+
+    }
+
+    private void newOpenCamera() {
+        if (mThread == null) {
+            mThread = new CameraHandlerThread();
+        }
+
+        synchronized (mThread) {
+            mThread.openCamera();
+        }
+    }
+
+    private void newReleaseCamera() {
+        if (mThread == null)
+            return;
+
+        synchronized (mThread) {
+            mThread.closeCamera();
         }
     }
 
@@ -244,13 +292,57 @@ public class CaptureActivity extends AppCompatActivity {
     }
 
 
+    private class CameraHandlerThread extends HandlerThread {
+        Handler mHandler = null;
+
+        CameraHandlerThread() {
+            super("CameraHandlerThread");
+            start();
+            mHandler = new Handler(getLooper());
+        }
+
+
+        void openCamera() {
+
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    oldOpenCamera();
+                }
+            });
+
+        }
+
+        void closeCamera() {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    releaseCamera();
+                }
+            });
+        }
+    }
+
+
     Camera.PictureCallback mPicture = new Camera.PictureCallback() {
         @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
-            saveProfileImageAsync = new SaveProfileImageAsync();
-            saveProfileImageAsync.execute(data);
+        public void onPictureTaken(final byte[] data, Camera camera) {
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog = new ProgressDialog(CaptureActivity.this);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setCancelable(false);
+                    progressDialog.setMessage("Processing...");
+
+                    saveProfileImageAsync = new SaveProfileImageAsync();
+                    saveProfileImageAsync.execute(data);
+                    rotation = mCameraPreview.getCameraRotation();
+                }
+            });
+
             mCamera.stopPreview();
-            rotation = mCameraPreview.getCameraRotation();
         }
     };
 
@@ -263,15 +355,15 @@ public class CaptureActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialogWeakReference = new WeakReference<ProgressDialog>(progressDialog);
-            if (progressDialogWeakReference.get() != null){
+            if (progressDialogWeakReference.get() != null) {
                 progressDialogWeakReference.get().show();
             }
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            progressDialogWeakReference.get().dismiss();
             super.onPostExecute(aVoid);
+            progressDialogWeakReference.get().dismiss();
             finish();
         }
 
@@ -286,10 +378,10 @@ public class CaptureActivity extends AppCompatActivity {
                     return null;
 
                 // crop Image
-                Bitmap finalImage =BitmapFactory.decodeByteArray(data, 0, data.length);
+                Bitmap finalImage = BitmapFactory.decodeByteArray(data, 0, data.length);
 
                 // if the image is saved as landscape mode
-                if (finalImage.getHeight() < finalImage.getWidth()){
+                if (finalImage.getHeight() < finalImage.getWidth()) {
                     finalImage = BitmapUtils.rotateImage(finalImage, rotation);
                 }
 
@@ -298,9 +390,9 @@ public class CaptureActivity extends AppCompatActivity {
                 }
 
                 File imageFile;
-                if (imageType == IMAGE_PROFILE){
+                if (imageType == IMAGE_PROFILE) {
                     imageFile = new File(getFilesDir(), getIntent().getIntExtra(EXTRA_REQUEST_CODE, 1001) + "_nickel.png");
-                }else{
+                } else {
                     imageFile = new File(getFilesDir(), new Date().getTime() + getIntent().getIntExtra(EXTRA_REQUEST_CODE, 1002) + "_nickel.png");
                 }
 
@@ -316,12 +408,12 @@ public class CaptureActivity extends AppCompatActivity {
                     fos.close();
                     finalImage.recycle();
 
-                    if (imageType == IMAGE_PROFILE){
-                        if (requestCode == Const.REQUEST_PICTURE_FROM_CAMERA_FRONT){
+                    if (imageType == IMAGE_PROFILE) {
+                        if (requestCode == Const.REQUEST_PICTURE_FROM_CAMERA_FRONT) {
                             PreferencesUtils.saveIDFront(getApplicationContext(), Uri.fromFile(imageFile).toString());
-                        }else if(requestCode == Const.REQUEST_PICTURE_FROM_CAMERA_BACK){
+                        } else if (requestCode == Const.REQUEST_PICTURE_FROM_CAMERA_BACK) {
                             PreferencesUtils.saveIDBack(getApplicationContext(), Uri.fromFile(imageFile).toString());
-                        }else if(requestCode == Const.REQUEST_CODE_RECEIPT_PHOTO) {
+                        } else if (requestCode == Const.REQUEST_CODE_RECEIPT_PHOTO) {
                             // TODO save the receipt photo for that transaction
                         }
                     }

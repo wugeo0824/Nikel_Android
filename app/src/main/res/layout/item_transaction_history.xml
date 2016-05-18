@@ -5,47 +5,65 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:background="@drawable/card"
-    android:orientation="vertical"
-    android:padding="@dimen/keyline_16">
+    android:orientation="vertical">
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvTransactionID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline_12"
         android:layout_marginBottom="@dimen/keyline_12"
+        android:layout_marginLeft="@dimen/keyline_12"
+        android:layout_marginRight="@dimen/keyline_12"
         android:text="Transaction ID: 12987389dasd"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textSize="18sp" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvTranDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/keyline_12"
+        android:layout_marginLeft="@dimen/keyline_12"
+        android:layout_marginRight="@dimen/keyline_12"
         android:text="March 2, 2016"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textSize="12sp" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvTranAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/keyline_12"
+        android:layout_marginLeft="@dimen/keyline_12"
+        android:layout_marginRight="@dimen/keyline_12"
         android:text="500SGD"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/dark_pink" />
+        android:textColor="@color/black"
+        android:textSize="34sp"
+        android:textStyle="bold" />
+
+    <View
+        android:background="@color/text_color_inactive"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvTranStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline_12"
+        android:gravity="center"
         android:layout_gravity="center_horizontal"
+        android:drawableLeft="@drawable/ico_ok"
+        android:drawablePadding="7dp"
+        android:textSize="13sp"
         android:text="Funds Ready for Collection" />
 
     <com.media2359.nickel.ui.customview.TransactionProgress
         android:id="@+id/tpHistory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="@dimen/keyline_12" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="14dp" />
 
 </LinearLayout>

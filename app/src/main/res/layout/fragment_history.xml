@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         style="@style/Widget.AppCompat.ProgressBar"
+        android:indeterminateTint="@color/colorAccent"
         android:indeterminate="true" />
 
     <com.media2359.nickel.ui.customview.ThemedSwipeRefreshLayout

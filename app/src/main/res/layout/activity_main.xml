@@ -48,7 +48,7 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <!-- The navigation drawer -->
-    <android.support.design.widget.NavigationView
+    <com.media2359.nickel.ui.customview.CustomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

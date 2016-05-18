@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/home_background"
     android:orientation="vertical"
     android:padding="@dimen/keyline_16">
 
@@ -11,11 +12,13 @@
         android:layout_height="70dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/keyline_12"
-        android:src="@drawable/logo_whole_small" />
+        android:src="@drawable/barcode_tattoo_by_emmersallday" />
 
     <View
+        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_below="@+id/ivBarcode"
         android:layout_marginBottom="@dimen/keyline_12"
         android:background="@color/grey" />
 
@@ -23,50 +26,65 @@
         android:id="@+id/tvInstruction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/keyline_12"
+        android:layout_below="@+id/divider"
+        android:lineSpacingExtra="5dp"
         android:text="@string/uob_instruction"
-        android:textSize="19sp" />
+        android:textSize="18sp" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/ivSevenLogo"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@+id/tvInstruction"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/keyline_12"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/logo_7_eleven_03" />
 
     <com.media2359.nickel.ui.customview.CustomButton
         android:id="@+id/btnStepGuide"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/keyline_12"
-        android:layout_marginBottom="@dimen/keyline_12"
-        android:background="@drawable/button_card"
-        android:drawableLeft="@drawable/ico_bank"
-        android:paddingLeft="@dimen/keyline_16"
-        android:paddingRight="@dimen/keyline_16"
+        style="@style/StepsButton"
+        android:layout_above="@+id/btnCStoreMap"
+        android:layout_gravity="bottom"
+        android:drawableLeft="@drawable/icn_step"
         android:text="Step by Step Guide" />
 
-    <com.media2359.nickel.ui.customview.CustomButton
+    <LinearLayout
         android:id="@+id/btnCStoreMap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/btnTakeReceipt"
         android:layout_marginBottom="@dimen/keyline_12"
         android:background="@drawable/button_card"
-        android:drawableLeft="@drawable/ico_address3"
-        android:paddingLeft="@dimen/keyline_16"
-        android:paddingRight="@dimen/keyline_16"
-        android:text="Nearest Convenience Store" />
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <com.media2359.nickel.ui.customview.CustomTextView
+            style="@style/StepsButton"
+            android:minHeight="45dp"
+            android:paddingLeft="10dp"
+            android:layout_marginLeft="6dp"
+            android:paddingRight="10dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="0dp"
+            android:background="@color/white"
+            android:drawableLeft="@drawable/icn_near"
+            android:text="Nearest Convenience Store" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_map" />
+
+    </LinearLayout>
+
 
     <com.media2359.nickel.ui.customview.CustomButton
         android:id="@+id/btnTakeReceipt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/keyline_12"
-        android:background="@drawable/button_card"
-        android:drawableLeft="@drawable/ico_photo"
-        android:paddingLeft="@dimen/keyline_16"
-        android:paddingRight="@dimen/keyline_16"
+        style="@style/StepsButton"
+        android:layout_alignParentBottom="true"
+        android:drawableLeft="@drawable/icn_picture"
         android:text="Please take a picture of the Receipt" />
 
 
-</LinearLayout>
+</RelativeLayout>

@@ -1,88 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="@dimen/keyline_16"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="@dimen/keyline_16">
 
     <ImageView
         android:id="@+id/ivRewards"
-        android:src="@drawable/dollar_bills"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:src="@drawable/dollar_bills" />
 
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvAvCredit"
-        android:text="Available Credits"
-        android:textSize="16sp"
-        android:layout_alignParentLeft="true"
-        android:layout_above="@+id/tvRewardsCode"
-        android:layout_marginBottom="@dimen/keyline_16"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvRewardsCode"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="@dimen/keyline_16"
+        android:layout_marginLeft="4dp"
+        android:text="Available Credits"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/tvCreditAmount"
-        android:text="20.00 SGD"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_alignParentRight="true"
-        android:layout_alignBottom="@+id/tvAvCredit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvAvCredit"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="4dp"
+        android:text="20.00 SGD"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvRewardsCode"
-        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textColor="@color/pink"
-        android:textStyle="bold"
-        android:layout_marginTop="@dimen/keyline_16"
+        android:layout_centerInParent="true"
         android:layout_marginBottom="@dimen/keyline_16"
-        android:text="DIAN5678UV"/>
+        android:layout_marginTop="@dimen/keyline_16"
+        android:text="DIAN5678UV"
+        android:textColor="@color/pink"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvRewardsInstruction"
-        android:text="Send your friends a free remittance worth $10 and you will get one too."
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:layout_below="@+id/tvRewardsCode"
-        android:textSize="16sp"
-        android:layout_margin="@dimen/keyline_16"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvRewardsCode"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/keyline_16"
+        android:gravity="center"
+        android:text="Send your friends a free remittance worth $10 and you will get one too."
+        android:textSize="16sp" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvEnterCode"
-        android:text="Enter Promo Code"
-        android:textColor="@color/pink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/etPromoCode"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/keyline_16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:text="Enter Promo Code"
+        android:textColor="@color/pink" />
 
     <com.media2359.nickel.ui.customview.CustomEditText
         android:id="@+id/etPromoCode"
-        android:layout_above="@+id/btnApplyCode"
-        android:layout_marginTop="@dimen/keyline_16"
-        android:layout_marginBottom="@dimen/keyline_16"
-        android:singleLine="true"
-        android:inputType="text"
         android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnApplyCode"
         android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content" />
+        android:layout_marginBottom="@dimen/keyline_16"
+        android:layout_marginTop="@dimen/keyline_16"
+        android:inputType="text"
+        android:singleLine="true" />
 
     <com.media2359.nickel.ui.customview.CustomButton
         android:id="@+id/btnApplyCode"
+        style="@style/PinkButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Apply"
-        style="@style/PinkButton" />
+        android:text="Apply" />
 
 </RelativeLayout>

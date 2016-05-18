@@ -217,7 +217,7 @@
             android:id="@+id/btnMyInfoEdit"
             android:layout_width="match_parent"
             android:layout_margin="5dp"
-            android:background="@drawable/card"
+            android:background="@drawable/button_card"
             android:minHeight="@dimen/recipient_home_row_height"
             android:layout_height="wrap_content">
 
@@ -302,7 +302,7 @@
             android:layout_width="match_parent"
             android:minHeight="@dimen/recipient_home_row_height"
             android:layout_margin="5dp"
-            android:background="@drawable/card"
+            android:background="@drawable/button_card"
             android:layout_height="wrap_content">
 
             <ImageView

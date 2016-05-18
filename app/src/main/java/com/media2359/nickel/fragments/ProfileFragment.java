@@ -11,11 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +23,6 @@ import com.media2359.nickel.activities.CaptureActivity;
 import com.media2359.nickel.ui.customview.ProfileField;
 import com.media2359.nickel.utils.BitmapUtils;
 import com.media2359.nickel.utils.Const;
-import com.media2359.nickel.utils.PreferencesUtils;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -37,12 +34,11 @@ public class ProfileFragment extends BaseFragment {
 
     private static final String TAG = "ProfileFragment";
 
-    private ProfileField pfName, pfDOB, pfStreet, pfCity, pfPostal, pfDocumentID;
+    private ProfileField pfName, pfDOB, pfStreet, pfCity, pfPostal, pfDocumentID, pfDocTypes;
     private ImageView ivIDFront, ivIDBack;
     private FrameLayout flStatus;
     private TextView tvIDFront, tvIDBack, tvStatus;
     private Button btnSaveChanges;
-    private Spinner documentTypes;
     private MyProfile myProfile;
     private String frontPhotoUrl, backPhotoUrl;
 
@@ -62,8 +58,10 @@ public class ProfileFragment extends BaseFragment {
         pfCity = (ProfileField) view.findViewById(R.id.pfCity);
         pfPostal = (ProfileField) view.findViewById(R.id.pfPostalCode);
         pfDocumentID = (ProfileField) view.findViewById(R.id.pfDocumentID);
+        pfDocTypes = (ProfileField) view.findViewById(R.id.pfDocType);
 
-        pfDOB.setShouldIntercept(true);
+        pfDOB.setShouldIntercept(true,ProfileField.POPUP_TYPE_CALENDAR);
+        pfDocTypes.setShouldIntercept(true,ProfileField.POPUP_TYPE_LIST_DIALOG);
 
         ivIDFront = (ImageView) view.findViewById(R.id.ivIDFront);
         ivIDBack = (ImageView) view.findViewById(R.id.ivIDBack);
@@ -72,15 +70,15 @@ public class ProfileFragment extends BaseFragment {
 
         tvIDFront = (TextView) view.findViewById(R.id.tvIDFront);
         tvIDBack = (TextView) view.findViewById(R.id.tvIDBack);
-        documentTypes = (Spinner) view.findViewById(R.id.spinnerDocType);
+//        documentTypes = (DocTypeSpinner) view.findViewById(R.id.spinnerDocType);
 
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.document_types, R.layout.item_spinner_entry);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        documentTypes.setAdapter(adapter);
+//        // Create an ArrayAdapter using the string array and a default spinner layout
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+//                R.array.document_types, R.layout.item_spinner_entry);
+//        // Specify the layout to use when the list of choices appears
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        // Apply the adapter to the spinner
+//        documentTypes.setAdapter(adapter);
 
         flStatus = (FrameLayout) view.findViewById(R.id.flProfileStatus);
         tvStatus = (TextView) view.findViewById(R.id.tvProfileStatus);
@@ -123,11 +121,10 @@ public class ProfileFragment extends BaseFragment {
             return false;
         }
 
-        if (documentTypes.getSelectedItemPosition() <= 0) {
-            documentTypes.requestFocus();
-            documentTypes.performClick();
-            return false;
-        }
+//        if (!documentTypes.validateInput()) {
+//            documentTypes.showSpinner();
+//            return false;
+//        }
 
         if (!pfDocumentID.validateInput()) {
             pfDocumentID.requestFocus();
@@ -147,7 +144,9 @@ public class ProfileFragment extends BaseFragment {
     private void saveChanges() {
         MyProfile.Builder builder = new MyProfile.Builder();
         builder.withFullName(pfName.getInput()).withDOB(pfDOB.getInput()).withStreetAddress(pfStreet.getInput())
-                .withCity(pfCity.getInput()).withPostalCode(pfPostal.getInput()).withDocumentType(documentTypes.getSelectedItemPosition())
+                .withCity(pfCity.getInput()).withPostalCode(pfPostal.getInput())
+                //.withDocumentType(documentTypes.getSelection())
+                .withDocumentType(0)
                 .withDocumentID(pfDocumentID.getInput()).withFrontPhotoUrl(frontPhotoUrl).withBackPhotoUrl(backPhotoUrl)
                 .build(getContext());
 
@@ -205,8 +204,8 @@ public class ProfileFragment extends BaseFragment {
         pfStreet.setInputAndLock(myProfile.getStreetAddress());
         pfDocumentID.setInputAndLock(myProfile.getDocumentID());
         pfPostal.setInputAndLock(myProfile.getPostalCode());
-        documentTypes.setSelection(myProfile.getDocumentType());
-        documentTypes.setEnabled(false);
+//        documentTypes.setSelection(myProfile.getDocumentType());
+//        documentTypes.setEnabled(false);
 
         Picasso.with(getActivity()).load(frontPhotoUrl).fit().centerCrop().placeholder(R.drawable.id_missing_front).into(ivIDFront);
         Picasso.with(getActivity()).load(backPhotoUrl).fit().centerCrop().placeholder(R.drawable.id_missing_back).into(ivIDBack);

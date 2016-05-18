@@ -30,6 +30,9 @@
     <string name="in_progress">IN PROGRESS</string>
     <string name="completed">COMPLETED</string>
     <string name="recipient">Recipient</string>
+    <string name="date_of_birth">Date of birth</string>
+
+    <string name="trans_id">Transaction ID: </string>
 
     <string name="complete_sender_profile">Complete sender profile</string>
     <string name="add_new_recipient">Add new recipient</string>

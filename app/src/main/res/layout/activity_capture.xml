@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:weightSum="16"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="16">
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvTop"
@@ -17,9 +17,9 @@
 
     <FrameLayout
         android:id="@+id/camera_preview"
-        android:layout_weight="12"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:layout_weight="12">
 
         <com.media2359.nickel.camera.IDCardOverlay
             android:id="@+id/overlay_IDCard"
@@ -27,30 +27,31 @@
             android:layout_height="match_parent" />
 
         <!--<TextView-->
-            <!--android:text="Position your card on the frame"-->
-            <!--android:layout_marginTop="60dp"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:layout_gravity="top|center_horizontal"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
+        <!--android:text="Position your card on the frame"-->
+        <!--android:layout_marginTop="60dp"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:layout_gravity="top|center_horizontal"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/flBottom"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
         android:layout_weight="3"
-        android:padding="@dimen/keyline_12"
-        android:background="@color/black">
+        android:background="@color/black"
+        android:padding="@dimen/keyline_12">
 
-        <Button
+        <com.media2359.nickel.ui.customview.CustomButton
+            android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_gravity="left|center_vertical"
-            android:background="@android:color/transparent"
+            android:background="@drawable/button_camera_cancel"
+            android:gravity="center"
             android:text="@string/cancel"
             android:textAllCaps="false"
             android:textColor="@color/text_color_normal" />
@@ -59,9 +60,9 @@
             android:id="@+id/button_capture"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:gravity="center"
+            android:layout_gravity="center"
             android:background="@drawable/button_camera"
-            android:layout_gravity="center" />
+            android:gravity="center" />
 
     </FrameLayout>
 

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
@@ -25,7 +26,8 @@ public class CStoreFragment extends BaseFragment {
 
     private ImageView ivBarcode;
     private TextView tvInstruction;
-    private Button btnGuide, btnMap, btnPhoto;
+    private Button btnGuide, btnPhoto;
+    private LinearLayout btnMap;
 
     public static CStoreFragment newInstance() {
         
@@ -51,7 +53,7 @@ public class CStoreFragment extends BaseFragment {
         ivBarcode.setImageBitmap(barcodeImage);
 
         btnGuide = (Button) view.findViewById(R.id.btnStepGuide);
-        btnMap = (Button) view.findViewById(R.id.btnCStoreMap);
+        btnMap = (LinearLayout) view.findViewById(R.id.btnCStoreMap);
         btnPhoto = (Button) view.findViewById(R.id.btnTakeReceipt);
 
         btnGuide.setOnClickListener(new View.OnClickListener() {

@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -92,26 +93,15 @@
             <!--android:layout_below="@+id/pfPostalCode"-->
             <!--android:background="@color/color_black_b5" />-->
 
-        <ImageView
-            android:id="@+id/ivDocType"
-            android:layout_width="18dp"
-            android:layout_height="60dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="@dimen/keyline_16"
-            android:layout_below="@id/pfPostalCode"
-            android:src="@drawable/ico_document" />
-
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/spinnerDocType"
-            android:entries="@array/document_types"
-            android:layout_toRightOf="@+id/ivDocType"
-            android:paddingLeft="4dp"
-            android:layout_below="@id/pfPostalCode"
+        <com.media2359.nickel.ui.customview.ProfileField
+            android:id="@+id/pfDocType"
             android:layout_width="match_parent"
-            android:layout_height="60dp">
-
-
-        </android.support.v7.widget.AppCompatSpinner>
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pfPostalCode"
+            app:inputType="text"
+            app:errorMessage="Please select your document type"
+            app:ivLeftImageRes="@drawable/ico_document"
+            app:tvHint="Document Type" />
 
         <!--<View-->
             <!--android:layout_width="match_parent"-->
@@ -124,7 +114,7 @@
             android:id="@+id/pfDocumentID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/spinnerDocType"
+            android:layout_below="@+id/pfDocType"
             app:inputType="text"
             app:errorMessage="Please enter full document ID"
             app:ivLeftImageRes="@drawable/ico_document"
@@ -151,7 +141,7 @@
             android:id="@+id/tvPhotoID"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:paddingLeft="4dp"
+            android:paddingLeft="7dp"
             android:layout_below="@+id/pfDocumentID"
             android:layout_marginRight="20dp"
             android:layout_toRightOf="@+id/ivPhotoID"

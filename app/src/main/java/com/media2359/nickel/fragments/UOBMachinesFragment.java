@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
@@ -22,7 +23,8 @@ import com.media2359.nickel.utils.Const;
 public class UOBMachinesFragment extends BaseFragment {
 
     private TextView tvInstruction;
-    private Button btnGuide, btnMap, btnPhoto;
+    private Button btnGuide, btnPhoto;
+    private LinearLayout btnMap;
     private Transaction transaction;
 
     public static UOBMachinesFragment newInstance() {
@@ -46,7 +48,7 @@ public class UOBMachinesFragment extends BaseFragment {
     private void initViews(View view) {
 
         btnGuide = (Button) view.findViewById(R.id.btnStepGuide);
-        btnMap = (Button) view.findViewById(R.id.btnUOBMachines);
+        btnMap = (LinearLayout) view.findViewById(R.id.btnUOBMachines);
         btnPhoto = (Button) view.findViewById(R.id.btnTakeReceipt);
 
         btnGuide.setOnClickListener(new View.OnClickListener() {

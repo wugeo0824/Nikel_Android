@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.MotionEventCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -33,12 +36,17 @@ public class ProfileField extends RelativeLayout {
     private static final String TAG = "ProfileField";
     private boolean shouldIntercept = false;
 
+    public final static int POPUP_TYPE_CALENDAR = 10;
+    public final static int POPUP_TYPE_LIST_DIALOG = 11;
+
 //    TextView tvFieldTitle;
     TextInputEditText etInputLayout;
     ImageView ivFieldStatus;
     TextInputLayout inputLayout;
     ImageView ivLeftImage;
     String errorMessage = "Please check here";
+
+    int popupType = -1;
 
 
     public ProfileField(Context context, AttributeSet attrs) {
@@ -66,7 +74,7 @@ public class ProfileField extends RelativeLayout {
             String hint = a.getString(R.styleable.ProfileField_tvHint);
             inputLayout.setHint(hint);
 
-            int inputType = a.getInt(R.styleable.ProfileField_inputType,1); // default value is 1, TEXT
+            final int inputType = a.getInt(R.styleable.ProfileField_inputType,1); // default value is 1, TEXT
             switch (inputType){
                 case 0:
                     // name
@@ -99,6 +107,7 @@ public class ProfileField extends RelativeLayout {
             ivLeftImage.setImageDrawable(drawable);
 
             etInputLayout.setOnKeyListener(onNextListener);
+
         }
     }
 
@@ -176,7 +185,7 @@ public class ProfileField extends RelativeLayout {
         setInput(input);
         setEnabledEditing(false);
         if (shouldIntercept){
-            setShouldIntercept(false);
+            setShouldIntercept(false, popupType);
         }
     }
 
@@ -184,13 +193,24 @@ public class ProfileField extends RelativeLayout {
         etInputLayout.setText(input);
     }
 
+    public void setFocusChangedListener(@NonNull OnFocusChangeListener onFocusChangeListener){
+        etInputLayout.setOnFocusChangeListener(onFocusChangeListener);
+    }
+
     private DatePickerDialog dateOfBirth;
     private SimpleDateFormat dateFormatter;
 
     public void showCalendar(){
+
+        Calendar newCalendar = Calendar.getInstance();
+
+        int year = newCalendar.get(Calendar.YEAR) -3; // 3 years earlier than current year
+        int month = 0; // Jan
+        int dayOfMonth = 1; // 1st
+
         //Calendar newCalendar = Calendar.getInstance();
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-        dateOfBirth = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+        dateOfBirth = new DatePickerDialog(getContext(),R.style.MyDatePicker, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
@@ -198,7 +218,8 @@ public class ProfileField extends RelativeLayout {
                 etInputLayout.setText(dateFormatter.format(newDate.getTime()));
             }
             //initial year month day to be displayed
-        }, 2000, 1, 1);
+        }, year, month, dayOfMonth);
+        dateOfBirth.setTitle(getContext().getString(R.string.date_of_birth));
 
         dateOfBirth.show();
     }
@@ -207,25 +228,59 @@ public class ProfileField extends RelativeLayout {
         return shouldIntercept;
     }
 
-    public void setShouldIntercept(boolean shouldIntercept) {
+    public void setShouldIntercept(boolean shouldIntercept, int popupType) {
         this.shouldIntercept = shouldIntercept;
+        this.popupType = popupType;
+
         if (shouldIntercept){
-            etInputLayout.setOnFocusChangeListener(new OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (hasFocus && etInputLayout.getText().toString().length()<=0){
-                        showCalendar();
+            if (popupType == POPUP_TYPE_CALENDAR){
+                etInputLayout.setOnFocusChangeListener(new OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if (hasFocus && etInputLayout.getText().toString().length()<=0){
+                            showCalendar();
+                        }
                     }
-                }
-            });
+                });
+            }
+
+            if (popupType == POPUP_TYPE_LIST_DIALOG){
+                etInputLayout.setOnFocusChangeListener(new OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if (hasFocus && etInputLayout.getText().toString().length()<=0){
+                            showDocTypesDialog();
+                        }
+                    }
+                });
+            }
+
         }else{
             etInputLayout.setOnFocusChangeListener(null);
         }
     }
 
+    private void showDocTypesDialog() {
+
+        final String[] items = getContext().getResources().getStringArray(R.array.document_types);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Choose Document Type");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                // Do something with the selection
+                etInputLayout.setText(items[item]);
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+        alert.setCancelable(false);
+    }
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         final int action = MotionEventCompat.getActionMasked(ev);
+
         if (action == MotionEvent.ACTION_DOWN && shouldIntercept)
             return true;
 
@@ -235,8 +290,14 @@ public class ProfileField extends RelativeLayout {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN && shouldIntercept){
-            showCalendar();
-            return true;
+            if (popupType == POPUP_TYPE_CALENDAR){
+                showCalendar();
+                return true;
+            }
+            if (popupType == POPUP_TYPE_LIST_DIALOG) {
+                showDocTypesDialog();
+                return true;
+            }
         }
         return false;
     }

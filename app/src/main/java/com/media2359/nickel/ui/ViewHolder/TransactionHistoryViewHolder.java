@@ -1,6 +1,9 @@
 package com.media2359.nickel.ui.viewholder;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.TextView;
 
@@ -38,7 +41,10 @@ public class TransactionHistoryViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindItem(Transaction transaction){
-        tvTranID.setText("Transaction ID: " + transaction.getTransactionID());
+        String prefixID = itemView.getContext().getString(R.string.trans_id);
+        SpannableString transID = new SpannableString(prefixID +" "+ transaction.getTransactionID());
+        transID.setSpan(new ForegroundColorSpan(itemView.getContext().getResources().getColor(R.color.pink)), prefixID.length(),transID.length(),SpannableString.SPAN_INCLUSIVE_INCLUSIVE);
+        tvTranID.setText(transID);
         tvTranDate.setText(transaction.getTransactionDate());
         tvTranAmount.setText(transaction.getTransactionAmount() + "SGD");
         tvTranStatus.setText(transaction.getTransactionStatus());
