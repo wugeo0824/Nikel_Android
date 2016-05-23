@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionNext"
-            android:textSize="18sp"
+            android:textSize="@dimen/font_size_large"
             android:singleLine="true"
             tools:hint="Name" />
     </com.media2359.nickel.ui.customview.CustomTextInputLayout>

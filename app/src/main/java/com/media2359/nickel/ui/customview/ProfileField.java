@@ -39,7 +39,10 @@ public class ProfileField extends RelativeLayout {
     public final static int POPUP_TYPE_CALENDAR = 10;
     public final static int POPUP_TYPE_LIST_DIALOG = 11;
 
-//    TextView tvFieldTitle;
+    private DatePickerDialog dateOfBirth;
+    private SimpleDateFormat dateFormatter;
+
+    //    TextView tvFieldTitle;
     TextInputEditText etInputLayout;
     ImageView ivFieldStatus;
     TextInputLayout inputLayout;
@@ -74,8 +77,8 @@ public class ProfileField extends RelativeLayout {
             String hint = a.getString(R.styleable.ProfileField_tvHint);
             inputLayout.setHint(hint);
 
-            final int inputType = a.getInt(R.styleable.ProfileField_inputType,1); // default value is 1, TEXT
-            switch (inputType){
+            final int inputType = a.getInt(R.styleable.ProfileField_inputType, 1); // default value is 1, TEXT
+            switch (inputType) {
                 case 0:
                     // name
                     etInputLayout.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
@@ -107,9 +110,27 @@ public class ProfileField extends RelativeLayout {
             ivLeftImage.setImageDrawable(drawable);
 
             etInputLayout.setOnKeyListener(onNextListener);
+            etInputLayout.addTextChangedListener(textValidationWatcher);
 
         }
     }
+
+    private TextWatcher textValidationWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            validateInput();
+        }
+    };
 
     private OnKeyListener onNextListener = new OnKeyListener() {
         @Override
@@ -123,17 +144,17 @@ public class ProfileField extends RelativeLayout {
     };
 
     public boolean validateInput() {
-        if (etInputLayout.getText().toString().length() >3){
+        if (etInputLayout.getText().toString().length() > 3) {
             showCompletedStatus(true);
             return true;
-        }else{
+        } else {
             showCompletedStatus(false);
-            showErrorMessage(true,errorMessage);
+            showErrorMessage(true, errorMessage);
             return false;
         }
     }
 
-    public void showCompletedStatus(boolean completed){
+    public void showCompletedStatus(boolean completed) {
         if (completed)
             ivFieldStatus.setVisibility(VISIBLE);
         else
@@ -142,20 +163,20 @@ public class ProfileField extends RelativeLayout {
 
     }
 
-    public void showErrorMessage(boolean show, String text){
-        if (show){
+    public void showErrorMessage(boolean show, String text) {
+        if (show) {
             inputLayout.setErrorEnabled(true);
             etInputLayout.setError(text);
-        }else{
+        } else {
             inputLayout.setErrorEnabled(false);
         }
     }
 
-    public void setTextWatcher(TextWatcher textWatcher){
+    public void setTextWatcher(TextWatcher textWatcher) {
         etInputLayout.addTextChangedListener(textWatcher);
     }
 
-    public void setOnFocusChangedListener(OnFocusChangeListener onFocusChangedListener){
+    public void setOnFocusChangedListener(OnFocusChangeListener onFocusChangedListener) {
         etInputLayout.setOnFocusChangeListener(onFocusChangedListener);
     }
 
@@ -173,44 +194,41 @@ public class ProfileField extends RelativeLayout {
         }
     }
 
-    public String getInput(){
+    public String getInput() {
         return etInputLayout.getText().toString();
     }
 
-    public EditText getEditText(){
+    public EditText getEditText() {
         return etInputLayout;
     }
 
-    public void setInputAndLock(String input){
+    public void setInputAndLock(String input) {
         setInput(input);
         setEnabledEditing(false);
-        if (shouldIntercept){
+        if (shouldIntercept) {
             setShouldIntercept(false, popupType);
         }
     }
 
-    public void setInput(String input){
+    public void setInput(String input) {
         etInputLayout.setText(input);
     }
 
-    public void setFocusChangedListener(@NonNull OnFocusChangeListener onFocusChangeListener){
+    public void setFocusChangedListener(@NonNull OnFocusChangeListener onFocusChangeListener) {
         etInputLayout.setOnFocusChangeListener(onFocusChangeListener);
     }
 
-    private DatePickerDialog dateOfBirth;
-    private SimpleDateFormat dateFormatter;
-
-    public void showCalendar(){
+    public void showCalendar() {
 
         Calendar newCalendar = Calendar.getInstance();
 
-        int year = newCalendar.get(Calendar.YEAR) -3; // 3 years earlier than current year
+        int year = newCalendar.get(Calendar.YEAR) - 3; // 3 years earlier than current year
         int month = 0; // Jan
         int dayOfMonth = 1; // 1st
 
         //Calendar newCalendar = Calendar.getInstance();
-        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-        dateOfBirth = new DatePickerDialog(getContext(),R.style.MyDatePicker, new DatePickerDialog.OnDateSetListener() {
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        dateOfBirth = new DatePickerDialog(getContext(), R.style.MyDatePicker, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
@@ -219,6 +237,7 @@ public class ProfileField extends RelativeLayout {
             }
             //initial year month day to be displayed
         }, year, month, dayOfMonth);
+
         dateOfBirth.setTitle(getContext().getString(R.string.date_of_birth));
 
         dateOfBirth.show();
@@ -232,30 +251,30 @@ public class ProfileField extends RelativeLayout {
         this.shouldIntercept = shouldIntercept;
         this.popupType = popupType;
 
-        if (shouldIntercept){
-            if (popupType == POPUP_TYPE_CALENDAR){
+        if (shouldIntercept) {
+            if (popupType == POPUP_TYPE_CALENDAR) {
                 etInputLayout.setOnFocusChangeListener(new OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
-                        if (hasFocus && etInputLayout.getText().toString().length()<=0){
+                        if (hasFocus && etInputLayout.getText().toString().length() <= 0) {
                             showCalendar();
                         }
                     }
                 });
             }
 
-            if (popupType == POPUP_TYPE_LIST_DIALOG){
+            if (popupType == POPUP_TYPE_LIST_DIALOG) {
                 etInputLayout.setOnFocusChangeListener(new OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
-                        if (hasFocus && etInputLayout.getText().toString().length()<=0){
+                        if (hasFocus && etInputLayout.getText().toString().length() <= 0) {
                             showDocTypesDialog();
                         }
                     }
                 });
             }
 
-        }else{
+        } else {
             etInputLayout.setOnFocusChangeListener(null);
         }
     }
@@ -273,8 +292,9 @@ public class ProfileField extends RelativeLayout {
             }
         });
         AlertDialog alert = builder.create();
+        alert.setCancelable(true);
         alert.show();
-        alert.setCancelable(false);
+
     }
 
     @Override
@@ -289,8 +309,8 @@ public class ProfileField extends RelativeLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN && shouldIntercept){
-            if (popupType == POPUP_TYPE_CALENDAR){
+        if (event.getAction() == MotionEvent.ACTION_DOWN && shouldIntercept) {
+            if (popupType == POPUP_TYPE_CALENDAR) {
                 showCalendar();
                 return true;
             }

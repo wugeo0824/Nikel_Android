@@ -14,9 +14,9 @@
 
         <FrameLayout
             android:id="@+id/fl_container"
-            android:layout_marginTop="?actionBarSize"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="?actionBarSize" />
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -28,18 +28,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:contentInsetStart="0dp"
                 app:contentInsetEnd="0dp"
+                app:contentInsetStart="0dp"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
                 <com.media2359.nickel.ui.customview.CustomTextView
                     android:id="@+id/tvToolbarTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    tools:text="Home"
                     android:textSize="@dimen/font_size_toolbar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
+                    tools:text="Home" />
 
             </android.support.v7.widget.Toolbar>
 
@@ -53,12 +53,54 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
         android:background="@drawable/splash_bg"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="#ffffff"
+        android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/menu_drawer" />
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/menu_drawer">
+
+        <RelativeLayout
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/whiteSpacer"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentTop="true"
+                android:background="@color/white" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icn_signout"
+                android:scaleType="fitCenter"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/keyline_16" />
+
+            <TextView
+                android:id="@+id/tvLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginLeft="72dp"
+                android:text="Sign Out"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_size_normal" />
+
+        </RelativeLayout>
+
+    </com.media2359.nickel.ui.customview.CustomNavigationView>
 
 
 </android.support.v4.widget.DrawerLayout>

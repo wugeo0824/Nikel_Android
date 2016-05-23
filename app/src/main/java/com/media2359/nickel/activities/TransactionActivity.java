@@ -66,10 +66,6 @@ public class TransactionActivity extends BaseActivity implements BaseFragment.Fr
 
     }
 
-    public Transaction getCurrentTransaction() {
-        return transaction;
-    }
-
     private void initViews() {
         manager = getSupportFragmentManager();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -137,6 +133,10 @@ public class TransactionActivity extends BaseActivity implements BaseFragment.Fr
             File result = new File(filePath);
             //Bitmap thumbImage = BitmapUtils.getThumbnail(this, result);
             TransactionManager.getManager().paymentMadeAndPhotoTaken(result.getAbsolutePath());
+
+            // if image is successfully taken, bring user back to transaction detail screen
+            clearFragmentStack();
+            switchFragment(TransactionDetailFragment.newInstance(TransactionManager.getManager().getCurrentTransaction()),false);
         }
     }
 

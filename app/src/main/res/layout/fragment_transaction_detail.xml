@@ -56,7 +56,7 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="@dimen/keyline_12"
                 android:text="@string/payment_options"
-                android:textSize="13sp" />
+                android:textSize="@dimen/font_size_normal" />
 
             <com.media2359.nickel.ui.customview.CustomButton
                 android:id="@+id/btnPaymentUOB"
@@ -66,7 +66,8 @@
                 android:layout_marginTop="@dimen/keyline_12"
                 android:background="@drawable/button_card"
                 android:drawableLeft="@drawable/logo_uob_white"
-                android:text="@string/UOB_machines" />
+                android:text="@string/UOB_machines"
+                android:textSize="@dimen/font_size_large" />
 
             <com.media2359.nickel.ui.customview.CustomButton
                 android:id="@+id/btnPaymentCStore"
@@ -76,45 +77,57 @@
                 android:layout_marginTop="@dimen/keyline_12"
                 android:background="@drawable/button_card"
                 android:drawableLeft="@drawable/logo_7_eleven_03"
-                android:text="@string/pay_by_CStore" />
+                android:text="@string/pay_by_CStore"
+                android:textSize="@dimen/font_size_large" />
 
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/rlReceiptUpload"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rlTransNumbers"
             android:layout_marginBottom="60dp"
             android:layout_marginTop="@dimen/keyline_12"
+            android:orientation="horizontal"
             android:paddingLeft="@dimen/keyline_16"
-            android:paddingRight="@dimen/keyline_16">
+            android:paddingRight="@dimen/keyline_16"
+            android:weightSum="4">
 
             <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvReceipt"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/receipt"
-                android:textSize="13sp" />
+                android:textSize="@dimen/font_size_normal" />
 
-            <ImageView
-                android:id="@+id/ivReceipt"
-                android:layout_width="150dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="40dp"
-                android:background="@drawable/placeholder_receipt" />
+            <FrameLayout
+                android:id="@+id/rlReceiptUpload"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content">
 
-            <com.media2359.nickel.ui.customview.CustomButton
-                android:id="@+id/btnSubmitReceipt"
-                android:layout_width="150dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center_horizontal|bottom"
-                android:background="@drawable/button_submit_receipt"
-                android:text="Submit"
-                android:textColor="@color/white" />
+                <ImageView
+                    android:id="@+id/ivReceipt"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="40dp"
+                    android:background="@drawable/placeholder_receipt" />
 
-        </FrameLayout>
+                <com.media2359.nickel.ui.customview.CustomButton
+                    android:id="@+id/btnSubmitReceipt"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:background="@drawable/button_submit_receipt"
+                    android:text="Submit"
+                    android:textColor="@color/white" />
+
+            </FrameLayout>
+
+        </LinearLayout>
 
 
         <com.media2359.nickel.ui.customview.CustomTextView
@@ -125,9 +138,10 @@
             android:background="#606060"
             android:gravity="center"
             android:padding="@dimen/keyline_12"
+            android:lineSpacingExtra="2dp"
             android:text="Funds will be available by 10AM on \n Monday December 7th"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="@dimen/font_size_normal" />
 
     </RelativeLayout>
 

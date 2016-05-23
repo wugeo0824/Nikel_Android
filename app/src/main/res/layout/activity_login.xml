@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/ivLogo"
-        android:layout_width="120dp"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_above="@+id/centerAnchor"
         android:layout_alignParentTop="true"
@@ -49,7 +49,7 @@
             android:layout_alignBottom="@+id/etPhoneLogin"
             android:layout_alignParentLeft="true"
             android:layout_alignTop="@+id/etPhoneLogin"
-            android:scaleType="centerInside"
+            android:scaleType="fitCenter"
             android:src="@drawable/ico_sm_phone" />
 
         <com.media2359.nickel.ui.customview.CustomEditText
@@ -61,6 +61,7 @@
             android:hint="@string/phone_number"
             android:inputType="phone"
             android:textColor="@color/white"
+            android:textSize="@dimen/font_size_large"
             android:theme="@style/LoginField" />
 
         <ImageView
@@ -69,9 +70,10 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/etPassword"
             android:layout_alignLeft="@+id/ivPhone"
+            android:layout_alignRight="@+id/ivPhone"
             android:layout_alignTop="@+id/etPassword"
             android:layout_below="@+id/ivPhone"
-            android:scaleType="centerInside"
+            android:scaleType="fitCenter"
             android:src="@drawable/ico_sm_password" />
 
         <com.media2359.nickel.ui.customview.CustomEditText
@@ -81,10 +83,10 @@
             android:layout_marginTop="@dimen/keyline_16"
             android:layout_alignLeft="@+id/etPhoneLogin"
             android:layout_below="@+id/etPhoneLogin"
-            android:fontFamily="sans-serif"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:textColor="@color/white"
+            android:textSize="@dimen/font_size_large"
             android:theme="@style/LoginField" />
 
         <ImageView
@@ -93,24 +95,25 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/etPasswordAgain"
             android:layout_alignLeft="@+id/ivPhone"
+            android:layout_alignRight="@+id/ivPhone"
             android:layout_alignTop="@+id/etPasswordAgain"
             android:layout_below="@+id/ivPassword"
-            android:scaleType="centerInside"
+            android:scaleType="fitCenter"
             android:src="@drawable/ico_sm_password"
             android:visibility="gone" />
 
-        <EditText
+        <com.media2359.nickel.ui.customview.CustomEditText
             android:id="@+id/etPasswordAgain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/etPhoneLogin"
             android:layout_marginTop="@dimen/keyline_16"
             android:layout_below="@+id/etPassword"
-            android:fontFamily="sans-serif"
             android:hint="@string/re_enter_password"
             android:inputType="textPassword"
             android:textColor="@color/white"
             android:theme="@style/LoginField"
+            android:textSize="@dimen/font_size_large"
             android:visibility="gone" />
 
         <!--<ImageView-->

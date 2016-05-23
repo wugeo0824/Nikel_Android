@@ -10,6 +10,10 @@
     <dimen name="font_size_body">14sp</dimen>
     <dimen name="font_size_home_body">12sp</dimen>
     <dimen name="font_size_toolbar_title">18sp</dimen>
+    <dimen name="font_size_large">18sp</dimen>
+    <dimen name="font_size_medium">16sp</dimen>
+    <dimen name="font_size_normal">14sp</dimen>
+    <dimen name="font_size_small">12sp</dimen>
 
     <dimen name="radius">20dp</dimen>
     <dimen name="card_overlay_width">310dp</dimen>
@@ -24,7 +28,7 @@
     <dimen name="progress_ball_width">32dp</dimen>
     <dimen name="progress_bar_height">4dp</dimen>
 
-    <dimen name="login_logo_top_margin">50dp</dimen>
+    <dimen name="login_logo_top_margin">40dp</dimen>
     <dimen name="in_item_progress_width">110dp</dimen>
     <dimen name="in_item_progress_height">14dp</dimen>
 

@@ -29,16 +29,17 @@
         android:layout_below="@+id/divider"
         android:lineSpacingExtra="5dp"
         android:text="@string/uob_instruction"
-        android:textSize="18sp" />
+        android:textSize="@dimen/font_size_large" />
 
     <ImageView
         android:id="@+id/ivSevenLogo"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="60dp"
         android:layout_below="@+id/tvInstruction"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="30dp"
         android:layout_marginTop="20dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/logo_7_eleven_03" />
 
     <com.media2359.nickel.ui.customview.CustomButton
@@ -68,12 +69,17 @@
             android:layout_marginRight="6dp"
             android:layout_marginBottom="0dp"
             android:background="@color/white"
+            android:textColor="@color/color_black_b5"
             android:drawableLeft="@drawable/icn_near"
             android:text="Nearest Convenience Store" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/img_map" />
 
     </LinearLayout>

@@ -13,6 +13,7 @@
         android:background="@color/black"
         android:gravity="center"
         android:text="@string/take_photo_instruction"
+        android:textSize="@dimen/font_size_normal"
         android:textColor="@color/white" />
 
     <FrameLayout
@@ -40,7 +41,6 @@
         android:id="@+id/flBottom"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_alignParentBottom="true"
         android:layout_weight="3"
         android:background="@color/black"
         android:padding="@dimen/keyline_12">
@@ -54,12 +54,13 @@
             android:gravity="center"
             android:text="@string/cancel"
             android:textAllCaps="false"
-            android:textColor="@color/text_color_normal" />
+            android:textSize="@dimen/font_size_medium"
+            android:textColor="@color/text_color_inactive" />
 
         <com.media2359.nickel.ui.customview.CustomButton
             android:id="@+id/button_capture"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
             android:background="@drawable/button_camera"
             android:gravity="center" />

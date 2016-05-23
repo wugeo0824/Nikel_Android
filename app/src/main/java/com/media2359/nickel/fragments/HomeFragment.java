@@ -29,9 +29,10 @@ import com.media2359.nickel.model.MyProfile;
 import com.media2359.nickel.model.Recipient;
 import com.media2359.nickel.model.Transaction;
 import com.media2359.nickel.ui.customview.ThemedSwipeRefreshLayout;
+import com.media2359.nickel.utils.DialogUtils;
 import com.media2359.nickel.utils.DisplayUtils;
+import com.media2359.nickel.utils.MistUtils;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,7 +53,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     private TextView tvExchangeRate, tvFees, tvMyName, tvMyInfo, tvAddRecipient, tvGetAmount;
     private EditText etSendAmount;
     private RelativeLayout btnMyInfoEdit, btnAddNewRecipient;
-    private List<Recipient> dataList = new ArrayList<>();
+    private List<Recipient> recipientList = new ArrayList<>();
     private double exchangeRate = 9679.13d; // 1SGD = [exchangeRate] IDR
     private double getAmount = 0d, fee = 7d, totalAmount = 0d;
     private ThemedSwipeRefreshLayout srl;
@@ -82,7 +83,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         rvHome = (RecyclerView) view.findViewById(R.id.rvRecipients);
         rvHome.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvHome.setHasFixedSize(true);
-        recipientAdapter = new RecipientAdapter(getActivity(), dataList);
+        recipientAdapter = new RecipientAdapter(getActivity(), recipientList);
         recipientAdapter.setOnItemClickListener(this);
         rvHome.setItemAnimator(new DefaultItemAnimator());
         rvHome.setAdapter(recipientAdapter);
@@ -168,9 +169,13 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     private View.OnClickListener onMyInfoClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mainActivity.switchFragmentAndSyncDrawer(new ProfileFragment(), R.id.nav_profile);
+            showProfileFragment();
         }
     };
+
+    private void showProfileFragment() {
+        mainActivity.switchFragmentAndSyncDrawer(new ProfileFragment(), R.id.nav_profile);
+    }
 
     /**
      * Adds thousands separator to the amount ","
@@ -198,7 +203,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
             if (!TextUtils.isEmpty(s.toString())) {
                 double sendAmount = Double.parseDouble(s.toString().replaceAll(",", ""));
                 getAmount = Math.round(sendAmount * exchangeRate * 100.0) / 100.0;
-                tvGetAmount.setText(getFormattedString(getAmount));
+                tvGetAmount.setText(MistUtils.getFormattedString(getAmount));
                 totalAmount = sendAmount + fee;
             } else {
                 tvGetAmount.setText("");
@@ -207,7 +212,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
             // add thousand separators
             if (!TextUtils.isEmpty(s.toString())) {
                 try {
-                    String formattedString = getFormattedString(s.toString());
+                    String formattedString = MistUtils.getFormattedString(s.toString());
                     etSendAmount.setText(formattedString);
                     etSendAmount.setSelection(etSendAmount.getText().length());
                     // to place the cursor at the end of text
@@ -220,28 +225,6 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
 
         }
     };
-
-    private String getFormattedString(String input) {
-        Long longval;
-        if (input.contains(",")) {
-            input = input.replaceAll(",", "");
-        }
-        longval = Long.parseLong(input);
-        return getFormattedString(longval);
-    }
-
-    private String getFormattedString(Long input) {
-        DecimalFormat formatter = new DecimalFormat("#,###");
-        String formattedString = formatter.format(input);
-        return formattedString;
-    }
-
-    private String getFormattedString(double input) {
-        DecimalFormat formatter = new DecimalFormat("#,###.00");
-        formatter.setDecimalSeparatorAlwaysShown(true);
-        String formattedString = formatter.format(input);
-        return formattedString;
-    }
 
     private SwipeRefreshLayout.OnRefreshListener OnRefresh = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
@@ -282,6 +265,17 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
             return false;
         }
 
+        if (MyProfile.getCurrentProfile(getContext()) == null) {
+            String message = getString(R.string.complete_profile_first);
+            DialogUtils.getNickelThemedAlertDialog(getContext(), "Alert", message, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    showProfileFragment();
+                }
+            }).show();
+            return false;
+        }
+
         return true;
     }
 
@@ -299,50 +293,36 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
 
     @Override
     public void onEditButtonClick(int position) {
-        Recipient recipient = dataList.get(position);
+        Recipient recipient = recipientList.get(position);
         mainActivity.switchFragment(RecipientDetailFragment.newInstance(recipient), true);
     }
 
     @Override
     public void onDeleteButtonClick(int position) {
-        showDeleteDialog(position, dataList.get(position).getName());
+        showDeleteDialog(position, recipientList.get(position).getName());
     }
 
     @Override
     public void onSendMoneyClick(int position) {
-        Recipient recipient = dataList.get(position);
+        Recipient recipient = recipientList.get(position);
         //TODO: change to actual value
         if (validTransaction()) {
             makeTransaction(recipient);
-            showPaymentConfirmationDialog(recipient.getName());
+            String message = "Proceed to send " + etSendAmount.getText().toString() + " SGD to " + recipient.getName() + "?";
+            showPaymentConfirmationDialog(message);
         }
     }
 
     @Override
     public void onTransactionClick(int position) {
-        TransactionActivity.startTransactionActivity(getActivity(), dataList.get(position).getCurrentTransaction());
+        TransactionActivity.startTransactionActivity(getActivity(), recipientList.get(position).getCurrentTransaction());
     }
 
-    private void showPaymentConfirmationDialog(String recipientName) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.PaymentAlterDialog);
-        builder.setTitle("Alert");
-        builder.setMessage("Proceed to send " + etSendAmount.getText().toString() + " SGD to " + recipientName + "?");
-        builder.setCancelable(false);
-        builder.setNegativeButton("No", null);
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+    private void showPaymentConfirmationDialog(String message) {
+        AlertDialog dialog = DialogUtils.getNickelThemedAlertDialog(getContext(), "Alert", message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 confirmTransaction();
-            }
-        });
-        final AlertDialog dialog = builder.create();
-
-        //2. now setup to change color of the button
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface arg0) {
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.pink));
-                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.text_color_inactive));
             }
         });
 
@@ -380,19 +360,15 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
 
 
     private void showDeleteDialog(final int position, String contactName) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Delete?");
-        builder.setMessage("Do you want to delete " + contactName + "?");
-        builder.setCancelable(false);
-        builder.setNegativeButton("No", null);
-        builder.setPositiveButton("Yes, delete it", new DialogInterface.OnClickListener() {
+        String message = "Do you want to delete " + contactName + "?";
+        String title = "Delete recipient information?";
+
+        DialogUtils.getNickelThemedAlertDialog(getActivity(), title, message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 recipientAdapter.removeItem(position);
             }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        }).show();
     }
 
     private void loadMyProfile() {
@@ -415,7 +391,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     }
 
     private void getRecipients() {
-        dataList.clear();
+        recipientList.clear();
 
         Recipient a = new Recipient("Husband", "BRI 281973021894", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
         Recipient b = new Recipient("Mother", "BRI 0123874123", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
@@ -429,14 +405,14 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         Transaction aadd = new Transaction("1238u9ashjd", "March 2, 2016", "500.00", "Funds Ready for Collection", Transaction.TRANS_NEW_BORN, "Husband", 1235);
         a.setCurrentTransaction(aadd);
 
-        dataList.add(a);
-        dataList.add(b);
-        dataList.add(c);
-        dataList.add(d);
-        dataList.add(a);
-        dataList.add(b);
-        dataList.add(c);
-        dataList.add(d);
+        recipientList.add(a);
+        recipientList.add(b);
+        recipientList.add(c);
+        recipientList.add(d);
+        recipientList.add(a);
+        recipientList.add(b);
+        recipientList.add(c);
+        recipientList.add(d);
 
         recipientAdapter.notifyDataSetChanged();
 
@@ -444,7 +420,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
             srl.setRefreshing(false);
         }
 
-        showListOfRecipient(!dataList.isEmpty());
+        showListOfRecipient(!recipientList.isEmpty());
     }
 
     private void showListOfRecipient(boolean show) {

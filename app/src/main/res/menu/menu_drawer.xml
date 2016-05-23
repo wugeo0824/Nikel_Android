@@ -4,35 +4,36 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ico_sm_phone"
+            android:icon="@drawable/icn_home"
             android:title="@string/home" />
         <item
             android:id="@+id/nav_profile"
-            android:icon="@drawable/ico_sm_phone"
+            android:icon="@drawable/icn_profile"
             android:title="My Profile" />
         <!--<item-->
         <!--android:id="@+id/nav_recipients"-->
         <!--android:title="Recipients" />-->
         <item
             android:id="@+id/nav_history"
-            android:icon="@drawable/ico_sm_phone"
+            android:icon="@drawable/icn_history"
             android:title="History" />
         <item
             android:id="@+id/nav_rewards"
-            android:icon="@drawable/ico_sm_phone"
+            android:icon="@drawable/icn_rewards"
             android:title="Rewards" />
-        <!--<item-->
-        <!--android:id="@+id/nav_help"-->
-        <!--android:title="Help" />-->
         <item
-            android:title="">
-            <menu>
-                <item
-                    android:id="@+id/nav_sign_out"
-                    android:icon="@drawable/ico_sm_language"
-                    android:title="Sign Out" />
-            </menu>
-        </item>
+            android:id="@+id/nav_help"
+            android:icon="@drawable/icn_help"
+            android:title="Help" />
+        <!--<item-->
+            <!--android:title="">-->
+            <!--<menu>-->
+                <!--<item-->
+                    <!--android:id="@+id/nav_sign_out"-->
+                    <!--android:icon="@drawable/icn_signout"-->
+                    <!--android:title="Sign Out" />-->
+            <!--</menu>-->
+        <!--</item>-->
 
     </group>
 

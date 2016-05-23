@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginBottom="3dp"
         android:text="Transaction ID: "
-        android:textSize="@dimen/font_size_body" />
+        android:textSize="@dimen/font_size_small" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvTransactionIDValue"
@@ -26,7 +26,7 @@
         android:layout_toRightOf="@+id/tvTransactionID"
         android:text="128973198n748"
         android:textColor="@color/pink"
-        android:textSize="@dimen/font_size_body" />
+        android:textSize="@dimen/font_size_small" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvTransactionDate"
@@ -35,7 +35,7 @@
         android:layout_below="@+id/tvTransactionID"
         android:layout_marginBottom="23dp"
         android:text="April 2nd, 2016 | 10:00 am"
-        android:textSize="@dimen/font_size_body" />
+        android:textSize="@dimen/font_size_small" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvSending"

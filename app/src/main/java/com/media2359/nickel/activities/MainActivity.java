@@ -23,10 +23,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.media2359.nickel.R;
+import com.media2359.nickel.help.HelpFragment;
 import com.media2359.nickel.history.HistoryMVPFragment;
 import com.media2359.nickel.model.MyProfile;
 import com.media2359.nickel.fragments.BaseFragment;
@@ -50,6 +52,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
     private TextView tvTitle, tvHeaderView;
     private Fragment mSpinnerFragment;
     private NavigationView navigationView;
+    private RelativeLayout btnLogout;
 
 
     @Override
@@ -149,6 +152,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         setSupportActionBar(toolbar);
         setTitle("");
 
+        btnLogout = (RelativeLayout) findViewById(R.id.btnLogout);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_main);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
@@ -180,6 +184,12 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         //mDrawerToggle.syncState();
         tvHeaderView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tvHeaderView);
         tvTitle = (TextView) findViewById(R.id.tvToolbarTitle);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
+            }
+        });
 
     }
 
@@ -237,12 +247,12 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
                 case R.id.nav_rewards:
                     newFragment = new RewardsFragment();
                     break;
-//                case R.id.nav_help:
-//                    newFragment = new SettingsFragment();
-//                    break;
-                case R.id.nav_sign_out:
-                    signOut();
-                    return false;
+                case R.id.nav_help:
+                    newFragment = new HelpFragment();
+                    break;
+//                case R.id.nav_sign_out:
+//                    signOut();
+//                    return false;
                 default:
                     return false;
             }
@@ -356,7 +366,8 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
             mDrawerToggle.syncState();
 
         if (MyProfile.getCurrentProfile(getApplicationContext()) == null){
-            tvHeaderView.setVisibility(View.INVISIBLE);
+            //tvHeaderView.setVisibility(View.INVISIBLE);
+            tvHeaderView.setText("Dian Sastro");
         }else{
             tvHeaderView.setText(MyProfile.getCurrentProfile(getApplicationContext()).getFullName());
         }

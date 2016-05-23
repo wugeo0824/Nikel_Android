@@ -30,12 +30,15 @@
     <string name="in_progress">IN PROGRESS</string>
     <string name="completed">COMPLETED</string>
     <string name="recipient">Recipient</string>
+    <string name="submit">Submit</string>
     <string name="date_of_birth">Date of birth</string>
+    <string name="my_info">My Information</string>
+    <string name="complete_profile_first">Sorry, you need to complete your profile before making a new transaction. Proceed to complete your profile now?</string>
 
     <string name="trans_id">Transaction ID: </string>
 
     <string name="complete_sender_profile">Complete sender profile</string>
-    <string name="add_new_recipient">Add new recipient</string>
+    <string name="add_new_recipient">Add New Recipient</string>
     
     <string name="take_photo_instruction">Please take a photo of the front of your I.D</string>
 

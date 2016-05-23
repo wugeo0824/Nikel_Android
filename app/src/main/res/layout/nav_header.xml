@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="192dp"
-    android:background="@color/colorPrimary"
-    android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
-    android:orientation="vertical"
-    android:gravity="bottom">
+    android:layout_height="65dp"
+    android:gravity="bottom"
+    android:orientation="horizontal"
+    android:background="@drawable/header_bg"
+    android:paddingLeft="16dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/logo_big"/>
+        android:id="@+id/ivDrawerProfilePhoto"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_vertical"
+        android:scaleType="fitCenter"
+        android:src="@drawable/img_profile" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvHeaderView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:layout_gravity="center_vertical"
         android:padding="@dimen/keyline_12"
-        android:textSize="18sp"
-        android:text="Nickel"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        android:text="Dian Sastro"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
 </LinearLayout>
