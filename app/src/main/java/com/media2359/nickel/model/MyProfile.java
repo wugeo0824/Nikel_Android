@@ -152,7 +152,7 @@ public class MyProfile {
             return this;
         }
 
-        public MyProfile build(Context context) {
+        public MyProfile buildAndSave(Context context) {
             return new MyProfile(this, context);
         }
 

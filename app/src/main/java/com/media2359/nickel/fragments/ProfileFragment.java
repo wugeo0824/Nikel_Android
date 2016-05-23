@@ -18,12 +18,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.media2359.nickel.R;
+import com.media2359.nickel.event.OnProfileChangedEvent;
 import com.media2359.nickel.model.MyProfile;
 import com.media2359.nickel.activities.CaptureActivity;
 import com.media2359.nickel.ui.customview.ProfileField;
 import com.media2359.nickel.utils.BitmapUtils;
 import com.media2359.nickel.utils.Const;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
@@ -148,9 +151,10 @@ public class ProfileFragment extends BaseFragment {
                 //.withDocumentType(documentTypes.getSelection())
                 .withDocumentType(0)
                 .withDocumentID(pfDocumentID.getInput()).withFrontPhotoUrl(frontPhotoUrl).withBackPhotoUrl(backPhotoUrl)
-                .build(getContext());
+                .buildAndSave(getContext());
 
         Toast.makeText(getActivity(), "Profile Saved", Toast.LENGTH_SHORT).show();
+        EventBus.getDefault().post(new OnProfileChangedEvent());
         getActivity().onBackPressed();
     }
 

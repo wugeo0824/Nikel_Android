@@ -16,9 +16,11 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
@@ -58,6 +60,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     private double getAmount = 0d, fee = 7d, totalAmount = 0d;
     private ThemedSwipeRefreshLayout srl;
     private Transaction currentTransaction;
+    private ScrollView scrollView;
 
     private Realm realm;
 
@@ -87,7 +90,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         recipientAdapter.setOnItemClickListener(this);
         rvHome.setItemAnimator(new DefaultItemAnimator());
         rvHome.setAdapter(recipientAdapter);
-        rvHome.addOnScrollListener(OnScrollRV);
+        //rvHome.addOnScrollListener(OnScrollRV);
 
         srl = (ThemedSwipeRefreshLayout) view.findViewById(R.id.srlHome);
         srl.setOnRefreshListener(OnRefresh);
@@ -126,8 +129,9 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
                 return false;
             }
         });
-    }
 
+        scrollView = (ScrollView) view.findViewById(R.id.scrollView);
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -143,27 +147,27 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         realm.close();
     }
 
-    private RecyclerView.OnScrollListener OnScrollRV = new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-
-            if (isScrolledToTop(recyclerView)) {
-                srl.setEnabled(true);
-            } else {
-                srl.setEnabled(false);
-            }
-        }
-    };
-
-    private boolean isScrolledToTop(RecyclerView recyclerView) {
-        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    private RecyclerView.OnScrollListener OnScrollRV = new RecyclerView.OnScrollListener() {
+//        @Override
+//        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//            super.onScrolled(recyclerView, dx, dy);
+//
+//            if (isScrolledToTop(recyclerView)) {
+//                srl.setEnabled(true);
+//            } else {
+//                srl.setEnabled(false);
+//            }
+//        }
+//    };
+//
+//    private boolean isScrolledToTop(RecyclerView recyclerView) {
+//        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+//        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 
 
     private View.OnClickListener onMyInfoClick = new View.OnClickListener() {

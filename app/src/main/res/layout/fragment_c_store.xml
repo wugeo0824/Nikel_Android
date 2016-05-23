@@ -68,7 +68,7 @@
             android:paddingRight="10dp"
             android:layout_marginRight="6dp"
             android:layout_marginBottom="0dp"
-            android:background="@color/white"
+            android:background="@android:color/transparent"
             android:textColor="@color/color_black_b5"
             android:drawableLeft="@drawable/icn_near"
             android:text="Nearest Convenience Store" />

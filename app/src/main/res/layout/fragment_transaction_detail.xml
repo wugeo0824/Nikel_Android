@@ -97,16 +97,16 @@
             <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvReceipt"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/receipt"
                 android:textSize="@dimen/font_size_normal" />
 
             <FrameLayout
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_height="wrap_content">
+                android:layout_weight="2">
 
                 <ImageView
                     android:id="@+id/ivReceipt"
@@ -137,8 +137,8 @@
             android:layout_alignParentBottom="true"
             android:background="#606060"
             android:gravity="center"
-            android:padding="@dimen/keyline_12"
             android:lineSpacingExtra="2dp"
+            android:padding="@dimen/keyline_12"
             android:text="Funds will be available by 10AM on \n Monday December 7th"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size_normal" />

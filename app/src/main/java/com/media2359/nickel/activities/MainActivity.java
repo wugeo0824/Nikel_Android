@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.media2359.nickel.R;
+import com.media2359.nickel.event.OnProfileChangedEvent;
 import com.media2359.nickel.help.HelpFragment;
 import com.media2359.nickel.history.HistoryMVPFragment;
 import com.media2359.nickel.model.MyProfile;
@@ -36,6 +37,8 @@ import com.media2359.nickel.fragments.HomeFragment;
 import com.media2359.nickel.fragments.ProfileFragment;
 import com.media2359.nickel.fragments.RewardsFragment;
 import com.media2359.nickel.fragments.SpinnerFragment;
+
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * This handles the transaction logic
@@ -346,6 +349,11 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         }
     }
 
+    @Subscribe
+    public void onEvent(OnProfileChangedEvent onProfileChangedEvent) {
+        if (MyProfile.getCurrentProfile(this) !=null)
+            tvHeaderView.setText(MyProfile.getCurrentProfile(this).getFullName());
+    }
 
     public void showLoadingSpinner() {
         mSpinnerFragment = new SpinnerFragment();

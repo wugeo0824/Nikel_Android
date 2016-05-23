@@ -222,11 +222,11 @@ public class CaptureActivity extends AppCompatActivity {
 
         if (imageType == IMAGE_PROFILE) {
             // for ID card overlay
-            //idCardOverlay.setVisibility(View.VISIBLE);
+            idCardOverlay.setVisibility(View.VISIBLE);
             tvTop.setText("Please place your ID inside the frame");
         } else {
             // for receipt overlay
-            //idCardOverlay.setVisibility(View.GONE);
+            idCardOverlay.setVisibility(View.GONE);
             tvTop.setText("Please place your Receipt inside the frame");
         }
     }

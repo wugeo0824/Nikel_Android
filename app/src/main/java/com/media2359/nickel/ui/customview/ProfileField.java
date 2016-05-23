@@ -239,6 +239,7 @@ public class ProfileField extends RelativeLayout {
         }, year, month, dayOfMonth);
 
         dateOfBirth.setTitle(getContext().getString(R.string.date_of_birth));
+        dateOfBirth.getDatePicker().setMaxDate(newCalendar.getTimeInMillis());
 
         dateOfBirth.show();
     }
