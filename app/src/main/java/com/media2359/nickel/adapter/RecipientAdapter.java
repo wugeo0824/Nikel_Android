@@ -77,7 +77,7 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else if (getItemViewType(position) == VIEW_TYPE_IN_PROGRESS) {
             InProgressViewHolder inProgress = (InProgressViewHolder) holder;
             inProgress.bind(recipient);
-            inProgress.btnRecipientNext.setOnClickListener(new View.OnClickListener() {
+            inProgress.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onItemClickListener.onTransactionClick(holder.getAdapterPosition());

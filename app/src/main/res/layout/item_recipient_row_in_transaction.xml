@@ -4,9 +4,9 @@
     android:id="@+id/topHolder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="@dimen/recipient_home_row_height"
     android:layout_margin="5dp"
-    android:background="@color/nav_bar_color">
+    android:background="@drawable/button_card_dark"
+    android:minHeight="@dimen/recipient_home_row_height">
 
     <ImageView
         android:id="@+id/ivRecipientLeft"
@@ -18,7 +18,6 @@
         android:layout_marginRight="@dimen/keyline_16"
         android:scaleType="centerInside"
         android:src="@drawable/ico_name_reversed" />
-
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvRecipientName"
@@ -43,13 +42,13 @@
         android:textSize="12sp"
         tools:text="BRI 129031095823" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/btnRecipientNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/button_edit_profile_dark"
+        android:clickable="false"
         android:padding="@dimen/keyline_12"
         android:src="@drawable/ic_chevron_right_24dp" />
 

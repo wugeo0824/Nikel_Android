@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item android:state_pressed="true">
         <layer-list>
             <item>
                 <shape android:shape="rectangle">
-                    <solid android:color="#CABBBBBB"/>
+                    <solid android:color="@color/color_black_b5"/>
                     <corners android:radius="2dp" />
                 </shape>
             </item>
@@ -16,7 +15,7 @@
                 android:top="0dp"
                 android:bottom="2dp">
                 <shape android:shape="rectangle">
-                    <solid android:color="#CABBBBBB"/>
+                    <solid android:color="@color/black"/>
                     <corners android:radius="2dp" />
                 </shape>
             </item>
@@ -26,7 +25,7 @@
         <layer-list>
             <item>
                 <shape android:shape="rectangle">
-                    <solid android:color="#CABBBBBB"/>
+                    <solid android:color="@color/nav_bar_color"/>
                     <corners android:radius="2dp" />
                 </shape>
             </item>
@@ -37,7 +36,7 @@
                 android:top="0dp"
                 android:bottom="2dp">
                 <shape android:shape="rectangle">
-                    <solid android:color="@android:color/white"/>
+                    <solid android:color="@color/nav_bar_color"/>
                     <corners android:radius="2dp" />
                 </shape>
             </item>

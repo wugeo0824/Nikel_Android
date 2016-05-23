@@ -39,6 +39,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textSize="@dimen/font_size_toolbar_title"
+                    android:textColor="@color/white"
                     tools:text="Home" />
 
             </android.support.v7.widget.Toolbar>

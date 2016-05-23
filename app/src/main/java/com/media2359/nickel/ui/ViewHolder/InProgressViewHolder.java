@@ -2,7 +2,6 @@ package com.media2359.nickel.ui.viewholder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
@@ -16,7 +15,7 @@ public class InProgressViewHolder extends RecyclerView.ViewHolder {
 
     TextView tvRecipientName, tvRecipientBank, tvTransactionAmount;
     InItemProgressBar progressBar;
-    public ImageButton btnRecipientNext;
+    //public ImageView btnRecipientNext;
 
     public InProgressViewHolder(View itemView) {
         super(itemView);
@@ -25,10 +24,10 @@ public class InProgressViewHolder extends RecyclerView.ViewHolder {
         tvRecipientBank = (TextView) itemView.findViewById(R.id.tvRecipientBank);
         tvTransactionAmount = (TextView) itemView.findViewById(R.id.tvTransactionAmount);
         progressBar = (InItemProgressBar) itemView.findViewById(R.id.pbInItemProgress);
-        btnRecipientNext = (ImageButton) itemView.findViewById(R.id.btnRecipientNext);
+        //btnRecipientNext = (ImageButton) itemView.findViewById(R.id.btnRecipientNext);
     }
 
-    public void bind(Recipient recipient){
+    public void bind(Recipient recipient) {
         tvRecipientName.setText(recipient.getName());
         tvRecipientBank.setText(recipient.getBankAccount());
         tvTransactionAmount.setText(recipient.getCurrentTransaction().getTransactionAmount() + " SGD");

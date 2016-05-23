@@ -43,7 +43,7 @@ public class TransactionDetailFragment extends BaseFragment {
     private Button btnSubmitReceipt, btnUOB, btnCStore;
     private ImageView ivReceipt;
     private LinearLayout llPaymentOptions;
-    private FrameLayout flReceiptUpload;
+    private LinearLayout llReceiptUpload;
     private TransactionActivity activity;
 
     public static TransactionDetailFragment newInstance(Transaction transaction) {
@@ -119,7 +119,7 @@ public class TransactionDetailFragment extends BaseFragment {
         ivReceipt = (ImageView) view.findViewById(R.id.ivReceipt);
         transactionProgress = (TransactionProgress) view.findViewById(R.id.progressDetail);
         llPaymentOptions = (LinearLayout) view.findViewById(R.id.llPaymentOptions);
-        flReceiptUpload = (FrameLayout) view.findViewById(R.id.rlReceiptUpload);
+        llReceiptUpload = (LinearLayout) view.findViewById(R.id.llReceiptUpload);
 
         tvRecipient.setText(transaction.getRecipientName());
 
@@ -183,22 +183,22 @@ public class TransactionDetailFragment extends BaseFragment {
                 break;
             case Transaction.TRANS_NEW_BORN:
                 llPaymentOptions.setVisibility(View.VISIBLE);
-                flReceiptUpload.setVisibility(View.GONE);
+                llReceiptUpload.setVisibility(View.GONE);
                 btnSubmitReceipt.setEnabled(true);
                 break;
             case Transaction.TRANS_PAYMENT_MADE:
                 llPaymentOptions.setVisibility(View.GONE);
-                flReceiptUpload.setVisibility(View.VISIBLE);
+                llReceiptUpload.setVisibility(View.VISIBLE);
                 btnSubmitReceipt.setEnabled(true);
                 break;
             case Transaction.TRANS_UPLOAD_COMPLETE:
                 llPaymentOptions.setVisibility(View.GONE);
-                flReceiptUpload.setVisibility(View.VISIBLE);
+                llReceiptUpload.setVisibility(View.VISIBLE);
                 btnSubmitReceipt.setVisibility(View.GONE);
                 break;
             case Transaction.TRANS_READY_COLLECTION:
                 llPaymentOptions.setVisibility(View.GONE);
-                flReceiptUpload.setVisibility(View.VISIBLE);
+                llReceiptUpload.setVisibility(View.VISIBLE);
                 btnSubmitReceipt.setVisibility(View.GONE);
                 tvStatus.setText("Funds ready for collection!");
                 break;
