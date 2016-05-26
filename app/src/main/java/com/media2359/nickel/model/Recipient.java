@@ -54,39 +54,13 @@ public class Recipient extends RealmObject {
     }
 
     public void setGreyedOut(final boolean greyedOut) {
-//        final Recipient object = this;
-//
-//        Realm realm = Realm.getDefaultInstance();
-//        realm.executeTransaction(new Realm.Transaction() {
-//            @Override
-//            public void execute(Realm realm) {
-//                object.greyedOut = greyedOut;
-//            }
-//        });
         this.greyedOut = greyedOut;
     }
 
     public void setCurrentTransaction(final NickelTransfer currentTransaction) {
-        final Recipient object = this;
-
-        Realm realm = Realm.getDefaultInstance();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                object.currentTransaction = currentTransaction;
-            }
-        });
+        this.currentTransaction = currentTransaction;
     }
     public void setExpanded(final boolean expanded) {
-//        final Recipient object = this;
-//
-//        Realm realm = Realm.getDefaultInstance();
-//        realm.executeTransaction(new Realm.Transaction() {
-//            @Override
-//            public void execute(Realm realm) {
-//                object.expanded = expanded;
-//            }
-//        });
         this.expanded = expanded;
     }
 

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import io.realm.Realm;
+
 /**
  * Created by Xijun on 25/4/16.
  */
@@ -118,7 +120,7 @@ public class HistoryPresenter extends MvpBasePresenter<HistoryView> {
 
     private List<NickelTransfer> mockData() {
 
-        List<NickelTransfer> transactionList = new ArrayList<>();
+        final List<NickelTransfer> transactionList = new ArrayList<>();
         NickelTransfer a = new NickelTransfer("1238u9ashjd", "March 2, 2016", "500", "Funds Ready for Collection", NickelTransfer.TRANS_READY_COLLECTION, "Husband", 7235, "BIN 812312313");
         NickelTransfer b = new NickelTransfer("2238u9ashjd", "March 12, 2016", "100", "Please DO xxxxxx", NickelTransfer.TRANS_UPLOAD_COMPLETE, "Mother", 6235, "BIN 812312313");
         NickelTransfer c = new NickelTransfer("3238u9ashjd", "April 2, 2016", "540", "Please DO yyyyy", NickelTransfer.TRANS_PAYMENT_MADE, "Father", 4354, "BIN 812312313");

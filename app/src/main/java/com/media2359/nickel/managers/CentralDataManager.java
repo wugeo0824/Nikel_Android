@@ -15,6 +15,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
 
 /**
@@ -131,11 +132,12 @@ public class CentralDataManager implements RealmChangeListener<RealmResults<Reci
     }
 
     public void updateTransactionForRecipient(@Nullable final NickelTransfer transaction, @NonNull final Recipient recipient) {
-        recipient.setCurrentTransaction(transaction);
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
+                NickelTransfer object = realm.copyToRealmOrUpdate(transaction);
+                recipient.setCurrentTransaction(object);
                 realm.copyToRealmOrUpdate(recipient);
             }
         });
