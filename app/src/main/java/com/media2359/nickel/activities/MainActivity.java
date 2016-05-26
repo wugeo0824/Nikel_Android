@@ -19,7 +19,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,15 +28,18 @@ import android.widget.Toast;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.event.OnProfileChangedEvent;
-import com.media2359.nickel.help.HelpFragment;
-import com.media2359.nickel.history.HistoryMVPFragment;
-import com.media2359.nickel.model.MyProfile;
 import com.media2359.nickel.fragments.BaseFragment;
 import com.media2359.nickel.fragments.HomeFragment;
 import com.media2359.nickel.fragments.ProfileFragment;
 import com.media2359.nickel.fragments.RewardsFragment;
 import com.media2359.nickel.fragments.SpinnerFragment;
+import com.media2359.nickel.help.HelpFragment;
+import com.media2359.nickel.history.HistoryMVPFragment;
+import com.media2359.nickel.managers.CentralDataManager;
+import com.media2359.nickel.managers.UserSessionManager;
+import com.media2359.nickel.model.MyProfile;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 /**
@@ -48,9 +50,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
     private static final int MY_PERMISSION_CAMERA = 91;
 
     private FragmentManager manager;
-    //private MenuItem menuCancel;
     private DrawerLayout mDrawerLayout;
-    //private CoordinatorLayout coordinatorLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private TextView tvTitle, tvHeaderView;
     private Fragment mSpinnerFragment;
@@ -63,11 +63,13 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         if (checkCameraHardware(getApplicationContext()))
             checkCameraPermission();
-        else{
+        else {
             Toast.makeText(getApplicationContext(), "Sorry, this app needs a camera to work.", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(MainActivity.this,LoginActivity.class);
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(i);
             finish();
         }
@@ -75,9 +77,10 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         initViews();
         // pre-load the profile information
         MyProfile.getCurrentProfile(getApplicationContext());
+        CentralDataManager.getInstance();
 
         if (null == savedInstanceState) {
-            switchFragment(new HomeFragment(), false);
+            switchFragment(HomeFragment.newInstance(), false);
         }
 
     }
@@ -190,7 +193,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signOut();
+                showSignOutDialog();
             }
         });
 
@@ -254,7 +257,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
                     newFragment = new HelpFragment();
                     break;
 //                case R.id.nav_sign_out:
-//                    signOut();
+//                    showSignOutDialog();
 //                    return false;
                 default:
                     return false;
@@ -279,13 +282,20 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         navigationView.setCheckedItem(itemId);
     }
 
-    private void signOut() {
+    AlertDialog dialog;
+
+    private void showSignOutDialog() {
+
+        if (dialog !=null && dialog.isShowing())
+            dialog.dismiss();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // Add the buttons
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
                 //TODO sign out
+                UserSessionManager.SignOut();
                 backToLogin();
             }
         });
@@ -300,7 +310,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         builder.setMessage("Click yes to sign out");
 
         // Create the AlertDialog
-        AlertDialog dialog = builder.create();
+        dialog = builder.create();
         dialog.show();
 
     }
@@ -349,9 +359,21 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
     @Subscribe
     public void onEvent(OnProfileChangedEvent onProfileChangedEvent) {
-        if (MyProfile.getCurrentProfile(this) !=null)
+        if (MyProfile.getCurrentProfile(this) != null)
             tvHeaderView.setText(MyProfile.getCurrentProfile(this).getFullName());
     }
 
@@ -373,10 +395,10 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         if (mDrawerToggle != null)
             mDrawerToggle.syncState();
 
-        if (MyProfile.getCurrentProfile(getApplicationContext()) == null){
+        if (MyProfile.getCurrentProfile(getApplicationContext()) == null) {
             //tvHeaderView.setVisibility(View.INVISIBLE);
-            tvHeaderView.setText("Dian Sastro");
-        }else{
+            tvHeaderView.setText("Please complete your profile");
+        } else {
             tvHeaderView.setText(MyProfile.getCurrentProfile(getApplicationContext()).getFullName());
         }
     }
@@ -407,14 +429,16 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
             case android.R.id.home:
                 onBackPressed();
                 return true;
-//            case R.id.menuRefresh:
-//                if (getCurrentFragment() instanceof HomeFragment){
-//
-//                }
             default:
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        CentralDataManager.getInstance().close();
     }
 
     @Override

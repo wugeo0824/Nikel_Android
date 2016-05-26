@@ -222,6 +222,8 @@
         <com.media2359.nickel.ui.customview.CustomButton
             android:id="@+id/btnSaveChanges"
             style="@style/PinkButton"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_marginBottom="@dimen/keyline_16"
             android:layout_below="@id/rlIDPhotoContainer"
             android:layout_centerHorizontal="true"

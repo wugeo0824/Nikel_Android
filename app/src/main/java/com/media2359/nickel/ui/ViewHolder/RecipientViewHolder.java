@@ -11,17 +11,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
-import com.media2359.nickel.event.OnRecipientDeleteClickEvent;
-import com.media2359.nickel.event.OnRecipientEditClickEvent;
-import com.media2359.nickel.event.OnSendMoneyClickEvent;
 import com.media2359.nickel.model.Recipient;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Xijun on 21/3/16.
  */
-public class RecipientViewHolder extends RecyclerView.ViewHolder{
+public class RecipientViewHolder extends RecyclerView.ViewHolder {
 
     public TextView tvRecipientName, tvRecipientBank, tvSendMoney;
     public Button btnEditRecipient, btnDeleteRecipient;
@@ -50,35 +45,18 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
     public void bindItem(final Recipient recipient) {
         tvRecipientName.setText(recipient.getName());
         tvRecipientBank.setText(recipient.getBankAccount());
-//        btnEditRecipient.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //TODO: edit recipient
-//                //EventBus.getDefault().post(new OnRecipientEditClickEvent(getAdapterPosition()));
-//            }
-//        });
-
-//        btnSendMoney.setOnClickListener(OnSendMoneyClick);
 
         btnRecipientOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (optionsShown){
+                if (optionsShown) {
                     hideOptionsButtons();
-                }else{
+                } else {
                     showOptionsButtons();
                 }
             }
         });
 
-//        btnDeleteRecipient.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //TODO: delete recipient
-//                //showDeleteDialog(recipient.getName());
-//                //EventBus.getDefault().post(new OnRecipientDeleteClickEvent(getAdapterPosition()));
-//            }
-//        });
 
         tvSendMoney.setText(String.format(itemView.getContext().getString(R.string.send_money_to), recipient.getName()));
 
@@ -87,31 +65,24 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
 
         setEnabledOrNot(recipient.isGreyedOut());
 
-        if (!recipient.isGreyedOut()){
-            if (recipient.isExpanded()){
+        if (!recipient.isGreyedOut()) {
+            if (recipient.isExpanded()) {
                 expand();
-            }else{
+            } else {
                 collapse();
             }
         }
 
     }
 
-//    private View.OnClickListener OnSendMoneyClick = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            //TODO: send money
-//            //EventBus.getDefault().post(new OnSendMoneyClickEvent(getAdapterPosition()));
-//        }
-//    };
 
-    public void setEnabledOrNot(boolean greyedOut){
-        if (!greyedOut){
+    public void setEnabledOrNot(boolean greyedOut) {
+        if (!greyedOut) {
             showOptionsButtons();
             btnRecipientOptions.setEnabled(true);
             collapse();
             //itemView.setOnClickListener(switchLayout);
-        }else{
+        } else {
             hideOptionsButtons();
             btnRecipientOptions.setEnabled(false);
             topHolder.setBackgroundColor(itemView.getResources().getColor(R.color.color_black_b5));
@@ -119,14 +90,14 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
         }
     }
 
-    private void showOptionsButtons(){
+    private void showOptionsButtons() {
         btnRecipientOptions.setVisibility(View.GONE);
         btnEditRecipient.setVisibility(View.VISIBLE);
         btnDeleteRecipient.setVisibility(View.VISIBLE);
         optionsShown = true;
     }
 
-    private void hideOptionsButtons(){
+    private void hideOptionsButtons() {
         btnRecipientOptions.setVisibility(View.VISIBLE);
         btnEditRecipient.setVisibility(View.GONE);
         btnDeleteRecipient.setVisibility(View.GONE);
@@ -151,7 +122,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
     public void expand() {
         topHolder.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.nav_bar_color));
         tvRecipientName.setTextColor(itemView.getContext().getResources().getColor(R.color.white));
-        if (optionsShown){
+        if (optionsShown) {
             hideOptionsButtons();
         }
         btnRecipientOptions.setVisibility(View.VISIBLE);
@@ -163,7 +134,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder{
     public void collapse() {
         topHolder.setBackground(itemView.getContext().getResources().getDrawable(R.drawable.card));
         tvRecipientName.setTextColor(itemView.getContext().getResources().getColor(R.color.text_color_normal));
-        if (optionsShown){
+        if (optionsShown) {
             hideOptionsButtons();
         }
         btnRecipientOptions.setVisibility(View.INVISIBLE);

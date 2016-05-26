@@ -15,24 +15,30 @@ import android.widget.TextView;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.activities.CaptureActivity;
+import com.media2359.nickel.managers.CentralDataManager;
+import com.media2359.nickel.model.NickelTransfer;
 import com.media2359.nickel.utils.BarcodeUtils;
 import com.media2359.nickel.utils.Const;
+
+import java.util.Locale;
 
 /**
  * Created by Xijun on 5/4/16.
  */
 public class CStoreFragment extends BaseFragment {
 
+    public static final String BUNDLE_TRANSACTION = "transaction";
 
     private ImageView ivBarcode;
     private TextView tvInstruction;
     private Button btnGuide, btnPhoto;
     private LinearLayout btnMap;
+    private NickelTransfer transaction;
 
     public static CStoreFragment newInstance() {
-        
+
         Bundle args = new Bundle();
-        
+        //args.putParcelable(BUNDLE_TRANSACTION, Parcels.wrap(transaction));
         CStoreFragment fragment = new CStoreFragment();
         fragment.setArguments(args);
         return fragment;
@@ -42,15 +48,28 @@ public class CStoreFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_c_store, container, false);
-        initViews(view);
+        initData();
         return view;
     }
 
-    private void initViews(View view) {
+    private void initData() {
+//        Bundle bundle = this.getArguments();
+//        if (bundle != null) {
+//            transaction = Parcels.unwrap(bundle.getParcelable(BUNDLE_TRANSACTION));
+//        }
+        transaction = CentralDataManager.getCurrentTransaction();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         // TODO change the content
         Bitmap barcodeImage = BarcodeUtils.encodeAsBitmapWithDisplayWidth(getActivity(), "www.google.com");
         ivBarcode = (ImageView) view.findViewById(R.id.ivBarcode);
         ivBarcode.setImageBitmap(barcodeImage);
+
+        tvInstruction = (TextView) view.findViewById(R.id.tvInstruction);
 
         btnGuide = (Button) view.findViewById(R.id.btnStepGuide);
         btnMap = (LinearLayout) view.findViewById(R.id.btnCStoreMap);
@@ -74,6 +93,12 @@ public class CStoreFragment extends BaseFragment {
                 CaptureActivity.startCapturingReceipt(getActivity(), Const.REQUEST_CODE_RECEIPT_PHOTO);
             }
         });
+
+        bindData();
+    }
+
+    private void bindData() {
+        tvInstruction.setText(String.format(Locale.getDefault(), getString(R.string.cstore_instruction), transaction.getTransactionAmount()));
     }
 
     private void openMap() {

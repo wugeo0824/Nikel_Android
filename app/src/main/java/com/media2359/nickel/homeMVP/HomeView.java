@@ -1,8 +1,8 @@
 package com.media2359.nickel.homeMVP;
 
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
+import com.media2359.nickel.model.NickelTransfer;
 import com.media2359.nickel.model.Recipient;
-import com.media2359.nickel.model.Transaction;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public interface HomeView extends MvpLceView<List<Recipient>> {
 
     void recipientDeleted();
 
-    void showTransactionDetailScreen(Transaction transaction);
+    void showTransactionDetailScreen(NickelTransfer transaction);
 
     void shoePaymentConfirmationAlertDialog(String message);
 

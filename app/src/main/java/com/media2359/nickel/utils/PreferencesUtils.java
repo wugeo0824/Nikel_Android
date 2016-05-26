@@ -2,12 +2,9 @@ package com.media2359.nickel.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.media2359.nickel.model.MyProfile;
-import com.media2359.nickel.model.Transaction;
 
 /**
  * Created by Xijun on 14/3/16.
@@ -30,19 +27,19 @@ public class PreferencesUtils {
     }
 
     public static void saveIDFront(Context context, String frontURL) {
-        getSharedPreferences(context).edit().putString(Constants.ID_PHOTO_FRONT,frontURL).apply();
+        getSharedPreferences(context).edit().putString(Constants.ID_PHOTO_FRONT, frontURL).apply();
     }
 
     public static void saveIDBack(Context context, String backURL) {
-        getSharedPreferences(context).edit().putString(Constants.ID_PHOTO_BACK,backURL).apply();
+        getSharedPreferences(context).edit().putString(Constants.ID_PHOTO_BACK, backURL).apply();
     }
 
-    public static void saveProfile(Context context, MyProfile myProfile){
+    public static void saveProfile(Context context, MyProfile myProfile) {
         SharedPreferences preferences = getSharedPreferences(context);
         preferences.edit().putString(PREF_MY_PROFILE, new Gson().toJson(myProfile)).apply();
     }
 
-    public static MyProfile getProfile(Context context){
+    public static MyProfile getProfile(Context context) {
         SharedPreferences preferences = getSharedPreferences(context);
         return new Gson().fromJson(preferences.getString(PREF_MY_PROFILE, null), MyProfile.class);
     }

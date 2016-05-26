@@ -12,42 +12,41 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.activities.MainActivity;
 import com.media2359.nickel.activities.TransactionActivity;
 import com.media2359.nickel.adapter.RecipientAdapter;
+import com.media2359.nickel.event.OnRecipientsChangedEvent;
+import com.media2359.nickel.managers.CentralDataManager;
 import com.media2359.nickel.model.MyProfile;
+import com.media2359.nickel.model.NickelTransfer;
 import com.media2359.nickel.model.Recipient;
-import com.media2359.nickel.model.Transaction;
 import com.media2359.nickel.ui.customview.ThemedSwipeRefreshLayout;
 import com.media2359.nickel.utils.DialogUtils;
 import com.media2359.nickel.utils.DisplayUtils;
 import com.media2359.nickel.utils.MistUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by Xijun on 10/3/16.
  */
 public class HomeFragment extends BaseFragment implements RecipientAdapter.onItemClickListener {
+
+    private static final String TAG = "HomeFragment";
 
     private MainActivity mainActivity;
     private RecyclerView rvHome;
@@ -55,18 +54,15 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     private TextView tvExchangeRate, tvFees, tvMyName, tvMyInfo, tvAddRecipient, tvGetAmount;
     private EditText etSendAmount;
     private RelativeLayout btnMyInfoEdit, btnAddNewRecipient;
-    private List<Recipient> recipientList = new ArrayList<>();
     private double exchangeRate = 9679.13d; // 1SGD = [exchangeRate] IDR
     private double getAmount = 0d, fee = 7d, totalAmount = 0d;
     private ThemedSwipeRefreshLayout srl;
-    private Transaction currentTransaction;
-    private ScrollView scrollView;
-
-    private Realm realm;
-
+    private NickelTransfer currentTransaction;
+    private int previousDataSize = -1;
 
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
+
         HomeFragment fragment = new HomeFragment();
         fragment.setArguments(args);
         return fragment;
@@ -86,11 +82,11 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         rvHome = (RecyclerView) view.findViewById(R.id.rvRecipients);
         rvHome.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvHome.setHasFixedSize(true);
-        recipientAdapter = new RecipientAdapter(getActivity(), recipientList);
+        recipientAdapter = new RecipientAdapter(getActivity());
         recipientAdapter.setOnItemClickListener(this);
-        rvHome.setItemAnimator(new DefaultItemAnimator());
+        recipientAdapter.setData(CentralDataManager.getInstance().getAllRecipients());
         rvHome.setAdapter(recipientAdapter);
-        //rvHome.addOnScrollListener(OnScrollRV);
+        rvHome.setItemAnimator(new DefaultItemAnimator());
 
         srl = (ThemedSwipeRefreshLayout) view.findViewById(R.id.srlHome);
         srl.setOnRefreshListener(OnRefresh);
@@ -99,7 +95,6 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         //TODO: set the exchange rate
         tvFees = (TextView) view.findViewById(R.id.tvFeesAmount);
         etSendAmount = (EditText) view.findViewById(R.id.etSendAmount);
-        //etSendAmount.setText("0");
         tvGetAmount = (TextView) view.findViewById(R.id.tvGetAmount);
         btnMyInfoEdit = (RelativeLayout) view.findViewById(R.id.btnMyInfoEdit);
         btnAddNewRecipient = (RelativeLayout) view.findViewById(R.id.btnAddNewRecipient);
@@ -107,14 +102,10 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         tvAddRecipient = (TextView) view.findViewById(R.id.tvAddRecipient);
         //tvMyInfo.setClickable(true);
         tvAddRecipient.setClickable(true);
-        tvAddRecipient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mainActivity.switchFragment(RecipientDetailFragment.newInstance(null), true);
-            }
-        });
+        tvAddRecipient.setOnClickListener(onNewRecipientClick);
 
         btnMyInfoEdit.setOnClickListener(onMyInfoClick);
+        btnAddNewRecipient.setOnClickListener(onNewRecipientClick);
         etSendAmount.addTextChangedListener(onAmountChangedWatcher);
 
         // hide the keyboard when user clicks done button
@@ -129,46 +120,22 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
                 return false;
             }
         });
-
-        scrollView = (ScrollView) view.findViewById(R.id.scrollView);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(getActivity()).build();
-        Realm.deleteRealm(realmConfiguration);
-        realm = Realm.getInstance(realmConfiguration);
+    public void onResume() {
+        super.onResume();
+
+        loadMyProfile();
+        getRecipients(false);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        realm.close();
-    }
-
-//    private RecyclerView.OnScrollListener OnScrollRV = new RecyclerView.OnScrollListener() {
-//        @Override
-//        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//            super.onScrolled(recyclerView, dx, dy);
-//
-//            if (isScrolledToTop(recyclerView)) {
-//                srl.setEnabled(true);
-//            } else {
-//                srl.setEnabled(false);
-//            }
-//        }
-//    };
-//
-//    private boolean isScrolledToTop(RecyclerView recyclerView) {
-//        LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-//        if (linearLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-
+    private View.OnClickListener onNewRecipientClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mainActivity.switchFragment(RecipientDetailFragment.newInstance(RecipientDetailFragment.NO_RECIPIENT), true);
+        }
+    };
 
     private View.OnClickListener onMyInfoClick = new View.OnClickListener() {
         @Override
@@ -233,30 +200,24 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     private SwipeRefreshLayout.OnRefreshListener OnRefresh = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //TODO;
-                    getRecipients();
-                }
-            }, 1000);
+            getRecipients(true);
         }
     };
 
-    private Transaction makeTransaction(Recipient recipient) {
+    private NickelTransfer makeTransaction(Recipient recipient) {
 
-        Transaction.Builder builder = new Transaction.Builder();
+        NickelTransfer.Builder builder = new NickelTransfer.Builder();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy h:mm a", Locale.getDefault());
-        String today = sdf.format(new Date().getTime());
+        String today = MistUtils.getTodayStringInFormat();
         //TODO: real ID
         currentTransaction = builder.withAmount(tvGetAmount.getText().toString())
                 .withDate(today)
                 .withExchangeRate(exchangeRate)
                 .withID("asijdaopkf")
                 .withRecipientName(recipient.getName())
+                .withRecipientAccount(recipient.getBankAccount())
                 .withStatus("This is payment status")
-                .withProgress(Transaction.TRANS_DRAFT)
+                .withProgress(NickelTransfer.TRANS_DRAFT)
                 .build();
 
         return currentTransaction;
@@ -286,47 +247,62 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     @Override
     public void onStart() {
         super.onStart();
-        //EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
+        EventBus.getDefault().unregister(this);
         super.onStop();
-        //EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void OnEvent(OnRecipientsChangedEvent onRecipientsChangedEvent) {
+
+        Log.d(TAG, "OnEvent: " + CentralDataManager.getInstance().getAllRecipients().size());
+
+        if (onRecipientsChangedEvent.isSuccess()){
+            recipientAdapter.notifyDataSetChanged();
+            showListOfRecipient(!CentralDataManager.getInstance().getAllRecipients().isEmpty());
+        }else {
+            Toast.makeText(getActivity(), "Sorry, internet connection is poor, please try again", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
     public void onEditButtonClick(int position) {
-        Recipient recipient = recipientList.get(position);
-        mainActivity.switchFragment(RecipientDetailFragment.newInstance(recipient), true);
+        mainActivity.switchFragment(RecipientDetailFragment.newInstance(position), true);
     }
 
     @Override
     public void onDeleteButtonClick(int position) {
-        showDeleteDialog(position, recipientList.get(position).getName());
+        Recipient recipient = CentralDataManager.getInstance().getRecipientAtPosition(position);
+        showDeleteDialog(position, recipient.getName());
     }
 
     @Override
     public void onSendMoneyClick(int position) {
-        Recipient recipient = recipientList.get(position);
+        Recipient recipient = CentralDataManager.getInstance().getRecipientAtPosition(position);
         //TODO: change to actual value
         if (validTransaction()) {
             makeTransaction(recipient);
             String message = "Proceed to send " + etSendAmount.getText().toString() + " SGD to " + recipient.getName() + "?";
-            showPaymentConfirmationDialog(message);
+            showPaymentConfirmationDialog(message, position);
         }
     }
 
     @Override
     public void onTransactionClick(int position) {
-        TransactionActivity.startTransactionActivity(getActivity(), recipientList.get(position).getCurrentTransaction());
+        Recipient recipient = CentralDataManager.getInstance().getRecipientAtPosition(position);
+        TransactionActivity.startTransactionActivity(getActivity(), recipient.getCurrentTransaction(), position);
     }
 
-    private void showPaymentConfirmationDialog(String message) {
+    private void showPaymentConfirmationDialog(String message, final int position) {
         AlertDialog dialog = DialogUtils.getNickelThemedAlertDialog(getContext(), "Alert", message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                confirmTransaction();
+                confirmTransaction(position);
             }
         });
 
@@ -337,13 +313,13 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
      * When user clicks yes on payment confirmation dialog
      * This should save the transaction in local storage, call the api to upload the open the transaction in server
      */
-    private void confirmTransaction() {
+    private void confirmTransaction(int position) {
         // TODO: call api
 
         // update the transaction status
-        currentTransaction.setTransProgress(Transaction.TRANS_NEW_BORN);
+        currentTransaction.transactionConfirmed();
 
-        TransactionActivity.startTransactionActivity(getActivity(), currentTransaction);
+        TransactionActivity.startTransactionActivity(getActivity(), currentTransaction, position);
     }
 
     /**
@@ -351,26 +327,18 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
      */
     private void transactionCreated() {
 
-        // save the current transaction into persisted storage
-        realm.executeTransactionAsync(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.copyToRealm(currentTransaction);
-            }
-        });
-
-        TransactionActivity.startTransactionActivity(getActivity(), currentTransaction);
     }
 
 
     private void showDeleteDialog(final int position, String contactName) {
         String message = "Do you want to delete " + contactName + "?";
-        String title = "Delete recipient information?";
+        String title = "Alert";
 
         DialogUtils.getNickelThemedAlertDialog(getActivity(), title, message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                recipientAdapter.removeItem(position);
+                CentralDataManager.getInstance().deleteRecipientAtPosition(position);
+                recipientAdapter.notifyItemRemoved(position);
             }
         }).show();
     }
@@ -394,37 +362,23 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         btnMyInfoEdit.setVisibility(View.VISIBLE);
     }
 
-    private void getRecipients() {
-        recipientList.clear();
+    private void getRecipients(boolean pullToRefresh) {
+        if (pullToRefresh)
+            CentralDataManager.getInstance().fetchRecipientsFromServer();
 
-        Recipient a = new Recipient("Husband", "BRI 281973021894", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
-        Recipient b = new Recipient("Mother", "BRI 0123874123", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
-        Recipient c = new Recipient("Sister", "MYI 9012830912", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
-        Recipient d = new Recipient("Han", "SGW 0911298301", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
-        a.setExpanded(false);
-        b.setExpanded(false);
-        c.setExpanded(false);
-        d.setExpanded(false);
-
-        Transaction aadd = new Transaction("1238u9ashjd", "March 2, 2016", "500.00", "Funds Ready for Collection", Transaction.TRANS_NEW_BORN, "Husband", 1235);
-        a.setCurrentTransaction(aadd);
-
-        recipientList.add(a);
-        recipientList.add(b);
-        recipientList.add(c);
-        recipientList.add(d);
-        recipientList.add(a);
-        recipientList.add(b);
-        recipientList.add(c);
-        recipientList.add(d);
-
-        recipientAdapter.notifyDataSetChanged();
-
-        if (srl.isRefreshing()) {
-            srl.setRefreshing(false);
+        if (pullToRefresh) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (srl.isRefreshing()) {
+                        srl.setRefreshing(false);
+                    }
+                }
+            }, 500);
         }
 
-        showListOfRecipient(!recipientList.isEmpty());
+        recipientAdapter.notifyDataSetChanged();
+        showListOfRecipient(!CentralDataManager.getInstance().getAllRecipients().isEmpty());
     }
 
     private void showListOfRecipient(boolean show) {
@@ -443,13 +397,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
 
-        loadMyProfile();
-        getRecipients();
-    }
 
     @Override
     protected String getPageTitle() {

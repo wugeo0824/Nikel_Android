@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.media2359.nickel.model.Transaction;
+import com.media2359.nickel.model.NickelTransfer;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,8 +26,8 @@ public class TransactionHistoryUtils {
         return context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
     }
 
-    public static List<Transaction> getAllTransactions(Context context) {
-        List<Transaction> transactions = new ArrayList<>();
+    public static List<NickelTransfer> getAllTransactions(Context context) {
+        List<NickelTransfer> transactions = new ArrayList<>();
         List<String> tsKeys = new ArrayList<>();
 
         tsKeys.addAll(getSharedPreferences(context).getAll().keySet());
@@ -38,15 +38,15 @@ public class TransactionHistoryUtils {
             if (TextUtils.isEmpty(tsString))
                 continue;
 
-            Transaction transaction = (new Gson()).fromJson(tsString, Transaction.class);
+            NickelTransfer transaction = (new Gson()).fromJson(tsString, NickelTransfer.class);
             transactions.add(transaction);
         }
 
         return transactions;
     }
 
-    public static void saveTransaction(Context context, Transaction transaction){
-        if (transaction == null){
+    public static void saveTransaction(Context context, NickelTransfer transaction) {
+        if (transaction == null) {
             Log.d(TAG, "saveTransaction: transaction is null");
         }
         // convert the content into string
@@ -59,7 +59,7 @@ public class TransactionHistoryUtils {
         getSharedPreferences(context).edit().putString(tsKey, tsString).commit();
     }
 
-    public static void deleteTransaction(Context context, Transaction transaction) {
+    public static void deleteTransaction(Context context, NickelTransfer transaction) {
 
         if (transaction == null)
             return;
@@ -77,7 +77,7 @@ public class TransactionHistoryUtils {
 
     }
 
-    public static String getTransactionKey(Transaction transaction){
+    public static String getTransactionKey(NickelTransfer transaction) {
         String key = transaction.getTransactionID() + transaction.getTransactionDate();
         return PREF_SINGLE_TRANSACTION + "_" + key;
     }

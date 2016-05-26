@@ -129,6 +129,11 @@ public class ProfileFragment extends BaseFragment {
 //            return false;
 //        }
 
+        if (pfDocTypes.getInput().isEmpty()){
+            pfDocTypes.requestFocus();
+            return false;
+        }
+
         if (!pfDocumentID.validateInput()) {
             pfDocumentID.requestFocus();
             return false;
@@ -148,8 +153,7 @@ public class ProfileFragment extends BaseFragment {
         MyProfile.Builder builder = new MyProfile.Builder();
         builder.withFullName(pfName.getInput()).withDOB(pfDOB.getInput()).withStreetAddress(pfStreet.getInput())
                 .withCity(pfCity.getInput()).withPostalCode(pfPostal.getInput())
-                //.withDocumentType(documentTypes.getSelection())
-                .withDocumentType(0)
+                .withDocumentType(pfDocTypes.getInput())
                 .withDocumentID(pfDocumentID.getInput()).withFrontPhotoUrl(frontPhotoUrl).withBackPhotoUrl(backPhotoUrl)
                 .buildAndSave(getContext());
 
@@ -210,6 +214,7 @@ public class ProfileFragment extends BaseFragment {
         pfPostal.setInputAndLock(myProfile.getPostalCode());
 //        documentTypes.setSelection(myProfile.getDocumentType());
 //        documentTypes.setEnabled(false);
+        pfDocTypes.setInputAndLock(myProfile.getDocumentType());
 
         Picasso.with(getActivity()).load(frontPhotoUrl).fit().centerCrop().placeholder(R.drawable.id_missing_front).into(ivIDFront);
         Picasso.with(getActivity()).load(backPhotoUrl).fit().centerCrop().placeholder(R.drawable.id_missing_back).into(ivIDBack);

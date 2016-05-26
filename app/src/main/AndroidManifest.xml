@@ -29,6 +29,7 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".activities.CaptureActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".activities.TransactionActivity"

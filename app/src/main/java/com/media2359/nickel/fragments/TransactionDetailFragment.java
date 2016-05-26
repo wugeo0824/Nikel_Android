@@ -10,17 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.media2359.nickel.R;
-import com.media2359.nickel.model.Transaction;
-import com.media2359.nickel.model.TransactionManager;
+import com.media2359.nickel.activities.CaptureActivity;
 import com.media2359.nickel.activities.TransactionActivity;
+import com.media2359.nickel.managers.CentralDataManager;
+import com.media2359.nickel.model.NickelTransfer;
 import com.media2359.nickel.ui.customview.TransactionProgress;
+import com.media2359.nickel.utils.Const;
 import com.media2359.nickel.utils.DialogUtils;
 import com.squareup.picasso.Picasso;
 
@@ -32,21 +33,17 @@ import java.io.File;
 public class TransactionDetailFragment extends BaseFragment {
 
     private static final String TAG = "DetailFragment";
-    //public static final String BUNDLE_BARCODE_CONTENT = "barcode_content";
-    public static final String BUNDLE_TRANSACTION = "transaction";
-    //private String barcodeContent = "";
-    private int progress;
-    private Transaction transaction;
-    //private ImageView ivBarcode;
+   // public static final String BUNDLE_TRANSACTION = "transaction";
+    private NickelTransfer transaction;
     private TransactionProgress transactionProgress;
-    private TextView tvInstruction, tvID, tvSendAmount, tvGetAmount, tvExchangeRate, tvFee, tvTotal, tvRecipient, tvStatus;
+    private TextView tvInstruction, tvID, tvSendAmount, tvGetAmount, tvExchangeRate, tvFee, tvTotal, tvRecipient, tvStatus, tvDate;
     private Button btnSubmitReceipt, btnUOB, btnCStore;
     private ImageView ivReceipt;
     private LinearLayout llPaymentOptions;
     private LinearLayout llReceiptUpload;
     private TransactionActivity activity;
 
-    public static TransactionDetailFragment newInstance(Transaction transaction) {
+    public static TransactionDetailFragment newInstance() {
 
         Bundle args = new Bundle();
         //args.putParcelable(BUNDLE_TRANSACTION, Parcels.wrap(transaction));
@@ -87,29 +84,29 @@ public class TransactionDetailFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        bindData();
         updateUIProgress();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
     private void initData() {
-//        Bundle bundle = this.getArguments();
-//        if (bundle != null) {
-//            transaction = Parcels.unwrap(bundle.getParcelable(BUNDLE_TRANSACTION));
-//            Log.d(TAG, "initData: transaction progress is " + transaction.getTransProgress());
-//        } else {
-//            Toast.makeText(getActivity(), "Something went wrong...", Toast.LENGTH_SHORT).show();
-//            Log.d(TAG, "initData: bundle is null");
-//        }
-        transaction = TransactionManager.getManager().getCurrentTransaction();
+        transaction = CentralDataManager.getCurrentTransaction();
     }
 
     private void initViews(View view) {
 
         tvInstruction = (TextView) view.findViewById(R.id.tvInstruction);
-        tvID = (TextView) view.findViewById(R.id.tvTransactionID);
+        tvID = (TextView) view.findViewById(R.id.tvTransactionIDValue);
         tvSendAmount = (TextView) view.findViewById(R.id.tvSendAmount);
         tvGetAmount = (TextView) view.findViewById(R.id.tvGetAmount);
         tvExchangeRate = (TextView) view.findViewById(R.id.tvExchangeRate);
         tvFee = (TextView) view.findViewById(R.id.tvFeesAmount);
+        tvDate = (TextView) view.findViewById(R.id.tvTransactionDate);
         //tvTotal = (TextView) view.findViewById(R.id.tvTotalAmount);
         tvRecipient = (TextView) view.findViewById(R.id.tvRecipientDetail);
         tvStatus = (TextView) view.findViewById(R.id.tvPaymentStatus);
@@ -121,12 +118,27 @@ public class TransactionDetailFragment extends BaseFragment {
         llPaymentOptions = (LinearLayout) view.findViewById(R.id.llPaymentOptions);
         llReceiptUpload = (LinearLayout) view.findViewById(R.id.llReceiptUpload);
 
-        tvRecipient.setText(transaction.getRecipientName());
-
         btnUOB.setOnClickListener(OnUOBClick);
         btnCStore.setOnClickListener(OnCStoreClick);
         btnSubmitReceipt.setOnClickListener(OnSubmitClick);
     }
+
+    private void bindData() {
+
+        tvID.setText(transaction.getTransactionID());
+        tvDate.setText(transaction.getTransactionDate());
+        tvSendAmount.setText(transaction.getTransactionAmount());
+
+        tvRecipient.setText(transaction.getRecipientName() + "\n" + transaction.getRecipientAccountNo());
+        tvExchangeRate.setText(transaction.getExchangeRate() + "IDR");
+    }
+
+    private View.OnClickListener OnReceiptClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            CaptureActivity.startCapturingReceipt(getActivity(), Const.REQUEST_CODE_RECEIPT_PHOTO);
+        }
+    };
 
     private View.OnClickListener OnUOBClick = new View.OnClickListener() {
         @Override
@@ -161,7 +173,7 @@ public class TransactionDetailFragment extends BaseFragment {
                 progressDialog.dismiss();
                 DialogUtils.showNickelDialog(getActivity(), "Submitted");
 
-                TransactionManager.getManager().receiptUploaded();
+                CentralDataManager.getCurrentTransaction().receiptUploaded();
                 updateUIProgress();
             }
         }, 1500);
@@ -169,37 +181,41 @@ public class TransactionDetailFragment extends BaseFragment {
 
     private void updateUIProgress() {
         transactionProgress.updateProgress(transaction.getTransProgress());
-        Transaction transaction = TransactionManager.getManager().getCurrentTransaction();
 
-        if (!TextUtils.isEmpty(transaction.getReceiptPhotoUrl())){
+        if (!TextUtils.isEmpty(transaction.getReceiptPhotoUrl())) {
             File image = new File(transaction.getReceiptPhotoUrl());
             Picasso.with(getActivity()).load(image).fit().centerInside().into(ivReceipt);
         }
 
         switch (transaction.getTransProgress()) {
-            case Transaction.TRANS_DRAFT:
+            case NickelTransfer.TRANS_DRAFT:
                 Log.d(TAG, "updateProgress: wrong, should not be new born state");
                 Toast.makeText(getActivity(), "something went wrong, check the log", Toast.LENGTH_SHORT).show();
                 break;
-            case Transaction.TRANS_NEW_BORN:
+            case NickelTransfer.TRANS_NEW_BORN:
                 llPaymentOptions.setVisibility(View.VISIBLE);
                 llReceiptUpload.setVisibility(View.GONE);
+                ivReceipt.setClickable(false);
                 btnSubmitReceipt.setEnabled(true);
                 break;
-            case Transaction.TRANS_PAYMENT_MADE:
+            case NickelTransfer.TRANS_PAYMENT_MADE:
                 llPaymentOptions.setVisibility(View.GONE);
                 llReceiptUpload.setVisibility(View.VISIBLE);
+                ivReceipt.setOnClickListener(OnReceiptClick);
+                ivReceipt.setClickable(true);
                 btnSubmitReceipt.setEnabled(true);
                 break;
-            case Transaction.TRANS_UPLOAD_COMPLETE:
+            case NickelTransfer.TRANS_UPLOAD_COMPLETE:
                 llPaymentOptions.setVisibility(View.GONE);
                 llReceiptUpload.setVisibility(View.VISIBLE);
                 btnSubmitReceipt.setVisibility(View.GONE);
+                ivReceipt.setClickable(false);
                 break;
-            case Transaction.TRANS_READY_COLLECTION:
+            case NickelTransfer.TRANS_READY_COLLECTION:
                 llPaymentOptions.setVisibility(View.GONE);
                 llReceiptUpload.setVisibility(View.VISIBLE);
                 btnSubmitReceipt.setVisibility(View.GONE);
+                ivReceipt.setClickable(false);
                 tvStatus.setText("Funds ready for collection!");
                 break;
         }

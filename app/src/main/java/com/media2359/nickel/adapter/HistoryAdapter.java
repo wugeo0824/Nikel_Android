@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.media2359.nickel.R;
-import com.media2359.nickel.model.Transaction;
+import com.media2359.nickel.model.NickelTransfer;
 import com.media2359.nickel.ui.viewholder.TransactionHistoryViewHolder;
 
 import java.util.List;
@@ -17,9 +17,9 @@ import java.util.List;
  */
 public class HistoryAdapter extends RecyclerView.Adapter<TransactionHistoryViewHolder> {
 
-    List<Transaction> transactionsList;
+    List<NickelTransfer> transactionsList;
 
-    public HistoryAdapter(List<Transaction> transactionsList) {
+    public HistoryAdapter(List<NickelTransfer> transactionsList) {
         this.transactionsList = transactionsList;
     }
 

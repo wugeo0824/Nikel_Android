@@ -44,8 +44,8 @@
 
         <ImageView
             android:id="@+id/ivPhone"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/etPhoneLogin"
             android:layout_alignParentLeft="true"
             android:layout_alignTop="@+id/etPhoneLogin"
@@ -66,8 +66,8 @@
 
         <ImageView
             android:id="@+id/ivPassword"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/etPassword"
             android:layout_alignLeft="@+id/ivPhone"
             android:layout_alignRight="@+id/ivPhone"

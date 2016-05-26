@@ -3,7 +3,6 @@ package com.media2359.nickel.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -12,14 +11,11 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
-import com.media2359.nickel.model.Transaction;
-import com.media2359.nickel.model.TransactionManager;
 import com.media2359.nickel.fragments.BaseFragment;
 import com.media2359.nickel.fragments.TransactionDetailFragment;
+import com.media2359.nickel.managers.CentralDataManager;
+import com.media2359.nickel.model.NickelTransfer;
 import com.media2359.nickel.utils.Const;
-import com.media2359.nickel.utils.TransactionHistoryUtils;
-
-import org.parceler.Parcels;
 
 import java.io.File;
 
@@ -28,19 +24,19 @@ import java.io.File;
  */
 public class TransactionActivity extends BaseActivity implements BaseFragment.FragmentVisibleListener {
 
+    private static final String TAG = "TransactionActivity";
+
     private TextView tvTitle;
     private FragmentManager manager;
-    private CoordinatorLayout coordinatorLayout;
-    //private Transaction transaction;
-    //private int transactionProgress = -1;
-    private Transaction transaction;
 
-    private static final String EXTRA_TRANSACTION = "extra_item";
+//    private static final String EXTRA_TRANSACTION = "extra_transaction";
+//    private static final String EXTRA_RECIPIENT = "extra_recipient";
 
-    public static void startTransactionActivity(Activity startingActivity, Transaction transaction) {
+    public static void startTransactionActivity(Activity startingActivity, NickelTransfer transaction, int recipientPosition) {
         Intent intent = new Intent(startingActivity, TransactionActivity.class);
-        //intent.putExtra(EXTRA_TRANSACTION, transaction.getTransactionID());
-        intent.putExtra(EXTRA_TRANSACTION, Parcels.wrap(transaction));
+        //intent.putExtra(EXTRA_TRANSACTION, Parcels.wrap(transaction));
+        //intent.putExtra(EXTRA_RECIPIENT, recipientPosition);
+        CentralDataManager.setCurrentTransaction(transaction, recipientPosition);
         startingActivity.startActivity(intent);
     }
 
@@ -48,22 +44,20 @@ public class TransactionActivity extends BaseActivity implements BaseFragment.Fr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
-        setCurrentTransaction();
+        //initCurrentTransaction();
         initViews();
-        switchFragment(TransactionDetailFragment.newInstance(transaction), false);
 
+        if (savedInstanceState == null)
+            switchFragment(TransactionDetailFragment.newInstance(), false);
     }
 
-    private void setCurrentTransaction(){
-        transaction = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_TRANSACTION));
+    private void initCurrentTransaction() {
+        //transaction = CentralDataManager.getCurrentTransaction();
 
-        if (transaction.getTransProgress() == Transaction.TRANS_DRAFT){
-            finish();
-        }else{
-            TransactionHistoryUtils.saveTransaction(getApplicationContext(),transaction);
-            TransactionManager.getManager().setCurrentTransaction(transaction);
-        }
-
+//        Intent intent = getIntent();
+//        if (intent != null) {
+//            recipientPosition = intent.getIntExtra(EXTRA_RECIPIENT, -1);
+//        }
     }
 
     private void initViews() {
@@ -115,7 +109,8 @@ public class TransactionActivity extends BaseActivity implements BaseFragment.Fr
     @Override
     protected void onPause() {
         super.onPause();
-        TransactionHistoryUtils.saveTransaction(getApplicationContext(),TransactionManager.getManager().getCurrentTransaction());
+        //TODO save the transaction locally
+        CentralDataManager.getInstance().saveCurrentTransactionToRecipient();
     }
 
     @Override
@@ -132,11 +127,11 @@ public class TransactionActivity extends BaseActivity implements BaseFragment.Fr
             String filePath = data.getStringExtra(Const.DATA_PHOTO_FILE);
             File result = new File(filePath);
             //Bitmap thumbImage = BitmapUtils.getThumbnail(this, result);
-            TransactionManager.getManager().paymentMadeAndPhotoTaken(result.getAbsolutePath());
+            CentralDataManager.getCurrentTransaction().paymentMadeAndPhotoTaken(result.getAbsolutePath());
 
             // if image is successfully taken, bring user back to transaction detail screen
             clearFragmentStack();
-            switchFragment(TransactionDetailFragment.newInstance(TransactionManager.getManager().getCurrentTransaction()),false);
+            switchFragment(TransactionDetailFragment.newInstance(), false);
         }
     }
 

@@ -1,36 +1,40 @@
 package com.media2359.nickel.model;
 
-import org.parceler.Parcel;
-import org.parceler.ParcelConstructor;
-
+import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Xijun on 21/3/16.
  */
 
-@Parcel(Parcel.Serialization.BEAN)
-public class Recipient extends RealmObject{
+public class Recipient extends RealmObject {
 
-    String name;
-    String nickName;
-    String phoneNumber;
-    String street;
-    String city;
-    String postalCode;
-    String bankName;
-    String bankAccount;
-    boolean expanded = false;
-    boolean greyedOut = false;
+    @PrimaryKey
+    private int ID;
 
-    Transaction currentTransaction;
+    private String name;
+    private String nickName;
+    private String phoneNumber;
+    private String street;
+    private String city;
+    private String postalCode;
+    private String bankName;
+    private String bankAccount;
+
+    @Ignore
+    private boolean expanded = false;
+    @Ignore
+    private boolean greyedOut = false;
+
+    private NickelTransfer currentTransaction;
 
     public Recipient() {
     }
 
-    @ParcelConstructor
-    public Recipient(String name, String nickName, String phoneNumber, String street, String city, String postalCode, String bankName, String bankAccount) {
+    public Recipient(int ID, String name, String nickName, String phoneNumber, String street, String city, String postalCode, String bankName, String bankAccount) {
+        this.ID = ID;
         this.name = name;
         this.nickName = nickName;
         this.phoneNumber = phoneNumber;
@@ -41,36 +45,61 @@ public class Recipient extends RealmObject{
         this.bankAccount = bankAccount;
     }
 
+    public int getID() {
+        return ID;
+    }
+
     public boolean isGreyedOut() {
         return greyedOut;
     }
 
-    public void setGreyedOut(boolean greyedOut) {
+    public void setGreyedOut(final boolean greyedOut) {
+//        final Recipient object = this;
+//
+//        Realm realm = Realm.getDefaultInstance();
+//        realm.executeTransaction(new Realm.Transaction() {
+//            @Override
+//            public void execute(Realm realm) {
+//                object.greyedOut = greyedOut;
+//            }
+//        });
         this.greyedOut = greyedOut;
+    }
+
+    public void setCurrentTransaction(final NickelTransfer currentTransaction) {
+        final Recipient object = this;
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                object.currentTransaction = currentTransaction;
+            }
+        });
+    }
+    public void setExpanded(final boolean expanded) {
+//        final Recipient object = this;
+//
+//        Realm realm = Realm.getDefaultInstance();
+//        realm.executeTransaction(new Realm.Transaction() {
+//            @Override
+//            public void execute(Realm realm) {
+//                object.expanded = expanded;
+//            }
+//        });
+        this.expanded = expanded;
     }
 
     public boolean isExpanded() {
         return expanded;
     }
 
-    public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getBankAccount() {
         return bankAccount;
-    }
-
-    public void setBankAccount(String bankAccount) {
-        this.bankAccount = bankAccount;
     }
 
     public String getNickName() {
@@ -101,11 +130,8 @@ public class Recipient extends RealmObject{
         return (currentTransaction != null);
     }
 
-    public Transaction getCurrentTransaction() {
+    public NickelTransfer getCurrentTransaction() {
         return currentTransaction;
     }
 
-    public void setCurrentTransaction(Transaction currentTransaction) {
-        this.currentTransaction = currentTransaction;
-    }
 }

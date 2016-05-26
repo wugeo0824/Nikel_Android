@@ -7,11 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.media2359.nickel.R;
+import com.media2359.nickel.managers.CentralDataManager;
 import com.media2359.nickel.model.Recipient;
 import com.media2359.nickel.ui.viewholder.InProgressViewHolder;
 import com.media2359.nickel.ui.viewholder.RecipientViewHolder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,16 +22,19 @@ import java.util.List;
 public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements RecipientViewHolder.ItemExpandCollapseListener {
 
     Context mContext;
-    List<Recipient> dataList = new ArrayList<>();
+    List<Recipient> dataList = Collections.emptyList();
     int lastExpandedPosition = -1;
     private onItemClickListener onItemClickListener;
 
     private final static int VIEW_TYPE_NORMAL = 0;
     private final static int VIEW_TYPE_IN_PROGRESS = 1;
 
-    public RecipientAdapter(Context mContext, List<Recipient> dataList) {
+    public RecipientAdapter(Context mContext) {
         this.mContext = mContext;
-        this.dataList = dataList;
+    }
+
+    public void setData(List<Recipient> recipients){
+        this.dataList = recipients;
     }
 
     @Override
@@ -73,6 +78,11 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     onItemClickListener.onSendMoneyClick(holder.getAdapterPosition());
                 }
             });
+
+            if (recipient.isExpanded()){
+                normal.expand();
+            }else
+                normal.collapse();
 
         } else if (getItemViewType(position) == VIEW_TYPE_IN_PROGRESS) {
             InProgressViewHolder inProgress = (InProgressViewHolder) holder;

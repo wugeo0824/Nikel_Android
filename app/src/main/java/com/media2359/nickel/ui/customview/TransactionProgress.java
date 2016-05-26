@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.media2359.nickel.R;
-import com.media2359.nickel.model.Transaction;
+import com.media2359.nickel.model.NickelTransfer;
 
 /**
  * Created by Xijun on 4/4/16.
@@ -59,28 +59,28 @@ public class TransactionProgress extends RelativeLayout {
 
     public void updateProgress(int progress) {
         switch (progress) {
-            case Transaction.TRANS_PAYMENT_MADE:
+            case NickelTransfer.TRANS_PAYMENT_MADE:
                 ivBall1.setImageResource(R.drawable.circle_green);
                 ivBall2.setImageResource(R.drawable.circle_grey);
                 ivBall3.setImageResource(R.drawable.circle_grey);
                 //pb.setProgress(25);
                 animateProgress(PROGRESS_25);
                 break;
-            case Transaction.TRANS_UPLOAD_COMPLETE:
+            case NickelTransfer.TRANS_UPLOAD_COMPLETE:
                 ivBall1.setImageResource(R.drawable.circle_green);
                 ivBall2.setImageResource(R.drawable.circle_green);
                 ivBall3.setImageResource(R.drawable.circle_grey);
                 //pb.setProgress(75);
                 animateProgress(PROGRESS_75);
                 break;
-            case Transaction.TRANS_READY_COLLECTION:
+            case NickelTransfer.TRANS_READY_COLLECTION:
                 ivBall1.setImageResource(R.drawable.circle_green);
                 ivBall2.setImageResource(R.drawable.circle_green);
                 ivBall3.setImageResource(R.drawable.circle_green);
                 //pb.setProgress(100);
                 animateProgress(PROGRESS_100);
                 break;
-            case Transaction.TRANS_NEW_BORN:
+            case NickelTransfer.TRANS_NEW_BORN:
                 ivBall1.setImageResource(R.drawable.circle_green);
                 ivBall2.setImageResource(R.drawable.circle_grey);
                 ivBall3.setImageResource(R.drawable.circle_grey);

@@ -12,25 +12,29 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.media2359.nickel.R;
-import com.media2359.nickel.model.Transaction;
-import com.media2359.nickel.model.TransactionManager;
 import com.media2359.nickel.activities.CaptureActivity;
+import com.media2359.nickel.managers.CentralDataManager;
+import com.media2359.nickel.model.NickelTransfer;
 import com.media2359.nickel.utils.Const;
+
+import java.util.Locale;
 
 /**
  * Created by Xijun on 1/4/16.
  */
 public class UOBMachinesFragment extends BaseFragment {
 
-    private TextView tvInstruction;
+    //public static final String BUNDLE_TRANSACTION = "transaction";
+
+    private TextView tvInstruction, tvTransferTo, tvAccountNo;
     private Button btnGuide, btnPhoto;
     private LinearLayout btnMap;
-    private Transaction transaction;
+    private NickelTransfer transaction;
 
     public static UOBMachinesFragment newInstance() {
 
         Bundle args = new Bundle();
-
+        //args.putParcelable(BUNDLE_TRANSACTION, Parcels.wrap(transaction));
         UOBMachinesFragment fragment = new UOBMachinesFragment();
         fragment.setArguments(args);
         return fragment;
@@ -40,12 +44,25 @@ public class UOBMachinesFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_uob, container, false);
-        transaction = TransactionManager.getManager().getCurrentTransaction();
-        initViews(view);
+        initData();
         return view;
     }
 
-    private void initViews(View view) {
+    private void initData() {
+//        Bundle bundle = this.getArguments();
+//        if (bundle != null) {
+//            transaction = Parcels.unwrap(bundle.getParcelable(BUNDLE_TRANSACTION));
+//        }
+        transaction = CentralDataManager.getCurrentTransaction();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvInstruction = (TextView) view.findViewById(R.id.tvInstruction);
+        tvTransferTo = (TextView) view.findViewById(R.id.tvTransferTo);
+        tvAccountNo = (TextView) view.findViewById(R.id.tvAccountNo);
 
         btnGuide = (Button) view.findViewById(R.id.btnStepGuide);
         btnMap = (LinearLayout) view.findViewById(R.id.btnUOBMachines);
@@ -69,6 +86,20 @@ public class UOBMachinesFragment extends BaseFragment {
                 CaptureActivity.startCapturingReceipt(getActivity(), Const.REQUEST_CODE_RECEIPT_PHOTO);
             }
         });
+
+        bindData();
+    }
+
+    private void bindData() {
+        tvInstruction.setText(String.format(Locale.getDefault(), getString(R.string.uob_instruction), transaction.getTransactionAmount()));
+        tvTransferTo.setText(String.format(Locale.getDefault(), getString(R.string.transfer_to), transaction.getRecipientName()));
+        tvAccountNo.setText(String.format(Locale.getDefault(), getString(R.string.account_no), transaction.getRecipientAccountNo()));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     private void openMap() {

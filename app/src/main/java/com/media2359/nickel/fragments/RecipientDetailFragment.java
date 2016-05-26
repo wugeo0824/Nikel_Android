@@ -10,30 +10,28 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.media2359.nickel.R;
-import com.media2359.nickel.model.Recipient;
 import com.media2359.nickel.activities.MainActivity;
+import com.media2359.nickel.managers.CentralDataManager;
+import com.media2359.nickel.model.Recipient;
 import com.media2359.nickel.ui.customview.ProfileField;
-
-import org.parceler.Parcels;
 
 /**
  * Created by Xijun on 17/3/16.
  */
 public class RecipientDetailFragment extends BaseFragment {
 
+    public static final int NO_RECIPIENT = -1;
     private static final String BUNDLE_RECIPIENT = "recipient";
     private Recipient recipient;
-
     private ProfileField pfFullName, pfDisplayName, pfPhone, pfStreet, pfCity, pfPostalCode, pfBankName, pfBankAccount, pfBankAgain;
     private Button btnSaveChanges;
 
-    public static RecipientDetailFragment newInstance(Recipient recipient){
+    public static RecipientDetailFragment newInstance(int recipientPosition) {
         RecipientDetailFragment instance = new RecipientDetailFragment();
-        if (recipient != null){
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(BUNDLE_RECIPIENT, Parcels.wrap(recipient));
-            instance.setArguments(bundle);
-        }
+        Bundle bundle = new Bundle();
+        bundle.putInt(BUNDLE_RECIPIENT, recipientPosition);
+        instance.setArguments(bundle);
+
         return instance;
     }
 
@@ -42,10 +40,12 @@ public class RecipientDetailFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recipient_detail, container, false);
         Bundle bundle = this.getArguments();
-        if (bundle!=null){
-            recipient = Parcels.unwrap(bundle.getParcelable(BUNDLE_RECIPIENT));
-        }else{
-            recipient = null;
+        recipient = null;
+        if (bundle != null) {
+            int position = bundle.getInt(BUNDLE_RECIPIENT);
+            if (position >= 0) {
+                recipient = CentralDataManager.getInstance().getRecipientAtPosition(bundle.getInt(BUNDLE_RECIPIENT));
+            }
         }
         initViews(view);
         fillInTheData();
@@ -79,24 +79,98 @@ public class RecipientDetailFragment extends BaseFragment {
 
     }
 
+    /**
+     * On button save changes click
+     * This should save the changes/ new recipient profile to both server and local disk
+     */
     private void saveChanges() {
-        //TODO
-        Toast.makeText(getActivity(), "Changes Saved", Toast.LENGTH_SHORT).show();
-        getActivity().onBackPressed();
+
+        if (validateRecipient()) {
+            int ID;
+            if (recipient !=null){
+                ID = recipient.getID();
+            }else {
+                ID = CentralDataManager.getInstance().getNextValidRecipientID();
+            }
+            
+            recipient = new Recipient(ID,pfDisplayName.getInput(), pfFullName.getInput(), pfPhone.getInput(), pfStreet.getInput(), pfCity.getInput(), pfPostalCode.getInput(), pfBankName.getInput(), pfBankAccount.getInput());
+
+            //TODO save to server
+            CentralDataManager.getInstance().addNewOrUpdateRecipient(recipient);
+            Toast.makeText(getActivity(), "Changes Saved", Toast.LENGTH_SHORT).show();
+            getActivity().onBackPressed();
+        }
+
+    }
+
+    private boolean validateRecipient() {
+
+        if (!pfDisplayName.validateInput()) {
+            pfDisplayName.requestFocus();
+            return false;
+        }
+
+        if (!pfFullName.validateInput()) {
+            pfFullName.requestFocus();
+            return false;
+        }
+
+        if (!pfPhone.validateInput()) {
+            pfPhone.requestFocus();
+            return false;
+        }
+
+        if (!pfStreet.validateInput()) {
+            pfStreet.requestFocus();
+            return false;
+        }
+
+        if (!pfCity.validateInput()) {
+            pfCity.requestFocus();
+            return false;
+        }
+
+        if (!pfPostalCode.validateInput()) {
+            pfPostalCode.requestFocus();
+            return false;
+        }
+
+        if (!pfBankName.validateInput()) {
+            pfBankName.requestFocus();
+            return false;
+        }
+
+        if (!pfBankAccount.validateInput()) {
+            pfBankAccount.requestFocus();
+            return false;
+        }
+
+        if (!pfBankAgain.validateInput() || !pfBankAccount.getInput().equals(pfBankAgain.getInput())) {
+            pfBankAgain.requestFocus();
+            return false;
+        }
+
+        return true;
     }
 
     private void fillInTheData() {
-        if (recipient == null){
+        if (recipient == null) {
             addNewRecipient();
-        }else{
+        } else {
             retrieveFromServer();
         }
     }
 
+    /**
+     * This will show the screen which allow user to add new recipient
+     */
     private void addNewRecipient() {
+
     }
 
     private void retrieveFromServer() {
+        // TODO load data from server
+
         pfFullName.setInput(recipient.getName());
         pfDisplayName.setInput(recipient.getName());
         pfBankName.setInput(recipient.getBankName());

@@ -20,7 +20,7 @@ public class MyProfile {
     String streetAddress;
     String city;
     String postalCode;
-    int documentType;
+    String documentType;
     String documentID;
     String frontPhotoUrl;
     String backPhotoUrl;
@@ -73,7 +73,7 @@ public class MyProfile {
         return postalCode;
     }
 
-    public int getDocumentType() {
+    public String getDocumentType() {
         return documentType;
     }
 
@@ -99,7 +99,7 @@ public class MyProfile {
         private String streetAddress;
         private String city;
         private String postalCode;
-        private int documentType;
+        private String documentType;
         private String documentID;
         private String frontPhotoUrl;
         private String backPhotoUrl;
@@ -132,7 +132,7 @@ public class MyProfile {
             return this;
         }
 
-        public Builder withDocumentType(int documentType) {
+        public Builder withDocumentType(String documentType) {
             this.documentType = documentType;
             return this;
         }

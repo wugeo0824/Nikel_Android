@@ -1,22 +1,18 @@
 package com.media2359.nickel.model;
 
-import android.content.Context;
-import android.support.v7.app.AlertDialog;
-
 import com.media2359.nickel.utils.Const;
 
-import org.parceler.Parcel;
-import org.parceler.ParcelConstructor;
-
+import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
 import io.realm.annotations.Required;
 
 /**
  * Created by Xijun on 1/4/16.
  */
 
-@Parcel(Parcel.Serialization.BEAN)
-public class Transaction extends RealmObject{
+public class NickelTransfer extends RealmObject {
 
     /**
      * The 5 stages of a transaction progress
@@ -27,23 +23,22 @@ public class Transaction extends RealmObject{
     public static final int TRANS_UPLOAD_COMPLETE = 2; // receipt photo uploaded
     public static final int TRANS_READY_COLLECTION = 3; // sms confirmation received, transaction complete
 
-    @Required
+    @PrimaryKey
     String transactionID;
-    @Required
+
     String transactionDate;
-    @Required
     String transactionAmount;
     String transactionStatus;
     int transProgress;
     String recipientName;
+    String recipientAccountNo;
     double exchangeRate;
     String receiptPhotoUrl;
 
-    public Transaction() {
+    public NickelTransfer() {
     }
 
-    @ParcelConstructor
-    public Transaction(String transactionID, String transactionDate, String transactionAmount, String transactionStatus, int transProgress, String recipientName, double exchangeRate) {
+    public NickelTransfer(String transactionID, String transactionDate, String transactionAmount, String transactionStatus, int transProgress, String recipientName, double exchangeRate, String recipientAccountNo) {
         this.transactionID = transactionID;
         this.transactionDate = transactionDate;
         this.transactionAmount = transactionAmount;
@@ -51,9 +46,10 @@ public class Transaction extends RealmObject{
         this.transProgress = transProgress;
         this.recipientName = recipientName;
         this.exchangeRate = exchangeRate;
+        this.recipientAccountNo = recipientAccountNo;
     }
 
-    public Transaction(Builder builder){
+    public NickelTransfer(Builder builder) {
         this.transactionID = builder.transactionID;
         this.transactionDate = builder.transactionDate;
         this.transactionAmount = builder.transactionAmount;
@@ -61,14 +57,69 @@ public class Transaction extends RealmObject{
         this.transProgress = builder.transProgress;
         this.recipientName = builder.recipientName;
         this.exchangeRate = builder.exchangeRate;
+        this.recipientAccountNo = builder.recipientAccountNo;
+    }
+
+    /**
+     * called after user clicked the confirm transaction button, and api callback came successfully
+     */
+    public void transactionConfirmed() {
+        setTransProgress(NickelTransfer.TRANS_NEW_BORN);
+    }
+
+    /**
+     * called when user made payment and took the receipt photo
+     */
+    public void paymentMadeAndPhotoTaken(String receiptPhoto) {
+        setReceiptPhotoUrl(receiptPhoto);
+        setTransProgress(NickelTransfer.TRANS_PAYMENT_MADE);
+    }
+
+    /**
+     * called when receipt photo has been successfully uploaded
+     */
+    public void receiptUploaded() {
+        setTransProgress(NickelTransfer.TRANS_UPLOAD_COMPLETE);
+    }
+
+    /**
+     * called when sms confirmation came and funds are ready for collection
+     */
+    public void transactionReady() {
+        setTransProgress(NickelTransfer.TRANS_READY_COLLECTION);
+    }
+
+
+    /**
+     * As realmObject, changes must be done inside transaction
+     * @param transProgress
+     */
+    private void setTransProgress(final int transProgress) {
+        final NickelTransfer object = this;
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                object.transProgress = transProgress;
+            }
+        });
+    }
+
+    public void setReceiptPhotoUrl(final String receiptPhotoUrl) {
+        final NickelTransfer object = this;
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                object.receiptPhotoUrl = receiptPhotoUrl;
+            }
+        });
     }
 
     public String getReceiptPhotoUrl() {
         return receiptPhotoUrl;
-    }
-
-    public void setReceiptPhotoUrl(String receiptPhotoUrl) {
-        this.receiptPhotoUrl = receiptPhotoUrl;
     }
 
     public String getTransactionID() {
@@ -87,12 +138,12 @@ public class Transaction extends RealmObject{
         return transactionStatus;
     }
 
-    public int getTransProgress() {
-        return transProgress;
+    public String getRecipientAccountNo() {
+        return recipientAccountNo;
     }
 
-    public void setTransProgress(int transProgress) {
-        this.transProgress = transProgress;
+    public int getTransProgress() {
+        return transProgress;
     }
 
     public String getRecipientName() {
@@ -113,7 +164,7 @@ public class Transaction extends RealmObject{
     }
 
     /**
-     * A builder for the Profile class. Follows a fluent interface.
+     * A builder for the Profile class.
      */
     public static final class Builder {
 
@@ -124,47 +175,53 @@ public class Transaction extends RealmObject{
         private int transProgress;
         private String recipientName;
         private double exchangeRate;
+        private String recipientAccountNo;
 
         public Builder() {
         }
 
-        public Builder withID(String transactionID){
+        public Builder withID(String transactionID) {
             this.transactionID = transactionID;
             return this;
         }
 
-        public Builder withDate(String transactionDate){
+        public Builder withDate(String transactionDate) {
             this.transactionDate = transactionDate;
             return this;
         }
 
-        public Builder withAmount(String transactionAmount){
+        public Builder withAmount(String transactionAmount) {
             this.transactionAmount = transactionAmount;
             return this;
         }
 
-        public Builder withStatus(String transactionStatus){
+        public Builder withStatus(String transactionStatus) {
             this.transactionStatus = transactionStatus;
             return this;
         }
 
-        public Builder withProgress(int progress){
-            this.transProgress = transProgress;
+        public Builder withProgress(int progress) {
+            this.transProgress = progress;
             return this;
         }
 
-        public Builder withRecipientName(String recipientName){
+        public Builder withRecipientName(String recipientName) {
             this.recipientName = recipientName;
             return this;
         }
 
-        public Builder withExchangeRate(double exchangeRate){
+        public Builder withExchangeRate(double exchangeRate) {
             this.exchangeRate = exchangeRate;
             return this;
         }
 
-        public Transaction build() {
-            return new Transaction(this);
+        public Builder withRecipientAccount(String recipientAccount) {
+            this.recipientAccountNo = recipientAccount;
+            return this;
+        }
+
+        public NickelTransfer build() {
+            return new NickelTransfer(this);
         }
     }
 }

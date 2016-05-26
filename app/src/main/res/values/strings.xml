@@ -33,7 +33,7 @@
     <string name="submit">Submit</string>
     <string name="date_of_birth">Date of birth</string>
     <string name="my_info">My Information</string>
-    <string name="complete_profile_first">Sorry, you need to complete your profile before making a new transaction. Proceed to complete your profile now?</string>
+    <string name="complete_profile_first">Oops, you need to complete your profile before making a new transaction. \n\nProceed to complete your profile now?</string>
 
     <string name="trans_id">Transaction ID: </string>
 
@@ -48,5 +48,8 @@
     <string name="privacy_message_1">By selecting to "Join Nickel", you are agreeing to our</string>
     <string name="user_agreement">User Agreement</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="uob_instruction">Please proceed to transfer SGD %d at the nearest UOB Cash Deposit Machines</string>
+    <string name="uob_instruction">Please proceed to transfer %s SGD at the nearest UOB Cash Deposit Machines</string>
+    <string name="cstore_instruction">Please proceed to pay %s SGD at the nearest convenient store using the barcode</string>
+    <string name="transfer_to">Transfer to: %s</string>
+    <string name="account_no">Account No: %s</string>
 </resources>

@@ -66,6 +66,7 @@ public class CaptureActivity extends AppCompatActivity {
     private int requestCode = -1;
     private IDCardOverlay idCardOverlay;
     private int rotation;
+    private TextView tvTop;
 
     private CameraHandlerThread mThread = null;
 
@@ -116,6 +117,17 @@ public class CaptureActivity extends AppCompatActivity {
         imageType = getIntent().getIntExtra(EXTRA_IMAGE_TYPE, IMAGE_PROFILE);
         requestCode = getIntent().getIntExtra(EXTRA_REQUEST_CODE, -1);
 
+        Log.d(TAG, "onResume: imageType " + imageType);
+        if (imageType == IMAGE_PROFILE) {
+            // for ID card overlay
+            idCardOverlay.setVisibility(View.VISIBLE);
+            tvTop.setText("Please place your ID inside the frame");
+        } else {
+            // for receipt overlay
+            idCardOverlay.setVisibility(View.GONE);
+            tvTop.setText("Please place your Receipt inside the frame");
+        }
+
         if (checkCameraHardware(getApplicationContext()))
             checkCameraPermission();
         else {
@@ -123,6 +135,25 @@ public class CaptureActivity extends AppCompatActivity {
             finish();
         }
 
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        imageType = getIntent().getIntExtra(EXTRA_IMAGE_TYPE, IMAGE_PROFILE);
+        requestCode = getIntent().getIntExtra(EXTRA_REQUEST_CODE, -1);
+
+        Log.d(TAG, "onNewIntent: imageType " + imageType);
+        if (imageType == IMAGE_PROFILE) {
+            // for ID card overlay
+            idCardOverlay.setVisibility(View.VISIBLE);
+            tvTop.setText("Please place your ID inside the frame");
+        } else {
+            // for receipt overlay
+            idCardOverlay.setVisibility(View.GONE);
+            tvTop.setText("Please place your Receipt inside the frame");
+        }
     }
 
     private void checkCameraPermission() {
@@ -203,7 +234,7 @@ public class CaptureActivity extends AppCompatActivity {
 
         idCardOverlay = (IDCardOverlay) findViewById(R.id.overlay_IDCard);
         preview = (FrameLayout) findViewById(R.id.camera_preview);
-        TextView tvTop = (TextView) findViewById(R.id.tvTop);
+        tvTop = (TextView) findViewById(R.id.tvTop);
         cancelButton = (Button) findViewById(R.id.btnCancel);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,16 +250,6 @@ public class CaptureActivity extends AppCompatActivity {
                 mCamera.takePicture(null, null, mPicture);
             }
         });
-
-        if (imageType == IMAGE_PROFILE) {
-            // for ID card overlay
-            idCardOverlay.setVisibility(View.VISIBLE);
-            tvTop.setText("Please place your ID inside the frame");
-        } else {
-            // for receipt overlay
-            idCardOverlay.setVisibility(View.GONE);
-            tvTop.setText("Please place your Receipt inside the frame");
-        }
     }
 
     /**

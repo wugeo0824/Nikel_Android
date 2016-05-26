@@ -6,32 +6,33 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceFragment;
 import com.media2359.nickel.R;
 import com.media2359.nickel.activities.TransactionActivity;
-import com.media2359.nickel.model.Transaction;
+import com.media2359.nickel.model.NickelTransfer;
 
 import java.util.List;
 
 /**
  * Created by Xijun on 25/4/16.
  */
-public class HistoryMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<Transaction>, HistoryView, HistoryPresenter>
+public class HistoryMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<NickelTransfer>, HistoryView, HistoryPresenter>
         implements HistoryView, SwipeRefreshLayout.OnRefreshListener, HistoryMVPAdapter.HistoryItemClickListener {
 
     RecyclerView rvHistory;
+    TextView emptyView;
 
     HistoryMVPAdapter historyAdapter;
 
     public static HistoryMVPFragment newInstance() {
-        
+
         Bundle args = new Bundle();
-        
+
         HistoryMVPFragment fragment = new HistoryMVPFragment();
         fragment.setArguments(args);
         return fragment;
@@ -47,7 +48,8 @@ public class HistoryMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         contentView.setOnRefreshListener(this);
-        historyAdapter = new HistoryMVPAdapter(getActivity(),this);
+        emptyView = (TextView) view.findViewById(R.id.emptyView);
+        historyAdapter = new HistoryMVPAdapter(getActivity(), this);
         rvHistory = (RecyclerView) view.findViewById(R.id.rvHistory);
         rvHistory.setHasFixedSize(true);
         rvHistory.setItemAnimator(new DefaultItemAnimator());
@@ -65,29 +67,31 @@ public class HistoryMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<
     public void showContent() {
         super.showContent();
         contentView.setRefreshing(false);
+        emptyView.setVisibility(View.GONE);
     }
 
     @Override
     public void showError(Throwable e, boolean pullToRefresh) {
         super.showError(e, pullToRefresh);
         contentView.setRefreshing(false);
+        emptyView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setData(List<NickelTransfer> data) {
+        historyAdapter.setTransactionsList(data);
     }
 
     @Override
     public void showLoading(boolean pullToRefresh) {
         super.showLoading(pullToRefresh);
         contentView.setRefreshing(pullToRefresh);
+        emptyView.setVisibility(View.GONE);
     }
 
     @Override
     public HistoryPresenter createPresenter() {
         return new HistoryPresenter();
-    }
-
-    @Override
-    public void setData(List<Transaction> data) {
-        historyAdapter.setTransactionsList(data);
-        historyAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -101,7 +105,16 @@ public class HistoryMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<
     }
 
     @Override
-    public void OnItemClick(RecyclerView.ViewHolder viewHolder, Transaction transaction) {
-        TransactionActivity.startTransactionActivity(getActivity(), transaction);
+    public void OnItemClick(RecyclerView.ViewHolder viewHolder, NickelTransfer transaction) {
+        TransactionActivity.startTransactionActivity(getActivity(), transaction, viewHolder.getAdapterPosition());
+    }
+
+    @Override
+    public void showEmptyView() {
+        contentView.setRefreshing(false);
+        errorView.setVisibility(View.GONE);
+        loadingView.setVisibility(View.GONE);
+        contentView.setVisibility(View.GONE);
+        emptyView.setVisibility(View.VISIBLE);
     }
 }

@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.media2359.nickel.R;
-import com.media2359.nickel.model.Transaction;
+import com.media2359.nickel.model.NickelTransfer;
 import com.media2359.nickel.ui.viewholder.TransactionHistoryViewHolder;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,11 +18,11 @@ import java.util.List;
  */
 public class HistoryMVPAdapter extends RecyclerView.Adapter<TransactionHistoryViewHolder> {
 
-    List<Transaction> transactionsList = new ArrayList<>();
+    List<NickelTransfer> transactionsList = Collections.emptyList();
     Context context;
 
     public interface HistoryItemClickListener {
-        void OnItemClick(RecyclerView.ViewHolder viewHolder, Transaction transaction);
+        void OnItemClick(RecyclerView.ViewHolder viewHolder, NickelTransfer transaction);
     }
 
     private HistoryItemClickListener historyItemClickListener;
@@ -42,7 +42,7 @@ public class HistoryMVPAdapter extends RecyclerView.Adapter<TransactionHistoryVi
 
     @Override
     public void onBindViewHolder(final TransactionHistoryViewHolder holder, int position) {
-        final Transaction transaction = transactionsList.get(position);
+        final NickelTransfer transaction = transactionsList.get(position);
         holder.bindItem(transaction);
         holder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,11 +57,8 @@ public class HistoryMVPAdapter extends RecyclerView.Adapter<TransactionHistoryVi
         return transactionsList.size();
     }
 
-    public List<Transaction> getTransactionsList() {
-        return transactionsList;
-    }
-
-    public void setTransactionsList(List<Transaction> transactionsList) {
+    public void setTransactionsList(List<NickelTransfer> transactionsList) {
         this.transactionsList = transactionsList;
+        notifyDataSetChanged();
     }
 }

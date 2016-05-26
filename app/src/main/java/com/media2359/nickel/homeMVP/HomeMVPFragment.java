@@ -28,8 +28,8 @@ import com.media2359.nickel.adapter.RecipientAdapter;
 import com.media2359.nickel.fragments.ProfileFragment;
 import com.media2359.nickel.fragments.RecipientDetailFragment;
 import com.media2359.nickel.model.MyProfile;
+import com.media2359.nickel.model.NickelTransfer;
 import com.media2359.nickel.model.Recipient;
-import com.media2359.nickel.model.Transaction;
 import com.media2359.nickel.ui.customview.ThemedSwipeRefreshLayout;
 import com.media2359.nickel.utils.DialogUtils;
 import com.media2359.nickel.utils.DisplayUtils;
@@ -61,10 +61,7 @@ public class HomeMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<Rec
     private double exchangeRate = 9679.13d; // 1SGD = [exchangeRate] IDR
     private double getAmount = 0d, fee = 7d, totalAmount = 0d;
     private ThemedSwipeRefreshLayout srl;
-    private Transaction currentTransaction;
-
-    private Realm realm;
-
+    private NickelTransfer currentTransaction;
 
     public static HomeMVPFragment newInstance() {
 
@@ -89,7 +86,7 @@ public class HomeMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<Rec
         rvHome = (RecyclerView) view.findViewById(R.id.rvRecipients);
         rvHome.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvHome.setHasFixedSize(true);
-        recipientAdapter = new RecipientAdapter(getActivity(), recipientList);
+        recipientAdapter = new RecipientAdapter(getActivity());
         recipientAdapter.setOnItemClickListener(this);
         rvHome.setItemAnimator(new DefaultItemAnimator());
         rvHome.setAdapter(recipientAdapter);
@@ -113,7 +110,7 @@ public class HomeMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<Rec
         tvAddRecipient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainActivity.switchFragment(RecipientDetailFragment.newInstance(null), true);
+                mainActivity.switchFragment(RecipientDetailFragment.newInstance(RecipientDetailFragment.NO_RECIPIENT), true);
             }
         });
 
@@ -138,15 +135,11 @@ public class HomeMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<Rec
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(getActivity()).build();
-        Realm.deleteRealm(realmConfiguration);
-        realm = Realm.getInstance(realmConfiguration);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        realm.close();
     }
 
     @Override
@@ -249,9 +242,9 @@ public class HomeMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<Rec
         }
     };
 
-    private Transaction makeTransaction(Recipient recipient) {
+    private NickelTransfer makeTransaction(Recipient recipient) {
 
-        Transaction.Builder builder = new Transaction.Builder();
+        NickelTransfer.Builder builder = new NickelTransfer.Builder();
 
         SimpleDateFormat sdf = new SimpleDateFormat("MMM MM dd, yyyy h:mm a", Locale.getDefault());
         String today = sdf.format(new Date().getTime());
@@ -262,7 +255,7 @@ public class HomeMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<Rec
                 .withID("asijdaopkf")
                 .withRecipientName(recipient.getName())
                 .withStatus("This is payment status")
-                .withProgress(Transaction.TRANS_DRAFT)
+                .withProgress(NickelTransfer.TRANS_DRAFT)
                 .build();
 
         return currentTransaction;
@@ -327,7 +320,7 @@ public class HomeMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<Rec
     }
 
     @Override
-    public void showTransactionDetailScreen(Transaction transaction) {
+    public void showTransactionDetailScreen(NickelTransfer transaction) {
 
     }
 
@@ -368,9 +361,9 @@ public class HomeMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<Rec
 
     @Override
     protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-        if (e instanceof IOException){
+        if (e instanceof IOException) {
             return "You are offline.";
-        }else{
+        } else {
             return e.getLocalizedMessage();
         }
     }
