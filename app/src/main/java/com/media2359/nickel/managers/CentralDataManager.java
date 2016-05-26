@@ -42,7 +42,7 @@ public class CentralDataManager implements RealmChangeListener<RealmResults<Reci
 
     private CentralDataManager() {
         realm = Realm.getDefaultInstance();
-        recipientList = realm.where(Recipient.class).findAllAsync();
+        recipientList = realm.where(Recipient.class).findAllSorted("ID");
         recipientList.addChangeListener(this);
     }
 

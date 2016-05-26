@@ -166,7 +166,7 @@
                         android:layout_alignTop="@+id/tvFees"
                         android:layout_marginRight="5dp"
                         android:layout_toLeftOf="@+id/tvSGD2"
-                        android:text="7.00"
+                        android:text="8.00"
                         android:textSize="@dimen/font_size_medium" />
 
                     <com.media2359.nickel.ui.customview.CustomTextView

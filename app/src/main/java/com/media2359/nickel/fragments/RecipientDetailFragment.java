@@ -3,6 +3,8 @@ package com.media2359.nickel.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +79,31 @@ public class RecipientDetailFragment extends BaseFragment {
             }
         });
 
+        pfBankAgain.removeDefaultTextWatchers();
+        pfBankAgain.addTextWatcher(bankAgainWatcher);
     }
+
+    private TextWatcher bankAgainWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (s.toString().equals(pfBankAccount.getInput())){
+                pfBankAgain.showCompletedStatus(true);
+            }else {
+                pfBankAgain.showCompletedStatus(false);
+                pfBankAgain.showErrorMessage(true,"Bank account entered does not match");
+            }
+        }
+    };
 
     /**
      * On button save changes click

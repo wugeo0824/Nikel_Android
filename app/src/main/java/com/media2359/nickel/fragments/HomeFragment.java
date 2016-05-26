@@ -39,7 +39,6 @@ import com.media2359.nickel.utils.MistUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by Xijun on 10/3/16.
@@ -58,7 +57,6 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     private double getAmount = 0d, fee = 7d, totalAmount = 0d;
     private ThemedSwipeRefreshLayout srl;
     private NickelTransfer currentTransaction;
-    private int previousDataSize = -1;
 
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
@@ -210,7 +208,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
 
         String today = MistUtils.getTodayStringInFormat();
         //TODO: real ID
-        currentTransaction = builder.withAmount(tvGetAmount.getText().toString())
+        currentTransaction = builder.withAmount(etSendAmount.getText().toString())
                 .withDate(today)
                 .withExchangeRate(exchangeRate)
                 .withID("asijdaopkf")
@@ -261,10 +259,10 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
 
         Log.d(TAG, "OnEvent: " + CentralDataManager.getInstance().getAllRecipients().size());
 
-        if (onRecipientsChangedEvent.isSuccess()){
+        if (onRecipientsChangedEvent.isSuccess()) {
             recipientAdapter.notifyDataSetChanged();
             showListOfRecipient(!CentralDataManager.getInstance().getAllRecipients().isEmpty());
-        }else {
+        } else {
             Toast.makeText(getActivity(), "Sorry, internet connection is poor, please try again", Toast.LENGTH_SHORT).show();
         }
 
@@ -395,8 +393,6 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
             tvAddRecipient.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_alert, 0, 0, 0);
         }
     }
-
-
 
 
     @Override

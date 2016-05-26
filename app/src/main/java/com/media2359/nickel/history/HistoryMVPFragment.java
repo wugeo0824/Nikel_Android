@@ -106,7 +106,7 @@ public class HistoryMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<
 
     @Override
     public void OnItemClick(RecyclerView.ViewHolder viewHolder, NickelTransfer transaction) {
-        TransactionActivity.startTransactionActivity(getActivity(), transaction, viewHolder.getAdapterPosition());
+        TransactionActivity.startTransactionActivity(getActivity(), transaction, -1);
     }
 
     @Override

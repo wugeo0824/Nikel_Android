@@ -17,55 +17,13 @@ import io.realm.Realm;
 public class HistoryPresenter extends MvpBasePresenter<HistoryView> {
 
     List<NickelTransfer> allTransactions = new ArrayList<>();
-//    private boolean isDiskReady = false;
-//    private boolean isServerReady = false;
-//    private boolean isApiSuccess = false;
-
-//    private Realm realm = Realm.getDefaultInstance();
 
     public void loadHistory(final boolean pullToRefresh) {
         getView().showLoading(pullToRefresh);
-
-//        //reset the booleans. no need to reset the disk flag, since we only want to load all of them once per app launch
-//        if (pullToRefresh){
-//            isServerReady = false;
-//        }
-
         loadTransactionsFromServer();
-//        loadTransactionsFromDisk();
     }
-
-    @Override
-    public void attachView(HistoryView view) {
-        super.attachView(view);
-        //EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void detachView(boolean retainInstance) {
-        super.detachView(retainInstance);
-        //EventBus.getDefault().unregister(this);
-        //allTransactions.removeChangeListener(this);
-        //allTransactions = null;
-        //realm.close();
-    }
-
-//    @Subscribe
-//    public void onEvent(OnTransactionsLoadedEvent event) {
-//
-//        // if internet loading failed, show error message, but we still have disk transactions to display
-//        if (!event.isSuccess()){
-//            getView().showError(event.getThrowable(), true);
-//        }
-//
-//        //getView().setData(event.getTransactions());
-//        getView().showContent();
-//    }
 
     private void notifyLoadingComplete() {
-//        if (!isServerReady || !isDiskReady)
-//            return;
-
         if (allTransactions == null || allTransactions.isEmpty()) {
             getView().showEmptyView();
         } else {
@@ -75,48 +33,17 @@ public class HistoryPresenter extends MvpBasePresenter<HistoryView> {
     }
 
 
-//    public void loadTransactionsFromDisk() {
-//        if (isDiskReady)
-//            return;
-//
-//        RealmQuery<Transaction> query = realm.where(Transaction.class);
-//        allTransactions = query.findAll();
-//        isDiskReady = true;
-//        notifyLoadingComplete();
-//        allTransactions.addChangeListener(this);
-//    }
-
 
     public void loadTransactionsFromServer() {
+        // TODO call api
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 allTransactions.addAll(mockData());
-                //addDataToRealm(mockData());
-//                isServerReady = true;
-//                isApiSuccess = false;
                 notifyLoadingComplete();
-                //syncDiskAndServerContent();
             }
         }, 500);
     }
-
-//    private void addDataToRealm(final List<Transaction> data) {
-//        realm.executeTransaction(new Realm.Transaction() {
-//            @Override
-//            public void execute(Realm realm) {
-//                realm.copyToRealmOrUpdate(data);
-//            }
-//        });
-//    }
-
-//    public void syncDiskAndServerContent() {
-//
-//        if (!isDiskReady || !isServerReady)
-//            return;
-//
-//        notifyLoadingComplete();
-//    }
 
     private List<NickelTransfer> mockData() {
 

@@ -18,9 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.media2359.nickel.R;
+import com.media2359.nickel.activities.CaptureActivity;
 import com.media2359.nickel.event.OnProfileChangedEvent;
 import com.media2359.nickel.model.MyProfile;
-import com.media2359.nickel.activities.CaptureActivity;
 import com.media2359.nickel.ui.customview.ProfileField;
 import com.media2359.nickel.utils.BitmapUtils;
 import com.media2359.nickel.utils.Const;
@@ -63,8 +63,8 @@ public class ProfileFragment extends BaseFragment {
         pfDocumentID = (ProfileField) view.findViewById(R.id.pfDocumentID);
         pfDocTypes = (ProfileField) view.findViewById(R.id.pfDocType);
 
-        pfDOB.setShouldIntercept(true,ProfileField.POPUP_TYPE_CALENDAR);
-        pfDocTypes.setShouldIntercept(true,ProfileField.POPUP_TYPE_LIST_DIALOG);
+        pfDOB.setShouldIntercept(true, ProfileField.POPUP_TYPE_CALENDAR);
+        pfDocTypes.setShouldIntercept(true, ProfileField.POPUP_TYPE_LIST_DIALOG);
 
         ivIDFront = (ImageView) view.findViewById(R.id.ivIDFront);
         ivIDBack = (ImageView) view.findViewById(R.id.ivIDBack);
@@ -129,7 +129,7 @@ public class ProfileFragment extends BaseFragment {
 //            return false;
 //        }
 
-        if (pfDocTypes.getInput().isEmpty()){
+        if (pfDocTypes.getInput().isEmpty()) {
             pfDocTypes.requestFocus();
             return false;
         }
@@ -222,6 +222,10 @@ public class ProfileFragment extends BaseFragment {
         ivIDFront.setClickable(false);
         ivIDBack.setEnabled(false);
         ivIDBack.setClickable(false);
+        tvIDFront.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ico_ok), null, null, null);
+        tvIDFront.setText("");
+        tvIDBack.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ico_ok), null, null, null);
+        tvIDBack.setText("");
     }
 
     private void changeProfileStatus(int status) {
@@ -282,6 +286,7 @@ public class ProfileFragment extends BaseFragment {
 
             ivIDFront.setImageBitmap(thumbImage);
             tvIDFront.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ico_ok), null, null, null);
+            tvIDFront.setText("");
 
         } else if ((requestCode == Const.REQUEST_PICTURE_FROM_CAMERA_BACK) && (resultCode == Activity.RESULT_OK)) {
             Log.d(TAG, "Image selected from camera");
@@ -296,6 +301,7 @@ public class ProfileFragment extends BaseFragment {
             Log.d(TAG, "onImageTakenFromCamera: back url is " + backPhotoUrl);
             ivIDBack.setImageBitmap(thumbImage);
             tvIDBack.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ico_ok), null, null, null);
+            tvIDBack.setText("");
         }
     }
 

@@ -143,6 +143,14 @@ public class ProfileField extends RelativeLayout {
         }
     };
 
+    public void removeDefaultTextWatchers(){
+        etInputLayout.removeTextChangedListener(textValidationWatcher);
+    }
+
+    public void addTextWatcher(TextWatcher textWatcher) {
+        etInputLayout.addTextChangedListener(textWatcher);
+    }
+
     public boolean validateInput() {
         if (etInputLayout.getText().toString().length() > 3) {
             showCompletedStatus(true);

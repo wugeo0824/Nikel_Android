@@ -64,7 +64,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         setContentView(R.layout.activity_main);
 
 
-
         if (checkCameraHardware(getApplicationContext()))
             checkCameraPermission();
         else {
@@ -113,8 +112,8 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
 
     private void showCameraRationale() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("This app requires your phone camera to capture photos of your ID card and receipt. \n Please grant permission for this app to work properly.");
-        builder.setTitle("Alert!");
+        builder.setMessage("This app requires your phone camera to capture photos of your ID card and receipt. \n\nPlease grant permission for this app to work properly.");
+        builder.setTitle("Alert");
         builder.setCancelable(true);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -286,7 +285,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
 
     private void showSignOutDialog() {
 
-        if (dialog !=null && dialog.isShowing())
+        if (dialog != null && dialog.isShowing())
             dialog.dismiss();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
