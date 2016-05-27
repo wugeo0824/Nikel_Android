@@ -14,7 +14,7 @@
         android:layout_above="@+id/centerAnchor"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="140dp"
+        android:layout_marginBottom="80dp"
         android:layout_marginTop="@dimen/login_logo_top_margin"
         android:scaleType="fitCenter"
         android:src="@drawable/logo_whole_small" />
@@ -40,7 +40,7 @@
         android:id="@+id/rlLoginContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true">
+        android:layout_below="@+id/centerAnchor">
 
         <ImageView
             android:id="@+id/ivPhone"
@@ -166,6 +166,6 @@
         style="@style/PinkButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="30dp"
         android:text="@string/sign_in" />
 </RelativeLayout>

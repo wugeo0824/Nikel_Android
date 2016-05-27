@@ -1,96 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/home_background"
-    android:orientation="vertical"
-    android:padding="@dimen/keyline_16">
-
-    <ImageView
-        android:id="@+id/ivBarcode"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/keyline_12"
-        android:src="@drawable/barcode_tattoo_by_emmersallday" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/ivBarcode"
-        android:layout_marginBottom="@dimen/keyline_12"
-        android:background="@color/grey" />
-
-    <com.media2359.nickel.ui.customview.CustomTextView
-        android:id="@+id/tvInstruction"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/divider"
-        android:lineSpacingExtra="5dp"
-        android:text="@string/uob_instruction"
-        android:textSize="@dimen/font_size_large" />
-
-    <ImageView
-        android:id="@+id/ivSevenLogo"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@+id/tvInstruction"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="20dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/logo_7_eleven_03" />
-
-    <com.media2359.nickel.ui.customview.CustomButton
-        android:id="@+id/btnStepGuide"
-        style="@style/StepsButton"
-        android:layout_above="@+id/btnCStoreMap"
-        android:layout_gravity="bottom"
-        android:drawableLeft="@drawable/icn_step"
-        android:text="Step by Step Guide" />
+    android:fillViewport="true">
 
     <LinearLayout
-        android:id="@+id/btnCStoreMap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnTakeReceipt"
-        android:layout_marginBottom="@dimen/keyline_12"
-        android:background="@drawable/button_card"
-        android:clickable="true"
-        android:orientation="vertical">
-
-        <com.media2359.nickel.ui.customview.CustomTextView
-            style="@style/StepsButton"
-            android:minHeight="45dp"
-            android:paddingLeft="10dp"
-            android:layout_marginLeft="6dp"
-            android:paddingRight="10dp"
-            android:layout_marginRight="6dp"
-            android:layout_marginBottom="0dp"
-            android:background="@android:color/transparent"
-            android:textColor="@color/color_black_b5"
-            android:drawableLeft="@drawable/icn_near"
-            android:text="Nearest Convenience Store" />
+        android:background="@color/home_background"
+        android:orientation="vertical"
+        android:padding="@dimen/keyline_16">
 
         <ImageView
+            android:id="@+id/ivBarcode"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:minHeight="70dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/keyline_12"
+            android:layout_weight="1"
+            android:src="@drawable/barcode_tattoo_by_emmersallday" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/keyline_12"
+            android:background="@color/grey" />
+
+        <com.media2359.nickel.ui.customview.CustomTextView
+            android:id="@+id/tvInstruction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/uob_instruction"
+            android:textSize="@dimen/font_size_large" />
+
+        <ImageView
+            android:id="@+id/ivSevenLogo"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="20dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/img_map" />
+            android:src="@drawable/logo_7_eleven_03" />
+
+        <com.media2359.nickel.ui.customview.CustomButton
+            android:id="@+id/btnStepGuide"
+            style="@style/StepsButton"
+            android:layout_gravity="bottom"
+            android:drawableLeft="@drawable/icn_step"
+            android:text="Step by Step Guide" />
+
+        <LinearLayout
+            android:id="@+id/btnCStoreMap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/keyline_12"
+            android:background="@drawable/button_card"
+            android:clickable="true"
+            android:orientation="vertical">
+
+            <com.media2359.nickel.ui.customview.CustomTextView
+                style="@style/StepsButton"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/icn_near"
+                android:minHeight="45dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Nearest Convenience Store"
+                android:textColor="@color/color_black_b5" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/img_map" />
+
+        </LinearLayout>
+
+
+        <com.media2359.nickel.ui.customview.CustomButton
+            android:id="@+id/btnTakeReceipt"
+            style="@style/StepsButton"
+            android:drawableLeft="@drawable/icn_picture"
+            android:text="Please take a picture of the Receipt" />
+
 
     </LinearLayout>
 
-
-    <com.media2359.nickel.ui.customview.CustomButton
-        android:id="@+id/btnTakeReceipt"
-        style="@style/StepsButton"
-        android:layout_alignParentBottom="true"
-        android:drawableLeft="@drawable/icn_picture"
-        android:text="Please take a picture of the Receipt" />
-
-
-</RelativeLayout>
+</ScrollView>

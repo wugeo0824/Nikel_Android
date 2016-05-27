@@ -144,11 +144,11 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         }
     }
 
-    @Override
-    public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onPostCreate(savedInstanceState, persistentState);
-        mDrawerToggle.syncState();
-    }
+//    @Override
+//    public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+//        super.onPostCreate(savedInstanceState, persistentState);
+//        mDrawerToggle.syncState();
+//    }
 
     private void initViews() {
         manager = getSupportFragmentManager();
@@ -362,12 +362,13 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        mDrawerToggle.syncState();
     }
 
     @Override
     protected void onStop() {
-        super.onStop();
         EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Subscribe

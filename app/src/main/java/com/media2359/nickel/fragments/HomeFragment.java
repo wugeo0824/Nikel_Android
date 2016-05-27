@@ -353,11 +353,13 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     private void hideMyProfile() {
         tvMyInfo.setVisibility(View.GONE);
         btnMyInfoEdit.setVisibility(View.GONE);
+        srl.setEnabled(true);
     }
 
     private void showMyProfile() {
         tvMyInfo.setVisibility(View.VISIBLE);
         btnMyInfoEdit.setVisibility(View.VISIBLE);
+        srl.setEnabled(false);
     }
 
     private void getRecipients(boolean pullToRefresh) {
@@ -385,12 +387,13 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
             btnAddNewRecipient.setVisibility(View.GONE);
             tvAddRecipient.setText(getString(R.string.add_new_recipient));
             tvAddRecipient.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_add, 0, 0, 0);
-
+            srl.setEnabled(true);
         } else {
             rvHome.setVisibility(View.GONE);
             btnAddNewRecipient.setVisibility(View.VISIBLE);
             tvAddRecipient.setText(getString(R.string.recipient));
             tvAddRecipient.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_alert, 0, 0, 0);
+            srl.setEnabled(false);
         }
     }
 
