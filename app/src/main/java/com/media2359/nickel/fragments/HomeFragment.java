@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +79,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     }
 
     private void initViews(View view) {
+        // to prevent soft keyboard from resizing the top half
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
@@ -176,7 +178,13 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
             if (!TextUtils.isEmpty(s.toString())) {
                 double sendAmount = Double.parseDouble(s.toString().replaceAll(",", ""));
                 getAmount = Math.round(sendAmount * exchangeRate * 100.0) / 100.0;
-                tvGetAmount.setText(MistUtils.getFormattedString(getAmount));
+                String resultText = MistUtils.getFormattedString(getAmount);
+                if (resultText.length() > 14){
+                    tvGetAmount.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_size_get_amount_small));
+                }else{
+                    tvGetAmount.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_size_get_amount_big));
+                }
+                tvGetAmount.setText(resultText);
                 totalAmount = sendAmount + fee;
             } else {
                 tvGetAmount.setText("");

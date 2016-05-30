@@ -57,6 +57,7 @@
                         android:inputType="numberDecimal"
                         android:paddingBottom="@dimen/keyline_16"
                         android:paddingRight="@dimen/keyline_12"
+                        android:maxLength="12"
                         android:textColor="@color/black"
                         android:textSize="27sp"
                         tools:text="129038" />
@@ -116,6 +117,7 @@
                         android:layout_below="@+id/tvRecipientGets"
                         android:layout_marginRight="5dp"
                         android:layout_toLeftOf="@+id/tvIDR"
+                        android:singleLine="true"
                         android:gravity="bottom|left"
                         android:paddingBottom="@dimen/keyline_16"
                         android:textColor="@color/pink"

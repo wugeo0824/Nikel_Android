@@ -17,6 +17,9 @@
 
     <dimen name="font_size_transaction_details">16sp</dimen>
 
+    <dimen name="font_size_get_amount_big">27sp</dimen>
+    <dimen name="font_size_get_amount_small">17sp</dimen>
+
     <dimen name="bottom_status_height">72dp</dimen>
 
     <dimen name="radius">20dp</dimen>
