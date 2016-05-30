@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -77,6 +78,9 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     }
 
     private void initViews(View view) {
+        getActivity().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         rvHome = (RecyclerView) view.findViewById(R.id.rvRecipients);
         rvHome.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvHome.setHasFixedSize(true);
