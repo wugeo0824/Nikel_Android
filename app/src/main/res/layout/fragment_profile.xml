@@ -65,7 +65,7 @@
             app:inputType="text"
             app:errorMessage="Please enter your full address"
             app:ivLeftImageRes="@drawable/ico_address1"
-            app:tvHint="Street Address" />
+            app:tvHint="Local Address" />
 
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfCity"
@@ -189,7 +189,7 @@
                 android:text="@string/back_missing"
                 android:textSize="13sp" />
 
-            <ImageView
+            <com.media2359.nickel.ui.customview.PhotoPicassoImageView
                 android:id="@+id/ivIDFront"
                 android:layout_width="@dimen/card_holder_width"
                 android:layout_height="@dimen/card_holder_height"
@@ -199,7 +199,7 @@
                 android:layout_toLeftOf="@+id/photoCenter"
                 android:src="@drawable/id_missing_front" />
 
-            <ImageView
+            <com.media2359.nickel.ui.customview.PhotoPicassoImageView
                 android:id="@+id/ivIDBack"
                 android:layout_width="@dimen/card_holder_width"
                 android:layout_height="@dimen/card_holder_height"

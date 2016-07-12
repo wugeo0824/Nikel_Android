@@ -21,6 +21,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/keyline_16"
             android:layout_marginRight="@dimen/keyline_16"
+            android:background="@android:color/transparent"
             android:scaleType="centerInside"
             android:src="@drawable/ico_name_reversed" />
 
@@ -97,8 +98,7 @@
         android:id="@+id/btnSendMoney"
         style="?android:attr/buttonStyle"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="50dp"
         android:background="@drawable/card_expanded"
         android:clickable="true"
         android:visibility="gone">
@@ -109,7 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@null"
+            android:background="@android:color/transparent"
             android:clickable="false"
             android:drawableLeft="@drawable/ico_send"
             android:focusable="false"
@@ -121,4 +121,5 @@
             android:textColor="@color/white"
             android:textSize="12sp" />
     </FrameLayout>
+
 </LinearLayout>

@@ -78,7 +78,7 @@ public class CentralDataManager implements RealmChangeListener<RealmResults<Reci
     public List<Recipient> mockRecipients() {
 
         List<Recipient> mockList = new ArrayList<>();
-        Recipient a = new Recipient(0, "Husband", "BRI 281973021894", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
+        Recipient a = new Recipient(0, "Husband", "BRI 281973021894", "92227744", "That street", "That city", "21314", "That bank", "QWE 2132113");
         Recipient b = new Recipient(1, "Mother", "BRI 0123874123", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
         Recipient c = new Recipient(2, "Sister", "MYI 9012830912", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
         Recipient d = new Recipient(3, "Han", "SGW 0911298301", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
@@ -87,7 +87,7 @@ public class CentralDataManager implements RealmChangeListener<RealmResults<Reci
         c.setExpanded(false);
         d.setExpanded(false);
 
-        NickelTransfer aadd = new NickelTransfer("1238u9ashjd", "March 2, 2016", "500.00", "Funds Ready for Collection", NickelTransfer.TRANS_NEW_BORN, "Husband", 1235, "QWE 2132113");
+        NickelTransfer aadd = new NickelTransfer("1238u9ashjd", "March 2, 2016", "500.00", "Funds Ready for Collection", NickelTransfer.TRANS_NEW_BORN, a.getName(), 1235, a.getBankAccount());
         a.setCurrentTransaction(aadd);
         mockList.add(a);
         mockList.add(b);

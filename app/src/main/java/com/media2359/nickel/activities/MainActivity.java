@@ -19,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -345,10 +346,18 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
 
     @Override
     public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+            mDrawerLayout.closeDrawers();
+            return;
+        }
+
         super.onBackPressed();
+
         if (getCurrentFragment() != null) {
             updateDrawerItem(getCurrentFragment());
         }
+
+
     }
 
     private void updateDrawerItem(Fragment fragment) {

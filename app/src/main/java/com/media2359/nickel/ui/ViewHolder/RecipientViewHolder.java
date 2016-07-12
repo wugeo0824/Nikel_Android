@@ -31,7 +31,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder {
     public RecipientViewHolder(View itemView) {
         super(itemView);
 
-        ((LinearLayout) itemView).setLayoutTransition(new LayoutTransition());
+        //((LinearLayout) itemView).setLayoutTransition(new LayoutTransition());
         tvRecipientName = (TextView) itemView.findViewById(R.id.tvRecipientName);
         tvRecipientBank = (TextView) itemView.findViewById(R.id.tvRecipientBank);
         tvSendMoney = (TextView) itemView.findViewById(R.id.tvSendMoney);
@@ -60,7 +60,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder {
 
         tvSendMoney.setText(String.format(itemView.getContext().getString(R.string.send_money_to), recipient.getName()));
 
-        itemView.setOnClickListener(switchLayout);
+        //itemView.setOnClickListener(switchLayout);
 
 
         setEnabledOrNot(recipient.isGreyedOut());
@@ -104,10 +104,6 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder {
         optionsShown = false;
     }
 
-    public ItemExpandCollapseListener getExpandCollapseListener() {
-        return expandCollapseListener;
-    }
-
     public void setExpandCollapseListener(ItemExpandCollapseListener expandCollapseListener) {
         this.expandCollapseListener = expandCollapseListener;
     }
@@ -143,7 +139,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder {
         expandCollapseListener.onItemCollapsed(getAdapterPosition());
     }
 
-    private void expandOrCollapse() {
+    public void expandOrCollapse() {
         if (expanded) {
             collapse();
         } else {

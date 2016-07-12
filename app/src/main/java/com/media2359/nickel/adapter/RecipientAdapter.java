@@ -7,12 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.media2359.nickel.R;
-import com.media2359.nickel.managers.CentralDataManager;
 import com.media2359.nickel.model.Recipient;
 import com.media2359.nickel.ui.viewholder.InProgressViewHolder;
 import com.media2359.nickel.ui.viewholder.RecipientViewHolder;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,12 +26,13 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private final static int VIEW_TYPE_NORMAL = 0;
     private final static int VIEW_TYPE_IN_PROGRESS = 1;
+    private final static int VIEW_TYPE_SPACER = 2;
 
     public RecipientAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
-    public void setData(List<Recipient> recipients){
+    public void setData(List<Recipient> recipients) {
         this.dataList = recipients;
     }
 
@@ -42,7 +41,7 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
-                View recipientView = inflater.inflate(R.layout.item_recipient_row_expanded, parent, false);
+                View recipientView = inflater.inflate(R.layout.item_recipient_row_expandable, parent, false);
                 RecipientViewHolder viewHolder = new RecipientViewHolder(recipientView);
                 viewHolder.setExpandCollapseListener(this);
                 return viewHolder;
@@ -58,8 +57,15 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         Recipient recipient = dataList.get(position);
 
         if (getItemViewType(position) == VIEW_TYPE_NORMAL) {
-            RecipientViewHolder normal = (RecipientViewHolder) holder;
+            final RecipientViewHolder normal = (RecipientViewHolder) holder;
             normal.bindItem(recipient);
+            normal.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    normal.expandOrCollapse();
+                    onItemClickListener.onItemExpandClick(holder.getAdapterPosition());
+                }
+            });
             normal.btnEditRecipient.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -79,9 +85,9 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
 
-            if (recipient.isExpanded()){
+            if (recipient.isExpanded()) {
                 normal.expand();
-            }else
+            } else
                 normal.collapse();
 
         } else if (getItemViewType(position) == VIEW_TYPE_IN_PROGRESS) {
@@ -100,7 +106,7 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public int getItemViewType(int position) {
         if (dataList.get(position).isInProgress()) {
             return VIEW_TYPE_IN_PROGRESS;
-        } else
+        }else
             return VIEW_TYPE_NORMAL;
     }
 
@@ -138,10 +144,6 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             lastExpandedPosition = -1;
     }
 
-    public RecipientAdapter.onItemClickListener getOnItemClickListener() {
-        return onItemClickListener;
-    }
-
     public void setOnItemClickListener(RecipientAdapter.onItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
@@ -167,6 +169,8 @@ public class RecipientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
          * User clicks view transaction button
          */
         void onTransactionClick(int position);
+
+        void onItemExpandClick(int position);
 
     }
 }

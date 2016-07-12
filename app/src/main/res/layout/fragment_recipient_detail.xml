@@ -92,7 +92,7 @@
             android:layout_below="@id/rlIDPhotoContainer"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/keyline_16"
-            android:text="@string/save_changes"
+            android:text="@string/submit"
             android:textAllCaps="false" />
 
 

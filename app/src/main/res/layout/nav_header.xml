@@ -4,7 +4,7 @@
     android:layout_height="65dp"
     android:gravity="bottom"
     android:orientation="horizontal"
-    android:background="@drawable/header_bg"
+    android:background="@android:color/transparent"
     android:paddingLeft="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
@@ -14,6 +14,7 @@
         android:layout_height="45dp"
         android:layout_gravity="center_vertical"
         android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
         android:src="@drawable/img_profile" />
 
     <com.media2359.nickel.ui.customview.CustomTextView

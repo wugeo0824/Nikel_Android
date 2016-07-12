@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -59,6 +58,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     private double getAmount = 0d, fee = 7d, totalAmount = 0d;
     private ThemedSwipeRefreshLayout srl;
     private NickelTransfer currentTransaction;
+    private LinearLayoutManager linearLayoutManager;
 
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
@@ -84,13 +84,14 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         rvHome = (RecyclerView) view.findViewById(R.id.rvRecipients);
-        rvHome.setLayoutManager(new LinearLayoutManager(getActivity()));
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        rvHome.setLayoutManager(linearLayoutManager);
         rvHome.setHasFixedSize(true);
         recipientAdapter = new RecipientAdapter(getActivity());
         recipientAdapter.setOnItemClickListener(this);
         recipientAdapter.setData(CentralDataManager.getInstance().getAllRecipients());
         rvHome.setAdapter(recipientAdapter);
-        rvHome.setItemAnimator(new DefaultItemAnimator());
+        //rvHome.setItemAnimator(new DefaultItemAnimator());
 
         srl = (ThemedSwipeRefreshLayout) view.findViewById(R.id.srlHome);
         srl.setOnRefreshListener(OnRefresh);
@@ -179,9 +180,9 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
                 double sendAmount = Double.parseDouble(s.toString().replaceAll(",", ""));
                 getAmount = Math.round(sendAmount * exchangeRate * 100.0) / 100.0;
                 String resultText = MistUtils.getFormattedString(getAmount);
-                if (resultText.length() > 14){
+                if (resultText.length() > 14) {
                     tvGetAmount.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_size_get_amount_small));
-                }else{
+                } else {
                     tvGetAmount.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.font_size_get_amount_big));
                 }
                 tvGetAmount.setText(resultText);
@@ -306,6 +307,11 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     public void onTransactionClick(int position) {
         Recipient recipient = CentralDataManager.getInstance().getRecipientAtPosition(position);
         TransactionActivity.startTransactionActivity(getActivity(), recipient.getCurrentTransaction(), position);
+    }
+
+    @Override
+    public void onItemExpandClick(int position) {
+        linearLayoutManager.scrollToPositionWithOffset(position, 20);
     }
 
     private void showPaymentConfirmationDialog(String message, final int position) {

@@ -27,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/font_size_large"
+            android:textColor="@color/dark_pink"
             tools:text="Transfer to:" />
 
         <com.media2359.nickel.ui.customview.CustomTextView
@@ -47,7 +48,14 @@
             android:layout_marginBottom="30dp"
             android:layout_marginTop="30dp"
             android:layout_weight="1"
-            android:src="@drawable/logo_uob_white" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/uob_logo" />
+
+        <com.media2359.nickel.ui.customview.CustomButton
+            android:id="@+id/btnTakeReceipt"
+            style="@style/StepsButton"
+            android:drawableLeft="@drawable/icn_picture"
+            android:text="Please take a picture of the Receipt" />
 
         <com.media2359.nickel.ui.customview.CustomButton
             android:id="@+id/btnStepGuide"
@@ -86,12 +94,6 @@
                 android:src="@drawable/img_map" />
 
         </LinearLayout>
-
-        <com.media2359.nickel.ui.customview.CustomButton
-            android:id="@+id/btnTakeReceipt"
-            style="@style/StepsButton"
-            android:drawableLeft="@drawable/icn_picture"
-            android:text="Please take a picture of the Receipt" />
 
     </LinearLayout>
 

@@ -408,4 +408,9 @@ public class HomeMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<Rec
     public void onTransactionClick(int position) {
 
     }
+
+    @Override
+    public void onItemExpandClick(int position) {
+
+    }
 }

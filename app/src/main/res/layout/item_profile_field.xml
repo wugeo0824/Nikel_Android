@@ -14,6 +14,7 @@
         android:layout_marginRight="@dimen/keyline_16"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
+        android:background="@android:color/transparent"
         android:src="@drawable/ic_person_black_24dp" />
 
     <com.media2359.nickel.ui.customview.CustomTextInputLayout

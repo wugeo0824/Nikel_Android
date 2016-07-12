@@ -268,6 +268,8 @@ public class ProfileFragment extends BaseFragment {
 
     @Override
     public void onPause() {
+        Picasso.with(getActivity()).cancelRequest(ivIDFront);
+        Picasso.with(getActivity()).cancelRequest(ivIDBack);
         super.onPause();
     }
 

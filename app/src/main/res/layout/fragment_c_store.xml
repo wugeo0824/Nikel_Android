@@ -47,6 +47,12 @@
             android:src="@drawable/logo_7_eleven_03" />
 
         <com.media2359.nickel.ui.customview.CustomButton
+            android:id="@+id/btnTakeReceipt"
+            style="@style/StepsButton"
+            android:drawableLeft="@drawable/icn_picture"
+            android:text="Please take a picture of the Receipt" />
+
+        <com.media2359.nickel.ui.customview.CustomButton
             android:id="@+id/btnStepGuide"
             style="@style/StepsButton"
             android:layout_gravity="bottom"
@@ -85,14 +91,6 @@
                 android:src="@drawable/img_map" />
 
         </LinearLayout>
-
-
-        <com.media2359.nickel.ui.customview.CustomButton
-            android:id="@+id/btnTakeReceipt"
-            style="@style/StepsButton"
-            android:drawableLeft="@drawable/icn_picture"
-            android:text="Please take a picture of the Receipt" />
-
 
     </LinearLayout>
 
