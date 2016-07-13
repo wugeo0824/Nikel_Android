@@ -3,6 +3,7 @@ package com.media2359.nickel.network;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -11,12 +12,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class NikelService {
 
-    static final String API_URL = "https://api.foursquare.com/";
+    static final String API_URL = "http://nickel-staging.ap-southeast-1.elasticbeanstalk.com";
 
-    private static NikelApi userlessManager;
+    private static NikelApi apiManager;
 
-    static NikelApi getUserlessApiManager() {
-        if(userlessManager == null) {
+    static NikelApi getApiManager() {
+        if(apiManager == null) {
+
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient httpClient = new OkHttpClient.Builder()
 //                    .addInterceptor(new Interceptor() {
@@ -29,6 +33,7 @@ public class NikelService {
 //                            return chain.proceed(request);
 //                        }
 //                    })
+                    .addInterceptor(interceptor)
                     .connectTimeout(10, TimeUnit.SECONDS)
                     .build();
 
@@ -38,15 +43,11 @@ public class NikelService {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-            userlessManager = retrofit.create(NikelApi.class);
+            apiManager = retrofit.create(NikelApi.class);
         }
 
-        return userlessManager;
+        return apiManager;
     }
 
-    interface NikelApi {
-
-        //TODO: apis go here
-    }
 }
 

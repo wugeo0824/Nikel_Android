@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -295,7 +294,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
                 //TODO sign out
-                UserSessionManager.SignOut();
+                UserSessionManager.getInstance().signOut();
                 backToLogin();
             }
         });

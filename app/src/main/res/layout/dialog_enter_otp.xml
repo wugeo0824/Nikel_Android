@@ -6,24 +6,16 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/keyline_16">
 
-    <!--<ImageView-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:id="@+id/ivLogo"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:scaleType="fitCenter"-->
-        <!--android:src="@drawable/logo_big" />-->
-
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvResetPassword"
         android:layout_marginTop="@dimen/keyline_12"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text="@string/reset_password_text" />
+        android:text="Please enter the One Time Password we sent to you via SMS" />
 
-    <com.media2359.nickel.ui.customview.PhoneNumberEditText
-        android:id="@+id/etPhoneNumber"
+    <com.media2359.nickel.ui.customview.CustomEditText
+        android:id="@+id/etOTP"
         android:layout_width="match_parent"
         android:drawableLeft="@drawable/ico_sm_phone_black"
         android:drawablePadding="@dimen/keyline_16"
@@ -31,15 +23,16 @@
         android:layout_marginTop="@dimen/keyline_12"
         android:layout_below="@+id/tvResetPassword"
         android:background="@color/home_background"
-        android:hint="@string/phone_number"
-        android:inputType="phone" />
+        android:hint="One Time Password"
+        android:inputType="text" />
 
 
     <com.media2359.nickel.ui.customview.CustomTextView
-        android:id="@+id/btnResetPassword"
+        android:id="@+id/btnSubmit"
+        android:layout_below="@+id/etOTP"
+        android:text="@string/submit"
         android:padding="12dp"
-        android:layout_below="@+id/etPhoneNumber"
-        android:text="@string/reset"
+        android:textAllCaps="true"
         android:textColor="@color/pink"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
@@ -48,11 +41,11 @@
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/btnCancelReset"
         android:padding="12dp"
-        android:layout_below="@+id/etPhoneNumber"
+        android:layout_below="@+id/etOTP"
         android:text="@string/cancel"
         android:textAllCaps="true"
         android:textColor="@color/text_color_normal"
-        android:layout_toLeftOf="@+id/btnResetPassword"
+        android:layout_toLeftOf="@+id/btnSubmit"
         android:layout_marginRight="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

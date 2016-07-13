@@ -52,16 +52,20 @@
             android:scaleType="fitCenter"
             android:src="@drawable/ico_sm_phone" />
 
-        <com.media2359.nickel.ui.customview.CustomEditText
+        <com.media2359.nickel.ui.customview.PhoneNumberEditText
             android:id="@+id/etPhoneLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/keyline_16"
             android:layout_toRightOf="@+id/ivPhone"
+            android:digits="+0123456789"
             android:hint="@string/phone_number"
+            android:imeOptions="actionNext"
             android:inputType="phone"
+            android:maxLength="20"
+            android:nextFocusDown="@+id/etPassword"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_large"
+            android:textSize="@dimen/font_size_medium"
             android:theme="@style/LoginField" />
 
         <ImageView
@@ -80,13 +84,13 @@
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/keyline_16"
             android:layout_alignLeft="@+id/etPhoneLogin"
             android:layout_below="@+id/etPhoneLogin"
+            android:layout_marginTop="@dimen/keyline_16"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_size_large"
+            android:textSize="@dimen/font_size_medium"
             android:theme="@style/LoginField" />
 
         <ImageView
@@ -107,13 +111,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/etPhoneLogin"
-            android:layout_marginTop="@dimen/keyline_16"
             android:layout_below="@+id/etPassword"
+            android:layout_marginTop="@dimen/keyline_16"
             android:hint="@string/re_enter_password"
             android:inputType="textPassword"
             android:textColor="@color/white"
+            android:textSize="@dimen/font_size_medium"
             android:theme="@style/LoginField"
-            android:textSize="@dimen/font_size_large"
             android:visibility="gone" />
 
         <!--<ImageView-->

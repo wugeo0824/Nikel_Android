@@ -47,7 +47,8 @@ dependencies {
         exclude group: 'stax', module: 'stax'
     }
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
-    //We are using this because we need to integrate with OKHTTP3. Once Picasso releases a new update with inbuilt support, we should be able to remove this
+
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'org.apache.directory.studio:org.apache.commons.io:2.4'

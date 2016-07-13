@@ -10,11 +10,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
@@ -25,9 +27,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.media2359.nickel.R;
+import com.media2359.nickel.event.OnForgotPasswordEvent;
+import com.media2359.nickel.event.OnLoginEvent;
+import com.media2359.nickel.event.OnLoginWithOtpEvent;
+import com.media2359.nickel.event.OnRegisterConsumerEvent;
+import com.media2359.nickel.managers.UserSessionManager;
+import com.media2359.nickel.network.RequestHandler;
 import com.media2359.nickel.utils.DialogUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * This handles login and sign up
@@ -35,6 +47,8 @@ import com.media2359.nickel.utils.DialogUtils;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
+
+    private String mobileNumber;
 
     private static final int ANIMATION_DURATION = 1500;
     private ImageView ivLogo, ivPasswordAgain;
@@ -44,6 +58,10 @@ public class LoginActivity extends AppCompatActivity {
     private RelativeLayout rlLoginContainer;
     private boolean animationPlayed = false;
     private boolean isLoginShowing = true;
+
+    AlertDialog alertDialog;
+    EditText etResetPhone, etOtp;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +92,9 @@ public class LoginActivity extends AppCompatActivity {
         rlLoginContainer = (RelativeLayout) findViewById(R.id.rlLoginContainer);
         rlLoginContainer.setLayoutTransition(new LayoutTransition());
         makeAllElementsHiding(true);
+
     }
+
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -123,10 +143,88 @@ public class LoginActivity extends AppCompatActivity {
                 .start();
     }
 
-    AlertDialog resetDialog;
-    EditText etResetPhone;
+    private void showEnterOtp() {
+
+        if (alertDialog != null && alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
+
+        // Use the Builder class for convenient dialog construction
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_enter_otp, null);
+        builder.setView(dialogView);
+
+        // Create the AlertDialog object and return it
+        alertDialog = builder.create();
+        TextView btnSubmit = (TextView) dialogView.findViewById(R.id.btnSubmit);
+        etOtp = (EditText) dialogView.findViewById(R.id.etOTP);
+        btnSubmit.setOnClickListener(onSubmitOTP);
+        dialogView.findViewById(R.id.btnCancelReset).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+
+    private View.OnClickListener onSubmitOTP = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //TODO
+            if (validOtp()){
+                if (alertDialog != null)
+                    alertDialog.dismiss();
+                progressDialog = showProgressDialog("", "Verifying...");
+                RequestHandler.loginWithOtp(mobileNumber, etOtp.getText().toString());
+            }
+        }
+    };
+
+    private boolean validOtp() {
+        if (TextUtils.isEmpty(etOtp.getText().toString())){
+            etOtp.setError("Please enter otp");
+            etOtp.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (alertDialog != null && alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        if (alertDialog != null && alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
+        if (progressDialog != null && progressDialog.isShowing()){
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+        super.onStop();
+    }
 
     private void showResetPassword() {
+
+        if (alertDialog != null && alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
 
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -135,28 +233,19 @@ public class LoginActivity extends AppCompatActivity {
         View dialogView = inflater.inflate(R.layout.dialog_reset_password, null);
         builder.setView(dialogView);
 
-
         // Create the AlertDialog object and return it
-        resetDialog = builder.create();
+        alertDialog = builder.create();
         TextView btnResetPassword = (TextView) dialogView.findViewById(R.id.btnResetPassword);
         etResetPhone = (EditText) dialogView.findViewById(R.id.etPhoneNumber);
+
         btnResetPassword.setOnClickListener(onResetClick);
         dialogView.findViewById(R.id.btnCancelReset).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetDialog.dismiss();
+                alertDialog.dismiss();
             }
         });
-        resetDialog.show();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (resetDialog != null && resetDialog.isShowing()) {
-            resetDialog.dismiss();
-        } else {
-            super.onBackPressed();
-        }
+        alertDialog.show();
     }
 
     private View.OnClickListener onResetClick = new View.OnClickListener() {
@@ -164,10 +253,11 @@ public class LoginActivity extends AppCompatActivity {
         public void onClick(View v) {
 
             if (etResetPhone.getText().length() > 5) {
-                if (resetDialog != null && resetDialog.isShowing())
-                    resetDialog.dismiss();
+                if (alertDialog != null && alertDialog.isShowing())
+                    alertDialog.dismiss();
 
-                resetPassword();
+                if (validPhone(etResetPhone))
+                    forgotPassword();
             } else {
                 etResetPhone.setError("Please enter full phone number");
             }
@@ -175,19 +265,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
-    private void resetPassword() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Submitting your request, please wait...");
-        progressDialog.show();
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                progressDialog.dismiss();
-                DialogUtils.showNickelDialog(LoginActivity.this, "Submitted");
-            }
-        }, 1500);
+    private void forgotPassword() {
+        progressDialog = showProgressDialog("", "Please wait...");
+        RequestHandler.forgotPassword(etResetPhone.getText().toString());
     }
 
     private void makeAllElementsHiding(boolean hide) {
@@ -205,14 +285,16 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private boolean validPhone() {
-        String input = etPhone.getText().toString();
+    private boolean validPhone(EditText et) {
+        String input = et.getText().toString();
         // TODO:
         if (TextUtils.isEmpty(input)) {
-            etPhone.setError("Please enter your phone number");
+            et.requestFocus();
+            et.setError("Please enter your phone number");
             return false;
-        } else if (input.length() < 5) {
-            etPhone.setError("Please enter full phone number");
+        } else if (input.length() < 5 || input.charAt(0) != '+') {
+            et.requestFocus();
+            et.setError("Please enter correct phone number");
             return false;
         }
 
@@ -222,9 +304,23 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validPassword() {
         String password = etPassword.getText().toString();
         if (TextUtils.isEmpty(password)) {
+            etPassword.requestFocus();
             etPassword.setError("Please enter your password");
             return false;
         }
+        return true;
+    }
+
+    private boolean validPasswordAgain() {
+        String passwordB = etPasswordAgain.getText().toString();
+        String passwordA = etPassword.getText().toString();
+
+        if (TextUtils.isEmpty(passwordB) || !passwordA.equals(passwordB)) {
+            etPasswordAgain.requestFocus();
+            etPasswordAgain.setError("Passwords do not match");
+            return false;
+        }
+
         return true;
     }
 
@@ -292,12 +388,11 @@ public class LoginActivity extends AppCompatActivity {
         isLoginShowing = true;
     }
 
-    ProgressDialog progressDialog;
     private View.OnClickListener onSignInClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
-            if (!validPhone())
+            if (!validPhone(etPhone))
                 return;
 
             if (!validPassword())
@@ -305,24 +400,29 @@ public class LoginActivity extends AppCompatActivity {
 
             //TODO sign in
             progressDialog = showProgressDialog("Signing in", "Please wait...");
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    progressDialog.dismiss();
-                    proceedToMainActivity();
-                }
-            }, 1500);
+            RequestHandler.login(etPhone.getText().toString(), etPassword.getText().toString());
 
         }
     };
 
     private ProgressDialog showProgressDialog(String title, String message) {
+        if (progressDialog != null && progressDialog.isShowing()){
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+
         ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle(title);
-        progressDialog.setMessage(message);
+
+        if (!TextUtils.isEmpty(title))
+            progressDialog.setTitle(title);
+
+        if (!TextUtils.isEmpty(message))
+            progressDialog.setMessage(message);
+
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(true);
         progressDialog.show();
+
         return progressDialog;
     }
 
@@ -353,22 +453,69 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-//            if (!validPhone())
-//                return;
-//
-//            if (!validPassword())
-//                return;
+            if (!validPhone(etPhone))
+                return;
 
-            //TODO join nickel
-            progressDialog = showProgressDialog("Registering", "Please wait...");
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    progressDialog.dismiss();
-                    proceedToMainActivity();
-                }
-            }, 1500);
+            if (!validPassword())
+                return;
+
+            if (!validPasswordAgain())
+                return;
+
+            mobileNumber = etPhone.getText().toString();
+
+            progressDialog = showProgressDialog("", "Please wait...");
+            RequestHandler.registerConsumer(mobileNumber, etPassword.getText().toString());
 
         }
     };
+
+    @Subscribe
+    public void onEvent(OnRegisterConsumerEvent event) {
+        if (progressDialog!=null && progressDialog.isShowing())
+            progressDialog.dismiss();
+
+        if (event.isSuccess()){
+            showEnterOtp();
+        }
+
+        Toast.makeText(LoginActivity.this, event.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Subscribe
+    public void onEvent(OnLoginWithOtpEvent event) {
+        if (progressDialog!=null && progressDialog.isShowing())
+            progressDialog.dismiss();
+
+        if (event.isSuccess()){
+            proceedToMainActivity();
+        }else {
+            Toast.makeText(LoginActivity.this, event.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Subscribe
+    public void onEvent(OnForgotPasswordEvent event) {
+        if (progressDialog!=null && progressDialog.isShowing())
+            progressDialog.dismiss();
+
+        if (event.isSuccess()){
+            //showEnterOtp();
+            Toast.makeText(LoginActivity.this, "Reset Password request received", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(LoginActivity.this, event.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Subscribe
+    public void onEvent(OnLoginEvent event) {
+        if (progressDialog!=null && progressDialog.isShowing())
+            progressDialog.dismiss();
+
+        if (event.isSuccess()){
+            proceedToMainActivity();
+        }else {
+            Toast.makeText(LoginActivity.this, event.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 }
