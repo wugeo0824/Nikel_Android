@@ -1,8 +1,15 @@
 package com.media2359.nickel.network;
 
+import com.media2359.nickel.managers.UserSessionManager;
+
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -23,16 +30,16 @@ public class NikelService {
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient httpClient = new OkHttpClient.Builder()
-//                    .addInterceptor(new Interceptor() {
-//                        @Override
-//                        public Response intercept(Chain chain) throws IOException {
-//                            Request request = chain.request();
-//                            HttpUrl url = request.url().newBuilder().addQueryParameter("client_id", FOURSQUARE_CLIENT_ID)
-//                                    .addQueryParameter("client_secret",FOURSQUARE_CLIENT_SECRET).addQueryParameter("v",currentDate).build();
-//                            request = request.newBuilder().url(url).build();
-//                            return chain.proceed(request);
-//                        }
-//                    })
+                    .addInterceptor(new Interceptor() {
+                        @Override
+                        public Response intercept(Chain chain) throws IOException {
+                            Request request = chain.request();
+                            if (UserSessionManager.getInstance().getToken() != null){
+                                request = request.newBuilder().addHeader("Authorization", UserSessionManager.getInstance().getToken()).build();
+                            }
+                            return chain.proceed(request);
+                        }
+                    })
                     .addInterceptor(interceptor)
                     .connectTimeout(10, TimeUnit.SECONDS)
                     .build();

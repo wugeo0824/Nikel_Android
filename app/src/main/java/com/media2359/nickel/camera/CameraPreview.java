@@ -4,8 +4,11 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 import com.media2359.nickel.utils.DisplayUtils;
 
@@ -24,6 +27,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private List<Camera.Size> mSupportedPreviewSizes;
     private Camera.Size mPreviewSize;
     private int cameraRotation = 0;
+
+    private int displayRotation = 0;
+    private int layoutRotation = 0;
 
     public CameraPreview(Context context, Camera camera) {
         super(context);
@@ -97,7 +103,33 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
 
             //ROTATE PREVIEW!
-            int rotation = DisplayUtils.getRotation(getContext());
+            Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, info);
+            int rotation = display.getRotation();
+
+
+            int degrees = 0;
+            switch (rotation) {
+                case Surface.ROTATION_0: degrees = 0; break; //Natural orientation
+                case Surface.ROTATION_90: degrees = 90; break; //Landscape left
+                case Surface.ROTATION_180: degrees = 180; break;//Upside down
+                case Surface.ROTATION_270: degrees = 270; break;//Landscape right
+            }
+
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                // frontFacing
+                rotation = (info.orientation + degrees) % 360;
+                rotation = (360 - rotation) % 360;
+            } else {
+                // Back-facing
+                rotation = (info.orientation - degrees + 360) % 360;
+            }
+
+            this.displayRotation = rotation;
+            this.layoutRotation = degrees;
+
             mCamera.setDisplayOrientation(rotation);
             parameters.setRotation(rotation);
             parameters.set("orientation", "portrait");
@@ -125,7 +157,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public int getCameraRotation() {
-        return cameraRotation;
+        return displayRotation + layoutRotation;
     }
 
     public void setCameraRotation(int cameraRotation) {

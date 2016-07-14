@@ -2,6 +2,7 @@ package com.media2359.nickel.model;
 
 import android.content.Context;
 
+import com.google.gson.annotations.SerializedName;
 import com.media2359.nickel.utils.PreferencesUtils;
 
 /**
@@ -15,15 +16,24 @@ public class MyProfile {
 
     private static MyProfile myProfile;
 
+    int id;
+    @SerializedName("name")
     String fullName;
+
     String dateOfBirth;
+    @SerializedName("address")
     String streetAddress;
+    @SerializedName("city")
     String city;
+    @SerializedName("postalCode")
     String postalCode;
+    @SerializedName("documentType")
     String documentType;
+
     String documentID;
-    String frontPhotoUrl;
-    String backPhotoUrl;
+
+    String frontPhotoUri;
+    String backPhotoUri;
 
     private MyProfile(Builder builder, Context context) {
         this.fullName = builder.fullName;
@@ -33,8 +43,8 @@ public class MyProfile {
         this.postalCode = builder.postalCode;
         this.documentType = builder.documentType;
         this.documentID = builder.documentID;
-        this.frontPhotoUrl = builder.frontPhotoUrl;
-        this.backPhotoUrl = builder.backPhotoUrl;
+        this.frontPhotoUri = builder.frontPhotoUrl;
+        this.backPhotoUri = builder.backPhotoUrl;
 
         myProfile = this;
         PreferencesUtils.saveProfile(context, myProfile);
@@ -81,12 +91,12 @@ public class MyProfile {
         return documentID;
     }
 
-    public String getBackPhotoUrl() {
-        return backPhotoUrl;
+    public String getBackPhotoUri() {
+        return backPhotoUri;
     }
 
-    public String getFrontPhotoUrl() {
-        return frontPhotoUrl;
+    public String getFrontPhotoUri() {
+        return frontPhotoUri;
     }
 
     /**

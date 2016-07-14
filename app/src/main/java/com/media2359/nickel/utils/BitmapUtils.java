@@ -24,14 +24,17 @@ public class BitmapUtils {
         // crop Image
         Bitmap croppedImage;
 
-        if (input.getHeight() >= input.getWidth()){
-            croppedImage =  Bitmap.createBitmap(input, 0, input.getHeight() / 3, // we only need the middle third of the image
-                    input.getWidth(), input.getHeight() / 3);
-        }else{
+//        if (input.getHeight() >= input.getWidth()){
+//            croppedImage =  Bitmap.createBitmap(input, 0, input.getHeight() / 3, // we only need the middle third of the image
+//                    input.getWidth(), input.getHeight() / 3);
+//        }else{
+//
+//            croppedImage =  Bitmap.createBitmap(input, input.getWidth() / 3, 0, // we only need the middle third of the image
+//                    input.getWidth()/3, input.getHeight());
+//        }
 
-            croppedImage =  Bitmap.createBitmap(input, input.getWidth() / 3, 0, // we only need the middle third of the image
-                    input.getWidth()/3, input.getHeight());
-        }
+                    croppedImage =  Bitmap.createBitmap(input, 0, input.getHeight() / 3, // we only need the middle third of the image
+                    input.getWidth(), input.getHeight() / 3);
 
         return croppedImage;
 

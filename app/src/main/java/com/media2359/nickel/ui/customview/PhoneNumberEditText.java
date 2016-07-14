@@ -54,10 +54,9 @@ public class PhoneNumberEditText extends EditText {
 
             if (!s.toString().startsWith("+")){
                 instance.setText("+"+s.toString());
-            }else
-                instance.setText(s.toString());
+                instance.setSelection(instance.getText().toString().length());
+            }
 
-            instance.setSelection(instance.getText().toString().length());
             instance.addTextChangedListener(this);
         }
     };

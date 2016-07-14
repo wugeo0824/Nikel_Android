@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.media2359.nickel.R;
+import com.media2359.nickel.camera.CameraOrientationListener;
 import com.media2359.nickel.camera.CameraPreview;
 import com.media2359.nickel.camera.IDCardOverlay;
 import com.media2359.nickel.utils.BitmapUtils;
@@ -34,6 +35,7 @@ import com.media2359.nickel.utils.PreferencesUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Date;
 
@@ -73,6 +75,7 @@ public class CaptureActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
     SaveProfileImageAsync saveProfileImageAsync;
+    CameraOrientationListener orientationListener;
 
 
     public static void startCapturingIDCard(Activity activity, int requestCode) {
@@ -108,11 +111,6 @@ public class CaptureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture);
         initViews();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
         imageType = getIntent().getIntExtra(EXTRA_IMAGE_TYPE, IMAGE_PROFILE);
         requestCode = getIntent().getIntExtra(EXTRA_REQUEST_CODE, -1);
@@ -134,6 +132,15 @@ public class CaptureActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Sorry, this device does not have a camera", Toast.LENGTH_SHORT).show();
             finish();
         }
+
+        orientationListener = new CameraOrientationListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        orientationListener.enable();
 
     }
 
@@ -202,10 +209,9 @@ public class CaptureActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        //releaseCamera();
+    protected void onDestroy() {
         newReleaseCamera();
+        orientationListener.disable();
 
         if (saveProfileImageAsync != null) {
             saveProfileImageAsync.cancel(false);
@@ -218,7 +224,28 @@ public class CaptureActivity extends AppCompatActivity {
             mock.interrupt();
         }
 
-        this.finish();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //releaseCamera();
+//        newReleaseCamera();
+//
+//        if (saveProfileImageAsync != null) {
+//            saveProfileImageAsync.cancel(false);
+//            saveProfileImageAsync = null;
+//        }
+//
+//        if (mThread != null) {
+//            CameraHandlerThread mock = mThread;
+//            mThread = null;
+//            mock.interrupt();
+//        }
+//
+//        this.finish();
+
     }
 
     private void releaseCamera() {
@@ -287,6 +314,7 @@ public class CaptureActivity extends AppCompatActivity {
             mThread.openCamera();
         }
     }
+
 
     private void newReleaseCamera() {
         if (mThread == null)
@@ -357,9 +385,13 @@ public class CaptureActivity extends AppCompatActivity {
                     progressDialog.setCancelable(false);
                     progressDialog.setMessage("Processing...");
 
+                    rotation = mCameraPreview.getCameraRotation();
+                    orientationListener.rememberOrientation();
+
+                    Log.d(TAG, "run: rotation " + rotation + " remember " + orientationListener.getRememberedOrientation());
+
                     saveProfileImageAsync = new SaveProfileImageAsync();
                     saveProfileImageAsync.execute(data);
-                    rotation = mCameraPreview.getCameraRotation();
                 }
             });
 
@@ -401,9 +433,14 @@ public class CaptureActivity extends AppCompatActivity {
                 // crop Image
                 Bitmap finalImage = BitmapFactory.decodeByteArray(data, 0, data.length);
 
+                int actualRotation = (
+                        rotation
+                                + orientationListener.getRememberedOrientation()
+                ) % 360;
+
                 // if the image is saved as landscape mode
                 if (finalImage.getHeight() < finalImage.getWidth()) {
-                    finalImage = BitmapUtils.rotateImage(finalImage, rotation);
+                    finalImage = BitmapUtils.rotateImage(finalImage, actualRotation);
                 }
 
                 if (imageType == IMAGE_PROFILE) {

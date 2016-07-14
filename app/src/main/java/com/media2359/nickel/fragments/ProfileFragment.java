@@ -197,8 +197,8 @@ public class ProfileFragment extends BaseFragment {
         if (myProfile == null) {
             changeProfileStatus(MyProfile.STATUS_EMPTY);
         } else {
-            frontPhotoUrl = myProfile.getFrontPhotoUrl();
-            backPhotoUrl = myProfile.getBackPhotoUrl();
+            frontPhotoUrl = myProfile.getFrontPhotoUri();
+            backPhotoUrl = myProfile.getBackPhotoUri();
             fillInMyProfile();
             btnSaveChanges.setText("Resubmit");
             changeProfileStatus(MyProfile.STATUS_PENDING);
