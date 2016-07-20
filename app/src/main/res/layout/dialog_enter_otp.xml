@@ -24,7 +24,7 @@
         android:layout_below="@+id/tvResetPassword"
         android:background="@color/home_background"
         android:hint="One Time Password"
-        android:inputType="text" />
+        android:inputType="numberDecimal" />
 
 
     <com.media2359.nickel.ui.customview.CustomTextView

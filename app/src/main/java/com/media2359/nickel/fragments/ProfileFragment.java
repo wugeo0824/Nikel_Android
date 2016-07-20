@@ -1,6 +1,7 @@
 package com.media2359.nickel.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -20,13 +21,17 @@ import android.widget.Toast;
 import com.media2359.nickel.R;
 import com.media2359.nickel.activities.CaptureActivity;
 import com.media2359.nickel.event.OnProfileChangedEvent;
+import com.media2359.nickel.event.OnProfileLoadedEvent;
 import com.media2359.nickel.model.MyProfile;
+import com.media2359.nickel.network.RequestHandler;
+import com.media2359.nickel.tasks.UploadProfileAsyncTask;
 import com.media2359.nickel.ui.customview.ProfileField;
 import com.media2359.nickel.utils.BitmapUtils;
 import com.media2359.nickel.utils.Const;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 
@@ -44,6 +49,8 @@ public class ProfileFragment extends BaseFragment {
     private Button btnSaveChanges;
     private MyProfile myProfile;
     private String frontPhotoUrl, backPhotoUrl;
+    private UploadProfileAsyncTask uploadProfileAsyncTask;
+    private ProgressDialog progressDialog;
 
     @Nullable
     @Override
@@ -73,15 +80,6 @@ public class ProfileFragment extends BaseFragment {
 
         tvIDFront = (TextView) view.findViewById(R.id.tvIDFront);
         tvIDBack = (TextView) view.findViewById(R.id.tvIDBack);
-//        documentTypes = (DocTypeSpinner) view.findViewById(R.id.spinnerDocType);
-
-//        // Create an ArrayAdapter using the string array and a default spinner layout
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-//                R.array.document_types, R.layout.item_spinner_entry);
-//        // Specify the layout to use when the list of choices appears
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        // Apply the adapter to the spinner
-//        documentTypes.setAdapter(adapter);
 
         flStatus = (FrameLayout) view.findViewById(R.id.flProfileStatus);
         tvStatus = (TextView) view.findViewById(R.id.tvProfileStatus);
@@ -94,6 +92,8 @@ public class ProfileFragment extends BaseFragment {
         public void onClick(View v) {
             if (validFields())
                 saveChanges();
+
+            Log.d(TAG, "onClick: " + validFields());
         }
     };
 
@@ -150,6 +150,7 @@ public class ProfileFragment extends BaseFragment {
     }
 
     private void saveChanges() {
+        btnSaveChanges.setEnabled(false);
         MyProfile.Builder builder = new MyProfile.Builder();
         builder.withFullName(pfName.getInput()).withDOB(pfDOB.getInput()).withStreetAddress(pfStreet.getInput())
                 .withCity(pfCity.getInput()).withPostalCode(pfPostal.getInput())
@@ -157,12 +158,22 @@ public class ProfileFragment extends BaseFragment {
                 .withDocumentID(pfDocumentID.getInput()).withFrontPhotoUrl(frontPhotoUrl).withBackPhotoUrl(backPhotoUrl)
                 .buildAndSave(getContext());
 
-        Toast.makeText(getActivity(), "Profile Saved", Toast.LENGTH_SHORT).show();
-        EventBus.getDefault().post(new OnProfileChangedEvent());
-        getActivity().onBackPressed();
+        uploadProfileAsyncTask = new UploadProfileAsyncTask();
+        uploadProfileAsyncTask.execute(MyProfile.getCurrentProfile(getContext()));
+
+        progressDialog = ProgressDialog.show(getContext(), "Uploading", "Please wait...", true);
+
     }
 
-//    private void showSelectionDialog(final boolean isFront) {
+    @Override
+    public void onDestroy() {
+        if (uploadProfileAsyncTask != null) {
+            uploadProfileAsyncTask.cancel(false);
+        }
+        super.onDestroy();
+    }
+
+    //    private void showSelectionDialog(final boolean isFront) {
 //        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 //
 //        builder.setTitle("Get your photo from Gallery?")
@@ -192,36 +203,54 @@ public class ProfileFragment extends BaseFragment {
 
     private void getMyProfile() {
         //TODO get my profile
-        myProfile = MyProfile.getCurrentProfile(getActivity());
+//        myProfile = MyProfile.getCurrentProfile(getActivity());
+//
+//        if (myProfile == null) {
+//            changeProfileStatus(MyProfile.STATUS_EMPTY);
+//        } else {
+//            frontPhotoUrl = myProfile.getFrontPhotoUri();
+//            backPhotoUrl = myProfile.getBackPhotoUri();
+//            fillInMyProfile();
+//            changeProfileStatus(MyProfile.STATUS_PENDING);
+//        }
 
-        if (myProfile == null) {
-            changeProfileStatus(MyProfile.STATUS_EMPTY);
-        } else {
-            frontPhotoUrl = myProfile.getFrontPhotoUri();
-            backPhotoUrl = myProfile.getBackPhotoUri();
-            fillInMyProfile();
-            btnSaveChanges.setText("Resubmit");
-            changeProfileStatus(MyProfile.STATUS_PENDING);
-        }
+        progressDialog = ProgressDialog.show(getContext(), "", "Please wait...", true);
+        RequestHandler.getProfile();
     }
 
-    private void fillInMyProfile() {
-        pfName.setInputAndLock(myProfile.getFullName());
-        pfDOB.setInputAndLock(myProfile.getDateOfBirth());
-        pfCity.setInputAndLock(myProfile.getCity());
-        pfStreet.setInputAndLock(myProfile.getStreetAddress());
-        pfDocumentID.setInputAndLock(myProfile.getDocumentID());
-        pfPostal.setInputAndLock(myProfile.getPostalCode());
+    private void fillInMyProfile(int status) {
+        if (status == MyProfile.STATUS_APPROVED){
+            pfName.setInputAndLock(myProfile.getFullName());
+            pfDOB.setInputAndLock(myProfile.getDateOfBirth());
+            pfCity.setInputAndLock(myProfile.getCity());
+            pfStreet.setInputAndLock(myProfile.getStreetAddress());
+            pfDocumentID.setInputAndLock(myProfile.getDocumentID());
+            pfPostal.setInputAndLock(myProfile.getPostalCode());
 //        documentTypes.setSelection(myProfile.getDocumentType());
 //        documentTypes.setEnabled(false);
-        pfDocTypes.setInputAndLock(myProfile.getDocumentType());
+            pfDocTypes.setInputAndLock(myProfile.getDocumentType());
+            ivIDFront.setEnabled(false);
+            ivIDFront.setClickable(false);
+            ivIDBack.setEnabled(false);
+            ivIDBack.setClickable(false);
+        }else {
+            pfName.setInput(myProfile.getFullName());
+            pfDOB.setInput(myProfile.getDateOfBirth());
+            pfCity.setInput(myProfile.getCity());
+            pfStreet.setInput(myProfile.getStreetAddress());
+            pfDocumentID.setInput(myProfile.getDocumentID());
+            pfPostal.setInput(myProfile.getPostalCode());
+            pfDocTypes.setInput(myProfile.getDocumentType());
+            ivIDFront.setEnabled(true);
+            ivIDFront.setClickable(true);
+            ivIDBack.setEnabled(true);
+            ivIDBack.setClickable(true);
+        }
+
 
         Picasso.with(getActivity()).load(frontPhotoUrl).fit().centerCrop().placeholder(R.drawable.id_missing_front).into(ivIDFront);
         Picasso.with(getActivity()).load(backPhotoUrl).fit().centerCrop().placeholder(R.drawable.id_missing_back).into(ivIDBack);
-        ivIDFront.setEnabled(false);
-        ivIDFront.setClickable(false);
-        ivIDBack.setEnabled(false);
-        ivIDBack.setClickable(false);
+
         tvIDFront.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ico_ok), null, null, null);
         tvIDFront.setText("");
         tvIDBack.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ico_ok), null, null, null);
@@ -235,12 +264,15 @@ public class ProfileFragment extends BaseFragment {
                 break;
             case MyProfile.STATUS_PENDING:
                 flStatus.setVisibility(View.VISIBLE);
+                btnSaveChanges.setText("Resubmit");
                 tvStatus.setText(getString(R.string.profile_status_pending));
                 tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_alert, 0, 0, 0);
                 break;
             case MyProfile.STATUS_APPROVED:
                 flStatus.setVisibility(View.VISIBLE);
                 tvStatus.setText(getString(R.string.profile_status_approved));
+                btnSaveChanges.setText("Resubmit");
+                btnSaveChanges.setEnabled(false);
                 tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_ok, 0, 0, 0);
                 break;
             default:
@@ -312,5 +344,71 @@ public class ProfileFragment extends BaseFragment {
         return getString(R.string.my_profile);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onEvent(OnProfileChangedEvent onProfileChangedEvent) {
+
+        btnSaveChanges.setEnabled(true);
+        progressDialog.dismiss();
+
+        if (onProfileChangedEvent.isSuccess()) {
+            Toast.makeText(getActivity(), "Profile Saved", Toast.LENGTH_SHORT).show();
+            getActivity().onBackPressed();
+        } else {
+            Toast.makeText(getActivity(), onProfileChangedEvent.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Subscribe
+    public void onEvent(OnProfileLoadedEvent onProfileLoadedEvent) {
+
+        progressDialog.dismiss();
+
+        if (onProfileLoadedEvent.isSuccess()) {
+            myProfile = onProfileLoadedEvent.getProfile();
+            int status = -1;
+
+            if (myProfile != null) {
+                status = myProfile.getStatusInt();
+                frontPhotoUrl = myProfile.getDocument1();
+                backPhotoUrl = myProfile.getDocument2();
+            }
+
+            if (status == MyProfile.STATUS_EMPTY) {
+                changeProfileStatus(MyProfile.STATUS_EMPTY);
+
+            } else if (status == MyProfile.STATUS_PENDING) {
+//                frontPhotoUrl = myProfile.getDocument1();
+//                backPhotoUrl = myProfile.getDocument2();
+                fillInMyProfile(status);
+                changeProfileStatus(MyProfile.STATUS_PENDING);
+
+            } else if (status == MyProfile.STATUS_APPROVED) {
+//                frontPhotoUrl = myProfile.getDocument1();
+//                backPhotoUrl = myProfile.getDocument2();
+                fillInMyProfile(status);
+                changeProfileStatus(MyProfile.STATUS_APPROVED);
+            }
+
+            Log.d("MyProfile", "getStatusInt: " + onProfileLoadedEvent.isSuccess() + status);
+
+        } else {
+            changeProfileStatus(MyProfile.STATUS_EMPTY);
+            Toast.makeText(getActivity(), onProfileLoadedEvent.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
 }

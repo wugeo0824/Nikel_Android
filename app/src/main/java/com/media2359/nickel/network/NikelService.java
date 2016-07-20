@@ -35,7 +35,7 @@ public class NikelService {
                         public Response intercept(Chain chain) throws IOException {
                             Request request = chain.request();
                             if (UserSessionManager.getInstance().getToken() != null){
-                                request = request.newBuilder().addHeader("Authorization", UserSessionManager.getInstance().getToken()).build();
+                                request = request.newBuilder().addHeader("Authorization", "Bearer " + UserSessionManager.getInstance().getToken()).build();
                             }
                             return chain.proceed(request);
                         }

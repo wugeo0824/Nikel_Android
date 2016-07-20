@@ -14,8 +14,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //TODO: process any data if necessary or Animation
-        //Intent i = new Intent(SplashActivity.this,LoginActivity.class);
-        Intent i = new Intent(SplashActivity.this,MainActivity.class);
+        Intent i = new Intent(SplashActivity.this,LoginActivity.class);
+        //Intent i = new Intent(SplashActivity.this,MainActivity.class);
         startActivity(i);
         finish();
     }

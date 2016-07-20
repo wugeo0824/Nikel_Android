@@ -1,7 +1,9 @@
 package com.media2359.nickel.model;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.media2359.nickel.utils.PreferencesUtils;
 
@@ -10,30 +12,66 @@ import com.media2359.nickel.utils.PreferencesUtils;
  */
 public class MyProfile {
 
+    @Expose(serialize = false)
     public static final int STATUS_EMPTY = 0;
+    @Expose(serialize = false)
     public static final int STATUS_APPROVED = 1;
+    @Expose(serialize = false)
     public static final int STATUS_PENDING = 2;
 
+    @Expose(serialize = false, deserialize = false)
     private static MyProfile myProfile;
 
-    int id;
+    @SerializedName("id")
+    String id;
+
     @SerializedName("name")
     String fullName;
 
     String dateOfBirth;
+
     @SerializedName("address")
     String streetAddress;
+
     @SerializedName("city")
     String city;
+
     @SerializedName("postalCode")
     String postalCode;
+
     @SerializedName("documentType")
     String documentType;
 
+    @SerializedName("documentId")
     String documentID;
 
+    @SerializedName("document1")
+    String document1;
+
+    @SerializedName("document2")
+    String document2;
+
+    @SerializedName("mobilePhone")
+    String mobilePhone;
+
+    @SerializedName("email")
+    String email;
+
+    @SerializedName("status")
+    String status;
+
+    @SerializedName("error")
+    String error;
+
+    @Expose(serialize = false, deserialize = false)
     String frontPhotoUri;
+
+    @Expose(serialize = false, deserialize = false)
     String backPhotoUri;
+
+    public MyProfile() {
+
+    }
 
     private MyProfile(Builder builder, Context context) {
         this.fullName = builder.fullName;
@@ -97,6 +135,44 @@ public class MyProfile {
 
     public String getFrontPhotoUri() {
         return frontPhotoUri;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+        public String getDocument1() {
+        return document1;
+    }
+
+    public String getDocument2() {
+        return document2;
+    }
+
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public int getStatusInt() {
+        Log.d("MyProfile", "getStatusInt: " + status);
+
+        if (status.toLowerCase().equals("pending")){
+            return STATUS_PENDING;
+        }
+
+        if (status.toLowerCase().equals("verified")){
+            return STATUS_APPROVED;
+        }
+
+        return STATUS_EMPTY;
     }
 
     /**

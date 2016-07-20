@@ -381,8 +381,14 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
 
     @Subscribe
     public void onEvent(OnProfileChangedEvent onProfileChangedEvent) {
-        if (MyProfile.getCurrentProfile(this) != null)
-            tvHeaderView.setText(MyProfile.getCurrentProfile(this).getFullName());
+        if (MyProfile.getCurrentProfile(this) != null){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tvHeaderView.setText(MyProfile.getCurrentProfile(MainActivity.this).getFullName());
+                }
+            });
+        }
     }
 
     public void showLoadingSpinner() {

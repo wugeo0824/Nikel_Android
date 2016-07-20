@@ -58,7 +58,7 @@ public class CaptureActivity extends AppCompatActivity {
     public static final String EXTRA_REQUEST_CODE = "request_code";
     public static final int IMAGE_PROFILE = 11;
     public static final int IMAGE_RECEIPT = 12;
-    private static final int IMAGE_COMPRESSION_QUALITY = 100;
+    private static final int IMAGE_COMPRESSION_QUALITY = 80;
 
     private Camera mCamera;
     private CameraPreview mCameraPreview;

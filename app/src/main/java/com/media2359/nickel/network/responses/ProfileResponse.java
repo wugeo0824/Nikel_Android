@@ -7,11 +7,7 @@ import com.media2359.nickel.model.MyProfile;
  */
 public class ProfileResponse extends BaseResponse {
 
-    private MyProfile profile;
-
-    public ProfileResponse(MyProfile profile) {
-        this.profile = profile;
-    }
+    MyProfile profile;
 
     public MyProfile getProfile() {
         return profile;

@@ -235,7 +235,7 @@ public class ProfileField extends RelativeLayout {
         int dayOfMonth = 1; // 1st
 
         //Calendar newCalendar = Calendar.getInstance();
-        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         dateOfBirth = new DatePickerDialog(getContext(), R.style.MyDatePicker, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
