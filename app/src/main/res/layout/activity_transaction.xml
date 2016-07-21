@@ -30,7 +30,7 @@
                 android:textSize="@dimen/font_size_toolbar_title"
                 android:textColor="@color/white"
                 android:gravity="center"
-                tools:text="Home" />
+                tools:text="Confirmation" />
 
         </android.support.v7.widget.Toolbar>
 

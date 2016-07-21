@@ -3,12 +3,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
+
     <LinearLayout
-        android:layout_marginTop="@dimen/keyline_12"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline_12"
         android:orientation="vertical">
 
         <com.media2359.nickel.ui.customview.ProfileField
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             app:inputType="name"
             app:ivLeftImageRes="@drawable/ico_name"
-            app:tvHint="Display Name" />
+            app:tvHint="@string/display_name" />
 
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfReciName"
@@ -25,15 +25,15 @@
             android:layout_height="wrap_content"
             app:inputType="name"
             app:ivLeftImageRes="@drawable/ico_name"
-            app:tvHint="Name (First, Last)" />
+            app:tvHint="@string/full_name" />
 
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfReciPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:inputType="number"
+            app:inputType="phone"
             app:ivLeftImageRes="@drawable/ico_phone"
-            app:tvHint="Phone Number" />
+            app:tvHint="@string/phone_number" />
 
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfReciStreet"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             app:inputType="text"
             app:ivLeftImageRes="@drawable/ico_address1"
-            app:tvHint="Street Address" />
+            app:tvHint="@string/street_address" />
 
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfReciCity"
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             app:inputType="text"
             app:ivLeftImageRes="@drawable/ico_address2"
-            app:tvHint="City" />
+            app:tvHint="@string/city" />
 
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfReciPostal"
@@ -57,15 +57,43 @@
             android:layout_height="wrap_content"
             app:inputType="number"
             app:ivLeftImageRes="@drawable/ico_address3"
-            app:tvHint="Postal Code" />
+            app:tvHint="@string/postal_code" />
 
-        <com.media2359.nickel.ui.customview.ProfileField
-            android:id="@+id/pfReciBankName"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:inputType="text"
-            app:ivLeftImageRes="@drawable/ico_bank"
-            app:tvHint="Bank Name" />
+            android:layout_height="60dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <ImageView
+                android:id="@+id/ivFieldLeft"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/keyline_16"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ico_bank" />
+
+            <com.media2359.nickel.ui.customview.CustomTextView
+                android:text="@string/bank_name"
+                android:layout_alignLeft="@+id/spinnerBankName"
+                android:paddingLeft="4dp"
+                android:textColor="@color/pink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/spinnerBankName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@+id/ivFieldLeft"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
+                android:textSize="@dimen/font_size_large" />
+
+        </RelativeLayout>
 
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfReciBankAccount"
@@ -73,7 +101,7 @@
             android:layout_height="wrap_content"
             app:inputType="number"
             app:ivLeftImageRes="@drawable/ico_bank"
-            app:tvHint="Bank Account Number" />
+            app:tvHint="@string/bank_account" />
 
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfReciBankAccountConfirm"
@@ -81,18 +109,18 @@
             android:layout_height="wrap_content"
             app:inputType="number"
             app:ivLeftImageRes="@drawable/ico_bank"
-            app:tvHint="Confirm Bank Account Number" />
+            app:tvHint="@string/confirm_bank_account" />
 
         <Button
             android:id="@+id/btnSaveChanges"
             style="@style/PinkButton"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_marginBottom="@dimen/keyline_16"
             android:layout_below="@id/rlIDPhotoContainer"
             android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/keyline_16"
             android:layout_marginTop="@dimen/keyline_16"
-            android:text="@string/submit"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:text="@string/save_changes"
             android:textAllCaps="false" />
 
 

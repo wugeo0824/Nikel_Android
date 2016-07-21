@@ -98,7 +98,7 @@ public class CStoreFragment extends BaseFragment {
     }
 
     private void bindData() {
-        tvInstruction.setText(String.format(Locale.getDefault(), getString(R.string.cstore_instruction), transaction.getTransactionAmount()));
+        tvInstruction.setText(String.format(Locale.getDefault(), getString(R.string.cstore_instruction), transaction.getAmountSent()));
     }
 
     private void openMap() {

@@ -2,7 +2,6 @@ package com.media2359.nickel.fragments;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,12 +17,17 @@ import android.widget.Toast;
 import com.media2359.nickel.R;
 import com.media2359.nickel.activities.CaptureActivity;
 import com.media2359.nickel.activities.TransactionActivity;
+import com.media2359.nickel.event.OnReceiptUploadedEvent;
 import com.media2359.nickel.managers.CentralDataManager;
 import com.media2359.nickel.model.NickelTransfer;
+import com.media2359.nickel.tasks.UploadReceiptAsyncTask;
 import com.media2359.nickel.ui.customview.TransactionProgress;
 import com.media2359.nickel.utils.Const;
 import com.media2359.nickel.utils.DialogUtils;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 
@@ -43,6 +47,9 @@ public class TransactionDetailFragment extends BaseFragment {
     private LinearLayout llReceiptUpload;
     private TransactionActivity activity;
 
+    ProgressDialog progressDialog;
+    UploadReceiptAsyncTask uploadReceipTask;
+
     public static TransactionDetailFragment newInstance() {
 
         Bundle args = new Bundle();
@@ -51,20 +58,6 @@ public class TransactionDetailFragment extends BaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putParcelable(BUNDLE_TRANSACTION,Parcels.wrap(transaction));
-//    }
-//
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//        if (savedInstanceState != null){
-//            transaction = savedInstanceState.getParcelable(BUNDLE_TRANSACTION);
-//        }
-//    }
 
     @Nullable
     @Override
@@ -88,12 +81,6 @@ public class TransactionDetailFragment extends BaseFragment {
         updateUIProgress();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-
-    }
-
     private void initData() {
         transaction = CentralDataManager.getCurrentTransaction();
     }
@@ -104,7 +91,7 @@ public class TransactionDetailFragment extends BaseFragment {
         tvID = (TextView) view.findViewById(R.id.tvTransactionIDValue);
         tvSendAmount = (TextView) view.findViewById(R.id.tvSendAmount);
         tvGetAmount = (TextView) view.findViewById(R.id.tvGetAmount);
-        tvExchangeRate = (TextView) view.findViewById(R.id.tvExchangeRate);
+        tvExchangeRate = (TextView) view.findViewById(R.id.tvOneSGD);
         tvFee = (TextView) view.findViewById(R.id.tvFeesAmount);
         tvDate = (TextView) view.findViewById(R.id.tvTransactionDate);
         //tvTotal = (TextView) view.findViewById(R.id.tvTotalAmount);
@@ -125,11 +112,16 @@ public class TransactionDetailFragment extends BaseFragment {
 
     private void bindData() {
 
-        tvID.setText(transaction.getTransactionID());
-        tvDate.setText(transaction.getTransactionDate());
-        tvSendAmount.setText(transaction.getTransactionAmount());
+        tvInstruction.setText(transaction.getTransactionStatus());
+        tvID.setText("" + transaction.getTransactionID());
+        tvDate.setText(transaction.getCreatedAt());
+        tvSendAmount.setText(transaction.getAmountSent());
+        tvGetAmount.setText(transaction.getAmtRecv());
+        tvFee.setText(transaction.getFee() + " SGD");
 
-        tvRecipient.setText(transaction.getRecipientName() + "\n" + transaction.getRecipientAccountNo());
+        tvStatus.setText(transaction.getTransactionStatus());
+
+        tvRecipient.setText(transaction.getRecipientFullName() + "\n" + transaction.getRecipientAccountNo());
         tvExchangeRate.setText(transaction.getExchangeRate() + "IDR");
     }
 
@@ -162,30 +154,26 @@ public class TransactionDetailFragment extends BaseFragment {
     };
 
     private void submitReceipt() {
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog = new ProgressDialog(getActivity());
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Submitting your receipt, please wait...");
         progressDialog.show();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                progressDialog.dismiss();
-                DialogUtils.showNickelDialog(getActivity(), "Submitted");
-
-                CentralDataManager.getCurrentTransaction().receiptUploaded();
-                updateUIProgress();
-            }
-        }, 1500);
+        uploadReceipTask = new UploadReceiptAsyncTask();
+        uploadReceipTask.execute(transaction);
     }
 
     private void updateUIProgress() {
         transactionProgress.updateProgress(transaction.getTransProgress());
 
-        if (!TextUtils.isEmpty(transaction.getReceiptPhotoUrl())) {
-            File image = new File(transaction.getReceiptPhotoUrl());
+        if (!TextUtils.isEmpty(transaction.getReceiptPhotoUrl())){
+            Picasso.with(getActivity()).load(transaction.getReceiptPhotoUrl()).fit().centerInside().into(ivReceipt);
+        }else if (!TextUtils.isEmpty(transaction.getReceiptFilePath())) {
+            File image = new File(transaction.getReceiptFilePath());
             Picasso.with(getActivity()).load(image).fit().centerInside().into(ivReceipt);
         }
+
+
 
         switch (transaction.getTransProgress()) {
             case NickelTransfer.TRANS_DRAFT:
@@ -216,13 +204,41 @@ public class TransactionDetailFragment extends BaseFragment {
                 llReceiptUpload.setVisibility(View.VISIBLE);
                 btnSubmitReceipt.setVisibility(View.GONE);
                 ivReceipt.setClickable(false);
-                tvStatus.setText("Funds ready for collection!");
                 break;
         }
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        if (uploadReceipTask != null){
+            uploadReceipTask.cancel(false);
+        }
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onEvent(OnReceiptUploadedEvent onReceiptUploadedEvent){
+
+        progressDialog.dismiss();
+
+        if (onReceiptUploadedEvent.isSuccess()){
+            DialogUtils.showNickelDialog(getActivity(), "Submitted");
+            CentralDataManager.getCurrentTransaction().receiptUploaded();
+            updateUIProgress();
+        }else {
+            Toast.makeText(getContext(), onReceiptUploadedEvent.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
     protected String getPageTitle() {
-        return "Confirmation";
+        return getString(R.string.confirmation);
     }
 }

@@ -40,10 +40,12 @@ public class TransactionHistoryViewHolder extends RecyclerView.ViewHolder {
         SpannableString transID = new SpannableString(prefixID + " " + transaction.getTransactionID());
         transID.setSpan(new ForegroundColorSpan(itemView.getContext().getResources().getColor(R.color.pink)), prefixID.length(), transID.length(), SpannableString.SPAN_INCLUSIVE_INCLUSIVE);
         tvTranID.setText(transID);
-        tvTranDate.setText(transaction.getTransactionDate());
-        tvTranAmount.setText(transaction.getTransactionAmount() + "SGD");
+        tvTranDate.setText(transaction.getCreatedAt());
+        tvTranAmount.setText(transaction.getAmountSent() + "SGD");
         tvTranStatus.setText(transaction.getTransactionStatus());
-        //TODO
+        if (transaction.getTransProgress() != NickelTransfer.TRANS_READY_COLLECTION){
+            tvTranStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_alert, 0, 0, 0);
+        }
         transactionProgress.updateProgress(transaction.getTransProgress());
     }
 }

@@ -44,4 +44,9 @@ public class PreferencesUtils {
         return new Gson().fromJson(preferences.getString(PREF_MY_PROFILE, null), MyProfile.class);
     }
 
+    public static void clearAll(Context context) {
+        SharedPreferences preferences = getSharedPreferences(context);
+        preferences.edit().clear().apply();
+    }
+
 }

@@ -1,18 +1,12 @@
 package com.media2359.nickel.model;
 
+import com.google.gson.annotations.SerializedName;
 import com.media2359.nickel.utils.Const;
-
-import io.realm.Realm;
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.RealmClass;
-import io.realm.annotations.Required;
 
 /**
  * Created by Xijun on 1/4/16.
  */
-
-public class NickelTransfer extends RealmObject {
+public class NickelTransfer {
 
     /**
      * The 5 stages of a transaction progress
@@ -23,25 +17,74 @@ public class NickelTransfer extends RealmObject {
     public static final int TRANS_UPLOAD_COMPLETE = 2; // receipt photo uploaded
     public static final int TRANS_READY_COLLECTION = 3; // sms confirmation received, transaction complete
 
-    @PrimaryKey
-    String transactionID;
+    public static final String STATUS_PENDING_PAYMENT = "pending payment";
+    public static final String STATUS_PENDING_VERIFICATION = "pending verification";
+    public static final String STATUS_PAYMENT_RECEIVED = "payment received";
+    public static final String STATUS_FUNDS_READY = "funds ready for collection";
+
+
+
+    @SerializedName("userId")
+    String userId;
+    @SerializedName("recipientId")
+    String recipientId;
+
+    @SerializedName("id")
+    int transactionID;
 
     String transactionDate;
-    String transactionAmount;
+
+    @SerializedName("amtSent")
+    String amountSent;
+    @SerializedName("amtRecv")
+    String amtRecv;
+
+    @SerializedName("currencySent")
+    String currencySent;
+    @SerializedName("currencyRecv")
+    String currencyRecv;
+
+    @SerializedName("status")
     String transactionStatus;
-    int transProgress;
+
+    int transProgress = 999;
+
+    @SerializedName("recpDisplayName")
     String recipientName;
+
+    @SerializedName("recpNameFirstLast")
+    String recipientFullName;
+
+    @SerializedName("recpPhoneNum")
+    String recpPhoneNum;
+
+    @SerializedName("recpBankName")
+    String recpBankName;
+
+    @SerializedName("recpBankAccountNum")
     String recipientAccountNo;
-    double exchangeRate;
+
+    @SerializedName("rate")
+    String exchangeRate;
+
+    @SerializedName("fee")
+    String fee;
+
+    @SerializedName("receipt")
     String receiptPhotoUrl;
+
+    @SerializedName("createdAt")
+    String createdAt;
+
+    String receiptFilePath;
 
     public NickelTransfer() {
     }
 
-    public NickelTransfer(String transactionID, String transactionDate, String transactionAmount, String transactionStatus, int transProgress, String recipientName, double exchangeRate, String recipientAccountNo) {
+    public NickelTransfer(int transactionID, String transactionDate, String amountSent, String transactionStatus, int transProgress, String recipientName, String exchangeRate, String recipientAccountNo) {
         this.transactionID = transactionID;
         this.transactionDate = transactionDate;
-        this.transactionAmount = transactionAmount;
+        this.amountSent = amountSent;
         this.transactionStatus = transactionStatus;
         this.transProgress = transProgress;
         this.recipientName = recipientName;
@@ -52,7 +95,7 @@ public class NickelTransfer extends RealmObject {
     public NickelTransfer(Builder builder) {
         this.transactionID = builder.transactionID;
         this.transactionDate = builder.transactionDate;
-        this.transactionAmount = builder.transactionAmount;
+        this.amountSent = builder.transactionAmount;
         this.transactionStatus = builder.transactionStatus;
         this.transProgress = builder.transProgress;
         this.recipientName = builder.recipientName;
@@ -71,7 +114,7 @@ public class NickelTransfer extends RealmObject {
      * called when user made payment and took the receipt photo
      */
     public void paymentMadeAndPhotoTaken(String receiptPhoto) {
-        setReceiptPhotoUrl(receiptPhoto);
+        setReceiptFilePath(receiptPhoto);
         setTransProgress(NickelTransfer.TRANS_PAYMENT_MADE);
     }
 
@@ -92,37 +135,22 @@ public class NickelTransfer extends RealmObject {
 
     /**
      * As realmObject, changes must be done inside transaction
+     *
      * @param transProgress
      */
     private void setTransProgress(final int transProgress) {
-        final NickelTransfer object = this;
-
-        Realm realm = Realm.getDefaultInstance();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                object.transProgress = transProgress;
-            }
-        });
+        this.transProgress = transProgress;
     }
 
     public void setReceiptPhotoUrl(final String receiptPhotoUrl) {
-        final NickelTransfer object = this;
-
-        Realm realm = Realm.getDefaultInstance();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                object.receiptPhotoUrl = receiptPhotoUrl;
-            }
-        });
+        this.receiptPhotoUrl = receiptPhotoUrl;
     }
 
     public String getReceiptPhotoUrl() {
         return receiptPhotoUrl;
     }
 
-    public String getTransactionID() {
+    public int getTransactionID() {
         return transactionID;
     }
 
@@ -130,8 +158,8 @@ public class NickelTransfer extends RealmObject {
         return transactionDate;
     }
 
-    public String getTransactionAmount() {
-        return transactionAmount;
+    public String getAmountSent() {
+        return amountSent;
     }
 
     public String getTransactionStatus() {
@@ -143,6 +171,18 @@ public class NickelTransfer extends RealmObject {
     }
 
     public int getTransProgress() {
+        if (transProgress > 100){
+            String status = getTransactionStatus().toLowerCase();
+            if (status.equals(STATUS_PENDING_PAYMENT))
+                return TRANS_NEW_BORN;
+            if (status.equals(STATUS_PAYMENT_RECEIVED))
+                return TRANS_PAYMENT_MADE;
+            if (status.equals(STATUS_PENDING_VERIFICATION))
+                return TRANS_UPLOAD_COMPLETE;
+            if (status.equals(STATUS_FUNDS_READY))
+                return TRANS_READY_COLLECTION;
+        }
+
         return transProgress;
     }
 
@@ -150,17 +190,65 @@ public class NickelTransfer extends RealmObject {
         return recipientName;
     }
 
-    public double getExchangeRate() {
+    public String getExchangeRate() {
         return exchangeRate;
     }
 
     public int getInItemProgress() {
-        if (transProgress <= 1)
+        if (getTransProgress() <= 1)
             return Const.IN_ITEM_PROGRESS_ONE;
-        else if (transProgress == 2)
+        else if (getTransProgress() == TRANS_UPLOAD_COMPLETE)
             return Const.IN_ITEM_PROGRESS_TWO;
         else
             return Const.IN_ITEM_MAX_PROGRESS;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getRecipientId() {
+        return recipientId;
+    }
+
+    public String getAmtRecv() {
+        return amtRecv;
+    }
+
+    public String getCurrencySent() {
+        return currencySent;
+    }
+
+    public String getCurrencyRecv() {
+        return currencyRecv;
+    }
+
+    public String getRecipientFullName() {
+        return recipientFullName;
+    }
+
+    public String getRecpPhoneNum() {
+        return recpPhoneNum;
+    }
+
+    public String getRecpBankName() {
+        return recpBankName;
+    }
+
+    public String getFee() {
+        return fee;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getReceiptFilePath() {
+        return receiptFilePath;
+    }
+
+    public void setReceiptFilePath(String receiptFilePath) {
+        this.receiptFilePath = receiptFilePath;
     }
 
     /**
@@ -168,19 +256,19 @@ public class NickelTransfer extends RealmObject {
      */
     public static final class Builder {
 
-        private String transactionID;
+        private int transactionID;
         private String transactionDate;
         private String transactionAmount;
         private String transactionStatus;
         private int transProgress;
         private String recipientName;
-        private double exchangeRate;
+        private String exchangeRate;
         private String recipientAccountNo;
 
         public Builder() {
         }
 
-        public Builder withID(String transactionID) {
+        public Builder withID(int transactionID) {
             this.transactionID = transactionID;
             return this;
         }
@@ -210,7 +298,7 @@ public class NickelTransfer extends RealmObject {
             return this;
         }
 
-        public Builder withExchangeRate(double exchangeRate) {
+        public Builder withExchangeRate(String exchangeRate) {
             this.exchangeRate = exchangeRate;
             return this;
         }

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Nickel</string>
+
+
+
+    <!--Log In-->
+    <string name="phone_number">No. Handphone (with Country code)</string>
+    <string name="sign_in">Sign In</string>
+    <string name="forgot_password">Lupa Password?</string>
+    <string name="re_enter_password">Ulangi password</string>
+    <string name="password_register">Password (8&#8211;20 Karakter))</string>
+    <string name="password">Password</string>
+    <string name="need_account">Butuh akun?</string>
+    <string name="have_account">Sudah memiliki akun?</string>
+    <string name="join_nickel">Daftar Nickel</string>
+
+    <string name="privacy_message_1">Dengan Memilih “Daftar Nickel”,</string>
+    <string name="user_agreement">Andamenyetujui Syarat</string>
+    <string name="privacy_policy">Ketentuan Nickel</string>
+
+    <string name="reset_password_text">Masukkan nomor handphone anda. Kamiakan mengirimkan sms dengan petunjuk tentang cara untuk memulihkan akun anda</string>
+
+    <string name="reset">Reset</string>
+    <string name="cancel">Batal</string>
+
+    <!--Home-->
+    <string name="home">Home</string>
+    <string name="send_money_to">Mengirim uang ke %s</string>
+
+    <!--My Profile-->
+    <string name="my_profile">Profil saya</string>
+    <string name="full_name">Nama lengkap</string>
+    <string name="DOB">Tanggal lahir</string>
+    <string name="street_address">Alamat lengkap</string>
+    <string name="city">Kota</string>
+    <string name="postal_code">Kode pos</string>
+    <string name="doc_type">Tipe dokumen: KTP / SIM</string>
+    <string name="doc_id">Nomor Dokumen</string>
+    <string name="photo_id">Foto dokumen</string>
+    <string name="front_missing">Bagian Depan</string>
+    <string name="back_missing">Bagian Belakang</string>
+    <string name="click_take_photo">Klik di sini untuk mengambil gambar</string>
+    <string name="save_changes">Simpan perubahan</string>
+
+
+    <string name="profile_status_pending">Application status: Pending</string>
+    <string name="open_account_instruction">Please proceed to UOB City Plaza for application proval</string>
+    <string name="profile_status_approved">Approved</string>
+    <string name="payment_options">Opsi pembayaran</string>
+    <string name="UOB_machines">UOB Cash Deposit Machines</string>
+    <string name="pay_by_CStore">Convenience Store</string>
+    <string name="receipt">Receipt</string>
+
+    <string name="in_progress">IN PROGRESS</string>
+    <string name="completed">COMPLETED</string>
+    <string name="recipient">Recipient</string>
+    <string name="submit">Submit</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="my_info">My Information</string>
+    <string name="complete_profile_first">Oops, you need to complete your profile before making a new transaction. \n\nProceed to complete your profile now?</string>
+
+    <string name="trans_id">Transaction ID: </string>
+
+    <string name="complete_sender_profile">Profil lengkap pengirim</string>
+    <string name="add_new_recipient">Menambah penerima baru</string>
+
+    <string name="uob_instruction">Please proceed to transfer %s SGD at the nearest UOB Cash Deposit Machines</string>
+    <string name="cstore_instruction">Please proceed to pay %s SGD at the nearest convenient store using the barcode</string>
+    <string name="transfer_to">Transfer to: %s</string>
+    <string name="account_no">Account No: %s</string>
+
+    <string name="my_recipients">My Recipients</string>
+
+    <string name="drawer_open">open drawer</string>
+    <string name="drawer_closed">close drawer</string>
+    <string name="apply">Pakai</string>
+    <string name="available_credits">Kredit yang tersedia</string>
+    <string name="bank_account">Nomor akun bank</string>
+    <string name="bank_name">Nama bank</string>
+    <string name="confirm_bank_account">Konfirmasi nomor akun bank</string>
+    <string name="confirmation">Konfirmasi</string>
+    <string name="delete">Hapus</string>
+    <string name="display_name">Nama tampilan</string>
+    <string name="edit">Edit</string>
+    <string name="enter_promo_code">Massukan kode promo</string>
+    <string name="fee_included">Biaya (Sudah termasuk)</string>
+    <string name="history">Riwayat</string>
+    <string name="help">Bantuan</string>
+    <string name="im_sending">Saya mengirim</string>
+    <string name="recipient_gets">Saya mengirim</string>
+    <string name="recipient_details">Informasi penerima</string>
+    <string name="to_recipient">Tujuan penerima</string>
+    <string name="make_payment_by_today">Silahkan melakukan  pembayaran dengan  23:59 hari ini . Dana  akan tersedia dalam  waktu 4 jam setelah  pembayaran</string>
+    <string name="nearest_atm">UOB Cash Deposit terdekat</string>
+    <string name="nearest_con_store">Toko terdekat</string>
+    <string name="payment_alert_1">lanjutkan untuk mengirim %s </string>
+    <string name="payment_alert_2">uang ke  %s ?</string>
+    <string name="payment_received">Pembayaran telah diterima</string>
+    <string name="thank_you">Terima kasih</string>
+    <string name="send_your_friend">Kirimkan ke teman-teman Anda  remittance gratis senilai $ 10 dan  Anda akan mendapatkan juga.</string>
+    <string name="sign_out">Keluar</string>
+    <string name="step_by_step">Panduan</string>
+    <string name="no">Tidak</string>
+    <string name="yes">Ya</string>
+    <string name="place_inside_frame">Posisi kartu Anda pada frame</string>
+    <string name="take_front_photo_instruction">Mohon mengambil foto bagian  depan ID Anda</string>
+    <string name="take_back_photo_instruction">Mohon mengambil foto bagian  belakang ID Anda</string>
+    <string name="transaction_history">Riwayat transaksi</string>
+    <string name="rewards">Hadiah</string>
+    <string name="rate">Nilai tukar</string>
+</resources>

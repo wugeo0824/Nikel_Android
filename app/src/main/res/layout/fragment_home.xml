@@ -40,7 +40,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentTop="true"
                         android:gravity="center"
-                        android:text="I'm sending"
+                        android:text="@string/im_sending"
                         android:textSize="@dimen/font_size_large" />
 
                     <com.media2359.nickel.ui.customview.CustomEditText
@@ -104,7 +104,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_marginTop="15dp"
                         android:gravity="center"
-                        android:text="Recipient gets"
+                        android:text="@string/recipient_gets"
                         android:textSize="@dimen/font_size_large" />
 
                     <com.media2359.nickel.ui.customview.CustomTextView
@@ -152,29 +152,29 @@
                     android:layout_height="wrap_content">
 
                     <com.media2359.nickel.ui.customview.CustomTextView
-                        android:id="@+id/tvOneDollar"
+                        android:id="@+id/tvTextRate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_above="@+id/tvFees"
-                        android:text="Rate"
+                        android:text="@string/rate"
+                        android:textSize="@dimen/font_size_medium" />
+
+                    <com.media2359.nickel.ui.customview.CustomTextView
+                        android:id="@+id/tvOneSGD"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/tvTextRate"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/tvExchangeRate"
+                        android:text="1 SGD ="
                         android:textSize="@dimen/font_size_medium" />
 
                     <com.media2359.nickel.ui.customview.CustomTextView
                         android:id="@+id/tvExchangeRate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignTop="@+id/tvOneDollar"
-                        android:layout_marginRight="5dp"
-                        android:layout_toLeftOf="@+id/tvIDR2"
-                        android:text="1 SGD ="
-                        android:textSize="@dimen/font_size_medium" />
-
-                    <com.media2359.nickel.ui.customview.CustomTextView
-                        android:id="@+id/tvIDR2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_alignTop="@+id/tvOneDollar"
+                        android:layout_alignTop="@+id/tvTextRate"
                         android:text="9760.90 IDR"
                         android:textColor="@color/pink"
                         android:textSize="@dimen/font_size_medium" />
@@ -184,7 +184,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:text="Fees (included)"
+                        android:text="@string/fee_included"
                         android:textSize="@dimen/font_size_medium" />
 
                     <com.media2359.nickel.ui.customview.CustomTextView
@@ -203,7 +203,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_alignTop="@+id/tvFees"
-                        android:layout_below="@+id/tvIDR2"
+                        android:layout_below="@+id/tvExchangeRate"
                         android:text="SGD"
                         android:textColor="@color/black"
                         android:textSize="@dimen/font_size_medium" />

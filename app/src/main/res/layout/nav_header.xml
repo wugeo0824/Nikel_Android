@@ -4,7 +4,7 @@
     android:layout_height="65dp"
     android:gravity="bottom"
     android:orientation="horizontal"
-    android:background="@android:color/transparent"
+    android:background="@drawable/header_bg"
     android:paddingLeft="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 

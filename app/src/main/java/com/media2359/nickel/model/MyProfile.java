@@ -101,6 +101,16 @@ public class MyProfile {
         return myProfile;
     }
 
+    public static void saveCurrentProfile(Context context, MyProfile profile) {
+        myProfile = profile;
+        PreferencesUtils.saveProfile(context, myProfile);
+    }
+
+    public static void clearProfile(Context context) {
+        myProfile = null;
+        PreferencesUtils.clearAll(context);
+    }
+
     public String getFullName() {
         return fullName;
     }

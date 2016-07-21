@@ -28,14 +28,14 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/font_size_large"
             android:textColor="@color/dark_pink"
-            tools:text="Transfer to:" />
+            tools:text="Transfer to: Nickel" />
 
         <com.media2359.nickel.ui.customview.CustomTextView
             android:id="@+id/tvAccountNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/keyline_12"
-            android:text="Account No: 12314123"
+            android:text="@string/account_no"
             android:textColor="@color/dark_pink"
             android:textSize="@dimen/font_size_large" />
 
@@ -45,8 +45,8 @@
             android:layout_height="0dp"
             android:minHeight="70dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="30dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:scaleType="fitCenter"
             android:src="@drawable/uob_logo" />
@@ -55,13 +55,13 @@
             android:id="@+id/btnTakeReceipt"
             style="@style/StepsButton"
             android:drawableLeft="@drawable/icn_picture"
-            android:text="Please take a picture of the Receipt" />
+            android:text="@string/take_picture_receipt" />
 
         <com.media2359.nickel.ui.customview.CustomButton
             android:id="@+id/btnStepGuide"
             style="@style/StepsButton"
             android:drawableLeft="@drawable/icn_step"
-            android:text="Step by Step Guide" />
+            android:text="@string/step_by_step" />
 
         <LinearLayout
             android:id="@+id/btnUOBMachines"
@@ -82,7 +82,7 @@
                 android:minHeight="45dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="Nearest Convenience Store" />
+                android:text="@string/nearest_atm" />
 
             <ImageView
                 android:layout_width="match_parent"

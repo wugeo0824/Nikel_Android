@@ -12,4 +12,6 @@ public interface HistoryView extends MvpLceView<List<NickelTransfer>> {
 
     void showEmptyView();
 
+    void showErrorMessage(String message);
+
 }

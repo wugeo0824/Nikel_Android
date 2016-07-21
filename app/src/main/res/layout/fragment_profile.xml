@@ -45,7 +45,7 @@
             app:inputType="name"
             app:errorMessage="Please enter your full name"
             app:ivLeftImageRes="@drawable/ico_name"
-            app:tvHint="Name (First, Last)" />
+            app:tvHint="@string/full_name" />
 
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfDOB"
@@ -55,7 +55,7 @@
             app:inputType="date"
             app:errorMessage="Please enter your correct Date of Birth"
             app:ivLeftImageRes="@drawable/ico_dob"
-            app:tvHint="D.O.B" />
+            app:tvHint="@string/DOB" />
 
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfStreetAddress"
@@ -65,7 +65,7 @@
             app:inputType="text"
             app:errorMessage="Please enter your full address"
             app:ivLeftImageRes="@drawable/ico_address1"
-            app:tvHint="Local Address" />
+            app:tvHint="@string/street_address" />
 
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfCity"
@@ -75,7 +75,7 @@
             app:inputType="text"
             app:errorMessage="Please enter full name of the city"
             app:ivLeftImageRes="@drawable/ico_address2"
-            app:tvHint="City" />
+            app:tvHint="@string/city" />
 
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfPostalCode"
@@ -85,7 +85,7 @@
             app:inputType="number"
             app:errorMessage="Please enter full postal code"
             app:ivLeftImageRes="@drawable/ico_address3"
-            app:tvHint="Postal Code" />
+            app:tvHint="@string/postal_code" />
 
         <!--<View-->
             <!--android:layout_width="match_parent"-->
@@ -101,7 +101,7 @@
             app:inputType="text"
             app:errorMessage="Please select your document type"
             app:ivLeftImageRes="@drawable/ico_document"
-            app:tvHint="Document Type" />
+            app:tvHint="@string/doc_type" />
 
         <!--<View-->
             <!--android:layout_width="match_parent"-->
@@ -118,7 +118,7 @@
             app:inputType="text"
             app:errorMessage="Please enter full document ID"
             app:ivLeftImageRes="@drawable/ico_document"
-            app:tvHint="Document ID" />
+            app:tvHint="@string/doc_id" />
 
         <!--<View-->
             <!--android:layout_width="match_parent"-->
@@ -146,7 +146,7 @@
             android:layout_marginRight="20dp"
             android:layout_toRightOf="@+id/ivPhotoID"
             android:gravity="center_vertical"
-            android:text="Photo of ID"
+            android:text="@string/photo_id"
             android:textSize="18sp" />
 
         <RelativeLayout
@@ -215,7 +215,7 @@
                 android:layout_below="@+id/ivIDFront"
                 android:layout_marginTop="@dimen/keyline_16"
                 android:gravity="center"
-                android:text="Click here to add photo" />
+                android:text="@string/click_take_photo" />
 
         </RelativeLayout>
 

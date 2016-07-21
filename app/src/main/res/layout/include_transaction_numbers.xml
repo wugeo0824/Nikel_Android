@@ -4,6 +4,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:paddingBottom="@dimen/keyline_16"
     android:paddingLeft="20dp"
@@ -16,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="3dp"
-        android:text="Transaction ID: "
+        android:text="@string/trans_id"
         android:textSize="@dimen/font_size_normal" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
@@ -35,6 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvTransactionID"
         android:layout_marginBottom="23dp"
+        tools:text="AIOSDIOAJSDIAJ"
         android:textSize="@dimen/font_size_normal" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
@@ -43,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvTransactionDate"
         android:layout_marginBottom="@dimen/transaction_number_row_margin"
-        android:text="I'm sending"
+        android:text="@string/im_sending"
         android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
@@ -51,15 +53,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvSending"
-        android:text="Recipient gets"
+        android:text="@string/recipient_gets"
         android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
         android:id="@+id/tvRate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/tvExchangeRate"
-        android:text="Rate"
+        android:layout_alignTop="@+id/tvOneSGD"
+        android:text="@string/rate"
         android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
@@ -67,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/tvFeesAmount"
-        android:text="Fees (included)"
+        android:text="@string/fee_included"
         android:textSize="@dimen/font_size_body" />
 
     <!--<com.media2359.nickel.ui.customview.CustomTextView-->
@@ -83,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/tvRecipientDetail"
-        android:text="To Recipient"
+        android:text="@string/to_recipient"
         android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
@@ -94,6 +96,7 @@
         android:layout_below="@+id/tvTransactionDate"
         android:layout_marginBottom="@dimen/transaction_number_row_margin"
         android:textColor="@color/black"
+        android:text="123 SGD"
         android:textSize="@dimen/font_size_body" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
@@ -110,13 +113,13 @@
     <com.media2359.nickel.ui.customview.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/tvExchangeRate"
-        android:layout_toLeftOf="@+id/tvExchangeRate"
+        android:layout_alignTop="@+id/tvOneSGD"
+        android:layout_toLeftOf="@+id/tvOneSGD"
         android:text="1 SGD = "
         android:textColor="@color/black" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
-        android:id="@+id/tvExchangeRate"
+        android:id="@+id/tvOneSGD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -131,7 +134,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/tvExchangeRate"
+        android:layout_below="@+id/tvOneSGD"
         android:layout_marginBottom="@dimen/transaction_number_row_margin"
         android:text="7.00 SGD"
         android:textColor="@color/black"

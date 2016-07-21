@@ -119,7 +119,13 @@ public class CaptureActivity extends AppCompatActivity {
         if (imageType == IMAGE_PROFILE) {
             // for ID card overlay
             idCardOverlay.setVisibility(View.VISIBLE);
-            tvTop.setText("Please place your ID inside the frame");
+
+            if (requestCode == Const.REQUEST_PICTURE_FROM_CAMERA_FRONT){
+                tvTop.setText(getString(R.string.take_front_photo_instruction));
+            }else if (requestCode == Const.REQUEST_PICTURE_FROM_CAMERA_BACK){
+                tvTop.setText(getString(R.string.take_back_photo_instruction));
+            }
+
         } else {
             // for receipt overlay
             idCardOverlay.setVisibility(View.GONE);

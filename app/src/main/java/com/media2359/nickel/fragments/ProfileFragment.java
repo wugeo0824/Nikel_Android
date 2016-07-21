@@ -48,7 +48,7 @@ public class ProfileFragment extends BaseFragment {
     private TextView tvIDFront, tvIDBack, tvStatus;
     private Button btnSaveChanges;
     private MyProfile myProfile;
-    private String frontPhotoUrl, backPhotoUrl;
+    private String frontPhotoFilePath, backPhotoFilePath;
     private UploadProfileAsyncTask uploadProfileAsyncTask;
     private ProgressDialog progressDialog;
 
@@ -57,6 +57,7 @@ public class ProfileFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         initViews(view);
+        getMyProfile();
         return view;
     }
 
@@ -92,8 +93,6 @@ public class ProfileFragment extends BaseFragment {
         public void onClick(View v) {
             if (validFields())
                 saveChanges();
-
-            Log.d(TAG, "onClick: " + validFields());
         }
     };
 
@@ -124,11 +123,6 @@ public class ProfileFragment extends BaseFragment {
             return false;
         }
 
-//        if (!documentTypes.validateInput()) {
-//            documentTypes.showSpinner();
-//            return false;
-//        }
-
         if (pfDocTypes.getInput().isEmpty()) {
             pfDocTypes.requestFocus();
             return false;
@@ -139,7 +133,7 @@ public class ProfileFragment extends BaseFragment {
             return false;
         }
 
-        if (TextUtils.isEmpty(frontPhotoUrl) || TextUtils.isEmpty(backPhotoUrl)) {
+        if (TextUtils.isEmpty(frontPhotoFilePath) || TextUtils.isEmpty(backPhotoFilePath)) {
             ivIDFront.requestFocus();
             Toast.makeText(getActivity(), "Please provide photos of your ID", Toast.LENGTH_SHORT).show();
             return false;
@@ -155,7 +149,7 @@ public class ProfileFragment extends BaseFragment {
         builder.withFullName(pfName.getInput()).withDOB(pfDOB.getInput()).withStreetAddress(pfStreet.getInput())
                 .withCity(pfCity.getInput()).withPostalCode(pfPostal.getInput())
                 .withDocumentType(pfDocTypes.getInput())
-                .withDocumentID(pfDocumentID.getInput()).withFrontPhotoUrl(frontPhotoUrl).withBackPhotoUrl(backPhotoUrl)
+                .withDocumentID(pfDocumentID.getInput()).withFrontPhotoUrl(frontPhotoFilePath).withBackPhotoUrl(backPhotoFilePath)
                 .buildAndSave(getContext());
 
         uploadProfileAsyncTask = new UploadProfileAsyncTask();
@@ -198,22 +192,10 @@ public class ProfileFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getMyProfile();
+
     }
 
     private void getMyProfile() {
-        //TODO get my profile
-//        myProfile = MyProfile.getCurrentProfile(getActivity());
-//
-//        if (myProfile == null) {
-//            changeProfileStatus(MyProfile.STATUS_EMPTY);
-//        } else {
-//            frontPhotoUrl = myProfile.getFrontPhotoUri();
-//            backPhotoUrl = myProfile.getBackPhotoUri();
-//            fillInMyProfile();
-//            changeProfileStatus(MyProfile.STATUS_PENDING);
-//        }
-
         progressDialog = ProgressDialog.show(getContext(), "", "Please wait...", true);
         RequestHandler.getProfile();
     }
@@ -248,8 +230,8 @@ public class ProfileFragment extends BaseFragment {
         }
 
 
-        Picasso.with(getActivity()).load(frontPhotoUrl).fit().centerCrop().placeholder(R.drawable.id_missing_front).into(ivIDFront);
-        Picasso.with(getActivity()).load(backPhotoUrl).fit().centerCrop().placeholder(R.drawable.id_missing_back).into(ivIDBack);
+        Picasso.with(getActivity()).load(frontPhotoFilePath).fit().centerCrop().placeholder(R.drawable.id_missing_front).into(ivIDFront);
+        Picasso.with(getActivity()).load(backPhotoFilePath).fit().centerCrop().placeholder(R.drawable.id_missing_back).into(ivIDBack);
 
         tvIDFront.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ico_ok), null, null, null);
         tvIDFront.setText("");
@@ -314,25 +296,18 @@ public class ProfileFragment extends BaseFragment {
             File result = new File(filePath);
 
             Bitmap thumbImage = BitmapUtils.getThumbnail(getActivity(), result);
-            frontPhotoUrl = Uri.fromFile(result).toString();
-            //PreferencesUtils.saveIDFront(getContext(),frontPhotoUrl);
-            Log.d(TAG, "onImageTakenFromCamera: front url is " + frontPhotoUrl);
+            frontPhotoFilePath = Uri.fromFile(result).toString();
 
             ivIDFront.setImageBitmap(thumbImage);
             tvIDFront.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ico_ok), null, null, null);
             tvIDFront.setText("");
 
         } else if ((requestCode == Const.REQUEST_PICTURE_FROM_CAMERA_BACK) && (resultCode == Activity.RESULT_OK)) {
-            Log.d(TAG, "Image selected from camera");
             String filePath = data.getStringExtra(Const.DATA_PHOTO_FILE);
             File result = new File(filePath);
 
-
             Bitmap thumbImage = BitmapUtils.getThumbnail(getActivity(), result);
-            backPhotoUrl = Uri.fromFile(result).toString();
-            //PreferencesUtils.saveIDBack(getContext(),backPhotoUrl);
-
-            Log.d(TAG, "onImageTakenFromCamera: back url is " + backPhotoUrl);
+            backPhotoFilePath = Uri.fromFile(result).toString();
             ivIDBack.setImageBitmap(thumbImage);
             tvIDBack.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ico_ok), null, null, null);
             tvIDBack.setText("");
@@ -382,22 +357,23 @@ public class ProfileFragment extends BaseFragment {
 
             if (myProfile != null) {
                 status = myProfile.getStatusInt();
-                frontPhotoUrl = myProfile.getDocument1();
-                backPhotoUrl = myProfile.getDocument2();
+                frontPhotoFilePath = myProfile.getDocument1();
+                backPhotoFilePath = myProfile.getDocument2();
+                MyProfile.saveCurrentProfile(getContext(), myProfile);
             }
 
             if (status == MyProfile.STATUS_EMPTY) {
                 changeProfileStatus(MyProfile.STATUS_EMPTY);
 
             } else if (status == MyProfile.STATUS_PENDING) {
-//                frontPhotoUrl = myProfile.getDocument1();
-//                backPhotoUrl = myProfile.getDocument2();
+//                frontPhotoFilePath = myProfile.getDocument1();
+//                backPhotoFilePath = myProfile.getDocument2();
                 fillInMyProfile(status);
                 changeProfileStatus(MyProfile.STATUS_PENDING);
 
             } else if (status == MyProfile.STATUS_APPROVED) {
-//                frontPhotoUrl = myProfile.getDocument1();
-//                backPhotoUrl = myProfile.getDocument2();
+//                frontPhotoFilePath = myProfile.getDocument1();
+//                backPhotoFilePath = myProfile.getDocument2();
                 fillInMyProfile(status);
                 changeProfileStatus(MyProfile.STATUS_APPROVED);
             }
@@ -408,7 +384,6 @@ public class ProfileFragment extends BaseFragment {
             changeProfileStatus(MyProfile.STATUS_EMPTY);
             Toast.makeText(getActivity(), onProfileLoadedEvent.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
 
     }
 }

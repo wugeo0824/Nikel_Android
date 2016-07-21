@@ -9,22 +9,22 @@
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/icn_profile"
-            android:title="My Profile" />
+            android:title="@string/my_profile" />
         <!--<item-->
         <!--android:id="@+id/nav_recipients"-->
         <!--android:title="Recipients" />-->
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/icn_history"
-            android:title="History" />
+            android:title="@string/history" />
         <item
             android:id="@+id/nav_rewards"
             android:icon="@drawable/icn_rewards"
-            android:title="Rewards" />
+            android:title="@string/rewards" />
         <item
             android:id="@+id/nav_help"
             android:icon="@drawable/icn_help"
-            android:title="Help" />
+            android:title="@string/help" />
         <!--<item-->
             <!--android:title="">-->
             <!--<menu>-->

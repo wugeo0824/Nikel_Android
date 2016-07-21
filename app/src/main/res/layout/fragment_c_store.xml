@@ -39,10 +39,10 @@
         <ImageView
             android:id="@+id/ivSevenLogo"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="30dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:scaleType="fitCenter"
             android:src="@drawable/logo_7_eleven_03" />
 
@@ -50,14 +50,14 @@
             android:id="@+id/btnTakeReceipt"
             style="@style/StepsButton"
             android:drawableLeft="@drawable/icn_picture"
-            android:text="Please take a picture of the Receipt" />
+            android:text="@string/take_picture_receipt" />
 
         <com.media2359.nickel.ui.customview.CustomButton
             android:id="@+id/btnStepGuide"
             style="@style/StepsButton"
             android:layout_gravity="bottom"
             android:drawableLeft="@drawable/icn_step"
-            android:text="Step by Step Guide" />
+            android:text="@string/step_by_step" />
 
         <LinearLayout
             android:id="@+id/btnCStoreMap"
@@ -78,7 +78,7 @@
                 android:minHeight="45dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:text="Nearest Convenience Store"
+                android:text="@string/nearest_con_store"
                 android:textColor="@color/color_black_b5" />
 
             <ImageView

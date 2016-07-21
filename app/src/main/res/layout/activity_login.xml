@@ -103,8 +103,7 @@
             android:layout_alignTop="@+id/etPasswordAgain"
             android:layout_below="@+id/ivPassword"
             android:scaleType="fitCenter"
-            android:src="@drawable/ico_sm_password"
-            android:visibility="gone" />
+            android:src="@drawable/ico_sm_password" />
 
         <com.media2359.nickel.ui.customview.CustomEditText
             android:id="@+id/etPasswordAgain"
@@ -117,29 +116,33 @@
             android:inputType="textPassword"
             android:textColor="@color/white"
             android:textSize="@dimen/font_size_medium"
-            android:theme="@style/LoginField"
-            android:visibility="gone" />
+            android:theme="@style/LoginField" />
 
-        <!--<ImageView-->
-        <!--android:id="@+id/ivLanguage"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/ivPasswordAgain"-->
-        <!--android:layout_marginTop="@dimen/keyline_16"-->
-        <!--android:layout_alignLeft="@+id/ivPhone"-->
-        <!--android:scaleType="centerInside"-->
-        <!--android:src="@drawable/ico_sm_language"/>-->
+        <!--<LinearLayout-->
+            <!--android:id="@+id/llLanguageContainer"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_marginTop="@dimen/keyline_16"-->
+            <!--android:layout_below="@+id/ivPasswordAgain"-->
+            <!--android:minHeight="40dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
-        <!--<android.support.v7.widget.AppCompatSpinner-->
-        <!--android:id="@+id/spinnerLanguage"-->
-        <!--android:layout_below="@+id/etPasswordAgain"-->
-        <!--android:layout_marginTop="@dimen/keyline_12"-->
-        <!--android:layout_alignLeft="@+id/etPhone"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
+            <!--<ImageView-->
+                <!--android:id="@+id/ivLanguage"-->
+                <!--android:layout_width="25dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:scaleType="fitCenter"-->
+                <!--android:src="@drawable/ico_sm_language" />-->
+
+            <!--<android.support.v7.widget.AppCompatSpinner-->
+                <!--android:id="@+id/spinnerLanguage"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="@dimen/keyline_12">-->
 
 
-        <!--</android.support.v7.widget.AppCompatSpinner>-->
+            <!--</android.support.v7.widget.AppCompatSpinner>-->
+        <!--</LinearLayout>-->
 
     </RelativeLayout>
 

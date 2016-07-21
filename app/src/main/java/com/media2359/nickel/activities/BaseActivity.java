@@ -32,7 +32,7 @@ public class BaseActivity extends AppCompatActivity {
     private void logOutUser() {
         lastActiveTime = -1;
 
-        Toast.makeText(getApplicationContext(), "Sorry, user session timed out. Please login again", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "User session timed out. Please login again", Toast.LENGTH_SHORT).show();
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
         finish();

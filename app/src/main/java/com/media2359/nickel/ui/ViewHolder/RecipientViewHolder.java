@@ -1,12 +1,10 @@
 package com.media2359.nickel.ui.viewholder;
 
-import android.animation.LayoutTransition;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -43,7 +41,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindItem(final Recipient recipient) {
-        tvRecipientName.setText(recipient.getName());
+        tvRecipientName.setText(recipient.getDisplayName());
         tvRecipientBank.setText(recipient.getBankAccount());
 
         btnRecipientOptions.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +56,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder {
         });
 
 
-        tvSendMoney.setText(String.format(itemView.getContext().getString(R.string.send_money_to), recipient.getName()));
+        tvSendMoney.setText(String.format(itemView.getContext().getString(R.string.send_money_to), recipient.getDisplayName()));
 
         //itemView.setOnClickListener(switchLayout);
 

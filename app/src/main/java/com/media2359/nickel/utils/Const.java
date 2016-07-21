@@ -19,4 +19,6 @@ public class Const {
     public final static int IN_ITEM_MAX_PROGRESS = 100;
     public final static int IN_ITEM_PROGRESS_ONE = 33;
     public final static int IN_ITEM_PROGRESS_TWO = 66;
+
+
 }

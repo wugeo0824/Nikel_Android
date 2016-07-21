@@ -1,52 +1,69 @@
 package com.media2359.nickel.model;
 
-import io.realm.Realm;
-import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
-import io.realm.annotations.PrimaryKey;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Xijun on 21/3/16.
  */
 
-public class Recipient extends RealmObject {
+public class Recipient {
 
-    @PrimaryKey
-    private int ID;
+    @SerializedName("nameFirstLast")
+    String fullName;
 
-    private String name;
-    private String nickName;
-    private String phoneNumber;
-    private String street;
-    private String city;
-    private String postalCode;
-    private String bankName;
-    private String bankAccount;
+    @SerializedName("displayName")
+    String displayName;
 
-    @Ignore
+    @SerializedName("phoneNum")
+    String phoneNumber;
+
+    @SerializedName("address")
+    String street;
+
+    @SerializedName("city")
+    String city;
+
+    @SerializedName("postalCode")
+    String postalCode;
+
+    @SerializedName("bankName")
+    String bankName;
+
+    @SerializedName("bankAccountNum")
+    String bankAccount;
+
+    @SerializedName("bankShortName")
+    String bankShortName;
+
+    @SerializedName("bankId")
+    int bankId;
+
+    @SerializedName("id")
+    String recipientId;
+
+    @SerializedName("latestTransfer")
+    NickelTransfer currentTransaction;
+
+    @Expose(serialize = false, deserialize = false)
     private boolean expanded = false;
-    @Ignore
-    private boolean greyedOut = false;
 
-    private NickelTransfer currentTransaction;
+    @Expose(serialize = false, deserialize = false)
+    private boolean greyedOut = false;
 
     public Recipient() {
     }
 
-    public Recipient(int ID, String name, String nickName, String phoneNumber, String street, String city, String postalCode, String bankName, String bankAccount) {
-        this.ID = ID;
-        this.name = name;
-        this.nickName = nickName;
+    public Recipient(String fullName, String displayName, String phoneNumber, String street, String city, String postalCode, String bankName, int bankId, String bankAccount) {
+        this.fullName = fullName;
+        this.displayName = displayName;
         this.phoneNumber = phoneNumber;
         this.street = street;
         this.city = city;
         this.postalCode = postalCode;
         this.bankName = bankName;
         this.bankAccount = bankAccount;
-    }
-
-    public int getID() {
-        return ID;
+        this.bankId = bankId;
     }
 
     public boolean isGreyedOut() {
@@ -60,6 +77,7 @@ public class Recipient extends RealmObject {
     public void setCurrentTransaction(final NickelTransfer currentTransaction) {
         this.currentTransaction = currentTransaction;
     }
+
     public void setExpanded(final boolean expanded) {
         this.expanded = expanded;
     }
@@ -68,16 +86,16 @@ public class Recipient extends RealmObject {
         return expanded;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
     public String getBankAccount() {
         return bankAccount;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getDisplayName() {
+        return displayName;
     }
 
     public String getPhoneNumber() {
@@ -98,6 +116,10 @@ public class Recipient extends RealmObject {
 
     public String getBankName() {
         return bankName;
+    }
+
+    public String getRecipientId() {
+        return recipientId;
     }
 
     public boolean isInProgress() {

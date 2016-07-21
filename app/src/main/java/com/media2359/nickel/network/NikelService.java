@@ -23,7 +23,7 @@ public class NikelService {
 
     private static NikelApi apiManager;
 
-    static NikelApi getApiManager() {
+    public static NikelApi getApiManager() {
         if(apiManager == null) {
 
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();

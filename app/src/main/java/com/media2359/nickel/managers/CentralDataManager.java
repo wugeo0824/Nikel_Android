@@ -7,31 +7,34 @@ import android.util.Log;
 import com.media2359.nickel.event.OnRecipientsChangedEvent;
 import com.media2359.nickel.model.NickelTransfer;
 import com.media2359.nickel.model.Recipient;
+import com.media2359.nickel.network.NikelService;
+import com.media2359.nickel.network.RequestHandler;
+import com.media2359.nickel.network.responses.BaseResponse;
+import com.media2359.nickel.network.responses.RecipientListResponse;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmObject;
-import io.realm.RealmResults;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Xijun on 23/5/16.
  */
-public class CentralDataManager implements RealmChangeListener<RealmResults<Recipient>> {
+public class CentralDataManager {
 
     private static final String TAG = "CentralDataManager";
-    private Realm realm;
+
     private static NickelTransfer currentTransaction = null;
     private static int recipientPosition = -1;
 
     private static CentralDataManager manager;
 
     //keep a list of recipients, since they are needed almost throughout the entire life of this app
-    private RealmResults<Recipient> recipientList;
+    private List<Recipient> recipientList;
 
     public static CentralDataManager getInstance() {
         if (manager == null) {
@@ -41,17 +44,15 @@ public class CentralDataManager implements RealmChangeListener<RealmResults<Reci
     }
 
     private CentralDataManager() {
-        realm = Realm.getDefaultInstance();
-        recipientList = realm.where(Recipient.class).findAllSorted("ID");
-        recipientList.addChangeListener(this);
+
+        recipientList = new ArrayList<>();
     }
 
     public void close() {
         Log.d(TAG, "close: ");
-        recipientList.removeChangeListeners();
+
         recipientList = null;
         currentTransaction = null;
-        realm.close();
         manager = null;
     }
 
@@ -75,28 +76,6 @@ public class CentralDataManager implements RealmChangeListener<RealmResults<Reci
     }
 
 
-    public List<Recipient> mockRecipients() {
-
-        List<Recipient> mockList = new ArrayList<>();
-        Recipient a = new Recipient(0, "Husband", "BRI 281973021894", "92227744", "That street", "That city", "21314", "That bank", "QWE 2132113");
-        Recipient b = new Recipient(1, "Mother", "BRI 0123874123", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
-        Recipient c = new Recipient(2, "Sister", "MYI 9012830912", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
-        Recipient d = new Recipient(3, "Han", "SGW 0911298301", "92227744", "That street", "That city", "21314", "That bank", "SHF98098");
-        a.setExpanded(false);
-        b.setExpanded(false);
-        c.setExpanded(false);
-        d.setExpanded(false);
-
-        NickelTransfer aadd = new NickelTransfer("1238u9ashjd", "March 2, 2016", "500.00", "Funds Ready for Collection", NickelTransfer.TRANS_NEW_BORN, a.getName(), 1235, a.getBankAccount());
-        a.setCurrentTransaction(aadd);
-        mockList.add(a);
-        mockList.add(b);
-        mockList.add(c);
-        mockList.add(d);
-
-        return mockList;
-    }
-
     public List<Recipient> getAllRecipients() {
         return recipientList;
     }
@@ -106,21 +85,27 @@ public class CentralDataManager implements RealmChangeListener<RealmResults<Reci
      */
     public boolean fetchRecipientsFromServer() {
         //TODO call api
-        final List<Recipient> apiResult = mockRecipients();
-
-        realm.executeTransactionAsync(new Realm.Transaction() {
+        Call<List<Recipient>> call = NikelService.getApiManager().getRecipients();
+        call.enqueue(new Callback<List<Recipient>>() {
             @Override
-            public void execute(Realm realm) {
-                for (Recipient recipient : apiResult) {
-                    realm.copyToRealmOrUpdate(recipient);
+            public void onResponse(Call<List<Recipient>> call, Response<List<Recipient>> response) {
+                if (response.isSuccessful()) {
+                    recipientList.clear();
+                    recipientList.addAll(response.body());
+                    EventBus.getDefault().post(new OnRecipientsChangedEvent(true, response.message()));
+                } else {
+                    EventBus.getDefault().post(new OnRecipientsChangedEvent(false, RequestHandler.convert400Response(response)));
                 }
             }
-        });
-        return true;
-    }
 
-    public int getNextValidRecipientID() {
-        return recipientList.size();
+            @Override
+            public void onFailure(Call<List<Recipient>> call, Throwable t) {
+                EventBus.getDefault().post(new OnRecipientsChangedEvent(false, t.getLocalizedMessage()));
+            }
+        });
+
+
+        return true;
     }
 
     public Recipient getRecipientAtPosition(int position) {
@@ -133,25 +118,28 @@ public class CentralDataManager implements RealmChangeListener<RealmResults<Reci
 
     public void updateTransactionForRecipient(@Nullable final NickelTransfer transaction, @NonNull final Recipient recipient) {
 
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                NickelTransfer object = realm.copyToRealmOrUpdate(transaction);
-                recipient.setCurrentTransaction(object);
-                realm.copyToRealmOrUpdate(recipient);
-            }
-        });
+
     }
 
     public boolean deleteRecipientAtPosition(final int position) {
         if (checkIfOutOfBound(position))
             return false;
-        
-        //TODO call api to delete recipient
-        realm.executeTransaction(new Realm.Transaction() {
+
+        Call<BaseResponse> call = NikelService.getApiManager().deleteRecipient(recipientList.get(position).getRecipientId());
+        call.enqueue(new Callback<BaseResponse>() {
             @Override
-            public void execute(Realm realm) {
-                recipientList.deleteFromRealm(position);
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()){
+                    recipientList.remove(position);
+                    EventBus.getDefault().post(new OnRecipientsChangedEvent(true, response.message()));
+                }else {
+                    EventBus.getDefault().post(new OnRecipientsChangedEvent(false, RequestHandler.convert400Response(response)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                EventBus.getDefault().post(new OnRecipientsChangedEvent(false, t.getLocalizedMessage()));
             }
         });
 
@@ -164,24 +152,60 @@ public class CentralDataManager implements RealmChangeListener<RealmResults<Reci
             return false;
         }
 
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.copyToRealmOrUpdate(recipient);
-            }
-        });
+        Call<Recipient> call;
+
+        if (recipient.getRecipientId() == null) {
+            call = NikelService.getApiManager().addRecipient(recipient);
+            call.enqueue(new Callback<Recipient>() {
+                @Override
+                public void onResponse(Call<Recipient> call, Response<Recipient> response) {
+                    if (response.isSuccessful()) {
+                        getAllRecipients().add(response.body());
+                        EventBus.getDefault().post(new OnRecipientsChangedEvent(true, response.message()));
+                    } else {
+                        EventBus.getDefault().post(new OnRecipientsChangedEvent(false, RequestHandler.convert400Response(response)));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Recipient> call, Throwable t) {
+                    EventBus.getDefault().post(new OnRecipientsChangedEvent(false, t.getLocalizedMessage()));
+                }
+            });
+        } else {
+            call = NikelService.getApiManager().updateRecipient(recipient.getRecipientId(), recipient);
+            call.enqueue(new Callback<Recipient>() {
+                @Override
+                public void onResponse(Call<Recipient> call, Response<Recipient> response) {
+                    if (response.isSuccessful()) {
+                        // delete old recipient
+                        for (Recipient oldRecipient: getAllRecipients()){
+                            if (oldRecipient.getRecipientId().equals(recipient.getRecipientId())){
+                                getAllRecipients().remove(oldRecipient);
+                                break;
+                            }
+                        }
+                        // add new recipient
+                        getAllRecipients().add(response.body());
+                        EventBus.getDefault().post(new OnRecipientsChangedEvent(true, response.message()));
+                    }else {
+                        EventBus.getDefault().post(new OnRecipientsChangedEvent(false, RequestHandler.convert400Response(response)));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Recipient> call, Throwable t) {
+                    EventBus.getDefault().post(new OnRecipientsChangedEvent(false, t.getLocalizedMessage()));
+                }
+            });
+        }
 
         return true;
     }
+
 
     private boolean checkIfOutOfBound(int position) {
         return (position < 0 || position >= recipientList.size());
     }
 
-    @Override
-    public void onChange(RealmResults<Recipient> element) {
-
-        // TODO handle api callback
-        EventBus.getDefault().post(new OnRecipientsChangedEvent(true, "Ok"));
-    }
 }

@@ -2,7 +2,6 @@ package com.media2359.nickel.fragments;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -33,6 +32,9 @@ import com.media2359.nickel.managers.CentralDataManager;
 import com.media2359.nickel.model.MyProfile;
 import com.media2359.nickel.model.NickelTransfer;
 import com.media2359.nickel.model.Recipient;
+import com.media2359.nickel.network.NikelService;
+import com.media2359.nickel.network.RequestHandler;
+import com.media2359.nickel.network.responses.ComputeResponse;
 import com.media2359.nickel.ui.customview.ThemedSwipeRefreshLayout;
 import com.media2359.nickel.utils.DialogUtils;
 import com.media2359.nickel.utils.DisplayUtils;
@@ -41,12 +43,21 @@ import com.media2359.nickel.utils.MistUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 /**
  * Created by Xijun on 10/3/16.
  */
 public class HomeFragment extends BaseFragment implements RecipientAdapter.onItemClickListener {
 
     private static final String TAG = "HomeFragment";
+
+    private static final String CURRENCY_SGD = "SGD";
+    private static final String CURRENCY_IDR = "IDR";
 
     private MainActivity mainActivity;
     private RecyclerView rvHome;
@@ -75,6 +86,9 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         if (getActivity() instanceof MainActivity)
             mainActivity = (MainActivity) getActivity();
         initViews(view);
+        loadMyProfile();
+        getRecipients(false);
+        
         return view;
     }
 
@@ -97,7 +111,6 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         srl.setOnRefreshListener(OnRefresh);
 
         tvExchangeRate = (TextView) view.findViewById(R.id.tvExchangeRate);
-        //TODO: set the exchange rate
         tvFees = (TextView) view.findViewById(R.id.tvFeesAmount);
         etSendAmount = (EditText) view.findViewById(R.id.etSendAmount);
         tvGetAmount = (TextView) view.findViewById(R.id.tvGetAmount);
@@ -131,8 +144,28 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     public void onResume() {
         super.onResume();
 
-        loadMyProfile();
-        getRecipients(false);
+
+        refreshRate();
+    }
+
+    private void refreshRate() {
+        NikelService.getApiManager().computeTransfer(108, CURRENCY_SGD, CURRENCY_IDR).enqueue(new Callback<ComputeResponse>() {
+            @Override
+            public void onResponse(Call<ComputeResponse> call, Response<ComputeResponse> response) {
+                if (response.isSuccessful()) {
+                    exchangeRate = response.body().getRate();
+                    tvExchangeRate.setText(exchangeRate + " IDR");
+
+                } else {
+                    Toast.makeText(getContext(), "Internet Connection is poor, rate was not refreshed", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ComputeResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "Internet Connection is poor, rate was not refreshed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private View.OnClickListener onNewRecipientClick = new View.OnClickListener() {
@@ -220,12 +253,11 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         NickelTransfer.Builder builder = new NickelTransfer.Builder();
 
         String today = MistUtils.getTodayStringInFormat();
-        //TODO: real ID
+
         currentTransaction = builder.withAmount(etSendAmount.getText().toString())
                 .withDate(today)
-                .withExchangeRate(exchangeRate)
-                .withID("asijdaopkf")
-                .withRecipientName(recipient.getName())
+                .withExchangeRate(String.valueOf(exchangeRate))
+                .withRecipientName(recipient.getDisplayName())
                 .withRecipientAccount(recipient.getBankAccount())
                 .withStatus("This is payment status")
                 .withProgress(NickelTransfer.TRANS_DRAFT)
@@ -272,11 +304,15 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
 
         Log.d(TAG, "OnEvent: " + CentralDataManager.getInstance().getAllRecipients().size());
 
+        if (srl.isRefreshing()) {
+            srl.setRefreshing(false);
+        }
+
         if (onRecipientsChangedEvent.isSuccess()) {
             recipientAdapter.notifyDataSetChanged();
             showListOfRecipient(!CentralDataManager.getInstance().getAllRecipients().isEmpty());
         } else {
-            Toast.makeText(getActivity(), "Sorry, internet connection is poor, please try again", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), onRecipientsChangedEvent.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -289,17 +325,18 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     @Override
     public void onDeleteButtonClick(int position) {
         Recipient recipient = CentralDataManager.getInstance().getRecipientAtPosition(position);
-        showDeleteDialog(position, recipient.getName());
+        showDeleteDialog(position, recipient.getDisplayName());
     }
 
     @Override
     public void onSendMoneyClick(int position) {
         Recipient recipient = CentralDataManager.getInstance().getRecipientAtPosition(position);
-        //TODO: change to actual value
         if (validTransaction()) {
+            refreshRate();
             makeTransaction(recipient);
-            String message = "Proceed to send " + etSendAmount.getText().toString() + " SGD to " + recipient.getName() + "?";
-            showPaymentConfirmationDialog(message, position);
+            String message1 = String.format(Locale.getDefault(), getString(R.string.payment_alert_1), etSendAmount.getText().toString() + " SGD");
+            String message2 = String.format(Locale.getDefault(), getString(R.string.payment_alert_2), recipient.getDisplayName());
+            showPaymentConfirmationDialog(message1 + message2, position);
         }
     }
 
@@ -327,24 +364,31 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
 
     /**
      * When user clicks yes on payment confirmation dialog
-     * This should save the transaction in local storage, call the api to upload the open the transaction in server
+     * call the api to upload the open the transaction in server
      */
-    private void confirmTransaction(int position) {
-        // TODO: call api
+    private void confirmTransaction(final int position) {
+        String recipientId = CentralDataManager.getInstance().getRecipientAtPosition(position).getRecipientId();
+        Call<NickelTransfer> call = NikelService.getApiManager().createTransfer(Integer.valueOf(etSendAmount.getText().toString().replaceAll(",", "")), CURRENCY_SGD, CURRENCY_IDR, recipientId);
+        call.enqueue(new Callback<NickelTransfer>() {
+            @Override
+            public void onResponse(Call<NickelTransfer> call, Response<NickelTransfer> response) {
+                if (response.isSuccessful()){
+                    // update the transaction status
+                    currentTransaction = response.body();
+                    currentTransaction.transactionConfirmed();
+                    TransactionActivity.startTransactionActivity(getActivity(), currentTransaction, position);
+                }else {
+                    Toast.makeText(getContext(), RequestHandler.convert400Response(response), Toast.LENGTH_SHORT).show();
+                }
+            }
 
-        // update the transaction status
-        currentTransaction.transactionConfirmed();
+            @Override
+            public void onFailure(Call<NickelTransfer> call, Throwable t) {
+                Toast.makeText(getContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        TransactionActivity.startTransactionActivity(getActivity(), currentTransaction, position);
     }
-
-    /**
-     * when the transaction is successfully created in server
-     */
-    private void transactionCreated() {
-
-    }
-
 
     private void showDeleteDialog(final int position, String contactName) {
         String message = "Do you want to delete " + contactName + "?";
@@ -360,7 +404,6 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     }
 
     private void loadMyProfile() {
-        //TODO get my profile data
         if (MyProfile.getCurrentProfile(getContext()) != null) {
             hideMyProfile();
         } else {
@@ -381,22 +424,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     }
 
     private void getRecipients(boolean pullToRefresh) {
-        if (pullToRefresh)
-            CentralDataManager.getInstance().fetchRecipientsFromServer();
-
-        if (pullToRefresh) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (srl.isRefreshing()) {
-                        srl.setRefreshing(false);
-                    }
-                }
-            }, 500);
-        }
-
-        recipientAdapter.notifyDataSetChanged();
-        showListOfRecipient(!CentralDataManager.getInstance().getAllRecipients().isEmpty());
+        CentralDataManager.getInstance().fetchRecipientsFromServer();
     }
 
     private void showListOfRecipient(boolean show) {

@@ -12,15 +12,20 @@ import com.media2359.nickel.event.OnProfileChangedEvent;
 import com.media2359.nickel.event.OnProfileLoadedEvent;
 import com.media2359.nickel.event.OnRegisterConsumerEvent;
 import com.media2359.nickel.event.OnResetPasswordEvent;
+import com.media2359.nickel.event.OnTransfersLoadedEvent;
 import com.media2359.nickel.managers.UserSessionManager;
 import com.media2359.nickel.model.MyProfile;
+import com.media2359.nickel.model.NickelTransfer;
 import com.media2359.nickel.network.responses.BaseResponse;
+import com.media2359.nickel.network.responses.ComputeResponse;
 import com.media2359.nickel.network.responses.LoginResponse;
 import com.media2359.nickel.network.responses.ProfileResponse;
+import com.media2359.nickel.network.responses.TransfersResponse;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -218,13 +223,34 @@ public class RequestHandler {
         return call;
     }
 
-    private static String convert400Response(Response response) {
+    public static Call getTransfers(int page) {
+        Call<TransfersResponse> call = NikelService.getApiManager().getTransfers(page);
+        call.enqueue(new Callback<TransfersResponse>() {
+            @Override
+            public void onResponse(Call<TransfersResponse> call, Response<TransfersResponse> response) {
+                if (response.isSuccessful()){
+                    EventBus.getDefault().post(new OnTransfersLoadedEvent(true, response.message(), response.body().getTransfers()));
+                }else {
+                    EventBus.getDefault().post(new OnTransfersLoadedEvent(false, convert400Response(response), null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TransfersResponse> call, Throwable t) {
+                EventBus.getDefault().post(new OnTransfersLoadedEvent(false, t.getLocalizedMessage(), null));
+            }
+        });
+        return call;
+    }
+
+
+    public static String convert400Response(Response response) {
         String error;
         try {
             error = response.errorBody().string();
             BaseResponse baseResponse = new Gson().fromJson(error, BaseResponse.class);
             return baseResponse.getError();
-        } catch (IOException e) {
+        } catch (Exception  e) {
             e.printStackTrace();
         }
         return "";

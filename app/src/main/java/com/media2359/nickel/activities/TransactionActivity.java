@@ -29,13 +29,9 @@ public class TransactionActivity extends BaseActivity implements BaseFragment.Fr
     private TextView tvTitle;
     private FragmentManager manager;
 
-//    private static final String EXTRA_TRANSACTION = "extra_transaction";
-//    private static final String EXTRA_RECIPIENT = "extra_recipient";
 
     public static void startTransactionActivity(Activity startingActivity, NickelTransfer transaction, int recipientPosition) {
         Intent intent = new Intent(startingActivity, TransactionActivity.class);
-        //intent.putExtra(EXTRA_TRANSACTION, Parcels.wrap(transaction));
-        //intent.putExtra(EXTRA_RECIPIENT, recipientPosition);
         CentralDataManager.setCurrentTransaction(transaction, recipientPosition);
         startingActivity.startActivity(intent);
     }
@@ -44,20 +40,10 @@ public class TransactionActivity extends BaseActivity implements BaseFragment.Fr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
-        //initCurrentTransaction();
         initViews();
 
         if (savedInstanceState == null)
             switchFragment(TransactionDetailFragment.newInstance(), false);
-    }
-
-    private void initCurrentTransaction() {
-        //transaction = CentralDataManager.getCurrentTransaction();
-
-//        Intent intent = getIntent();
-//        if (intent != null) {
-//            recipientPosition = intent.getIntExtra(EXTRA_RECIPIENT, -1);
-//        }
     }
 
     private void initViews() {
@@ -107,13 +93,6 @@ public class TransactionActivity extends BaseActivity implements BaseFragment.Fr
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        //TODO save the transaction locally
-        CentralDataManager.getInstance().saveCurrentTransactionToRecipient();
-    }
-
-    @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
@@ -127,7 +106,7 @@ public class TransactionActivity extends BaseActivity implements BaseFragment.Fr
             String filePath = data.getStringExtra(Const.DATA_PHOTO_FILE);
             File result = new File(filePath);
             //Bitmap thumbImage = BitmapUtils.getThumbnail(this, result);
-            CentralDataManager.getCurrentTransaction().paymentMadeAndPhotoTaken(result.getAbsolutePath());
+            CentralDataManager.getCurrentTransaction().paymentMadeAndPhotoTaken(result.getPath());
 
             // if image is successfully taken, bring user back to transaction detail screen
             clearFragmentStack();

@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Nickel</string>
-    <string name="save_changes">Save Changes</string>
+
+    <string name="drawer_open">open drawer</string>
+    <string name="drawer_closed">close drawer</string>
+
+
+    <!--log in-->
     <string name="phone_number">Phone Number (with Country code)</string>
     <string name="sign_in">Sign In</string>
     <string name="forgot_password">Forgot Password?</string>
@@ -10,46 +15,112 @@
     <string name="need_account">Need an account?</string>
     <string name="have_account">Have an account?</string>
     <string name="cancel">Cancel</string>
-    <string name="home">Home</string>
-    <string name="my_profile">My Profile</string>
-    <string name="my_recipients">My Recipients</string>
-    <string name="drawer_open">open drawer</string>
-    <string name="drawer_closed">close drawer</string>
-    <string name="join_nickel">Join Nickel</string>
-    <string name="send_money_to">Send Money to %s</string>
-    <string name="profile_status_pending">Application status: Pending</string>
-    <string name="open_account_instruction">Please proceed to UOB City Plaza for application proval</string>
-    <string name="profile_status_approved">Approved</string>
-    <string name="payment_options">Payment Options</string>
-    <string name="UOB_machines">UOB Cash Deposit Machines</string>
-    <string name="pay_by_CStore">Convenience Store</string>
-    <string name="receipt">Receipt</string>
     <string name="reset">RESET</string>
-    <string name="front_missing">Front Missing</string>
-    <string name="back_missing">Back Missing</string>
-    <string name="in_progress">IN PROGRESS</string>
-    <string name="completed">COMPLETED</string>
-    <string name="recipient">Recipient</string>
-    <string name="submit">Submit</string>
-    <string name="date_of_birth">Date of birth</string>
-    <string name="my_info">My Information</string>
-    <string name="complete_profile_first">Oops, you need to complete your profile before making a new transaction. \n\nProceed to complete your profile now?</string>
-
-    <string name="trans_id">Transaction ID: </string>
-
-    <string name="complete_sender_profile">Complete sender profile</string>
-    <string name="add_new_recipient">Add New Recipient</string>
-    
-    <string name="take_photo_instruction">Please take a photo of the front of your I.D</string>
-
-
+    <string name="join_nickel">Join Nickel</string>
     <string name="reset_password_text">Please enter your phone number. We will send you an SMS with instructions on how to recover your account.</string>
-
     <string name="privacy_message_1">By selecting to "Join Nickel", you are agreeing to our</string>
     <string name="user_agreement">User Agreement</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="uob_instruction">Please proceed to transfer %s SGD at the nearest UOB Cash Deposit Machines</string>
+
+    <!--home-->
+    <string name="home">Home</string>
+    <string name="im_sending">I\'m sending</string>
+    <string name="recipient_gets">Recipient gets</string>
+    <string name="rate">Rate</string>
+    <string name="fee_included">Fees (Included)</string>
+    <string name="my_info">My Information</string>
+    <string name="complete_sender_profile">Complete sender profile</string>
+    <string name="recipient">Recipient</string>
+    <string name="add_new_recipient">Add New Recipient</string>
+    <string name="complete_profile_first">Oops, you need to complete your profile before making a new transaction. \n\nProceed to complete your profile now?</string>
+
+    <string name="payment_alert_1">Proceed to send %s</string>
+    <string name="payment_alert_2"> to %s?</string>
+
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+
+    <!--recipient row view-->
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="send_money_to">Send Money to %s</string>
+    <string name="in_progress">IN PROGRESS</string>
+    <string name="completed">COMPLETED</string>
+
+    <!--transfer details-->
+    <string name="confirmation">Confirmation</string>
+    <string name="trans_id">Transaction ID: </string>
+    <string name="to_recipient">To Recipient</string>
+    <string name="payment_options">Payment Options</string>
+    <string name="UOB_machines">UOB Cash Deposit Machines</string>
+    <string name="pay_by_CStore">Convenience Store</string>
+    <string name="make_payment_by_today">Please make payment by 11:59 pm today. Funds will be available within 4 hours after payment.</string>
+    <string name="uob_instruction">Please proceed to pay %s SGD at the nearest UOB Cash Deposit Machines</string>
     <string name="cstore_instruction">Please proceed to pay %s SGD at the nearest convenient store using the barcode</string>
     <string name="transfer_to">Transfer to: %s</string>
     <string name="account_no">Account No: %s</string>
+    <string name="step_by_step">Step-by-step Guide</string>
+    <string name="nearest_atm">Nearest Cash Deposit Machine</string>
+    <string name="nearest_con_store">Nearest Convenience Store</string>
+    <string name="take_picture_receipt" translatable="false">Please take a picture of the receipt</string>
+    <string name="receipt">Receipt</string>
+
+    <string name="profile_status_pending">Application status: Pending</string>
+    <string name="open_account_instruction">Please proceed to UOB City Plaza for application approval</string>
+    <string name="profile_status_approved">Approved</string>
+
+    <string name="submit">Submit</string>
+    <string name="date_of_birth">Date of birth</string>
+
+
+    <!--my profile-->
+    <string name="full_name">Full Name</string>
+    <string name="DOB">D.O.B</string>
+    <string name="street_address">Street Address</string>
+    <string name="city">City</string>
+    <string name="postal_code">Postal Code</string>
+    <string name="doc_type">Document Type</string>
+    <string name="doc_id">Document ID</string>
+    <string name="photo_id">Photo of ID</string>
+    <string name="front_missing">Front Missing</string>
+    <string name="back_missing">Back Missing</string>
+    <string name="click_take_photo">Click here to take photo</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="my_profile">My Profile</string>
+
+    <!--recipient details-->
+    <string name="my_recipients">My Recipients</string>
+    <string name="recipient_details">Recipient Details</string>
+    <string name="display_name">Display Name</string>
+    <string name="bank_name">Bank Name</string>
+    <string name="bank_account">Bank Account Number</string>
+    <string name="confirm_bank_account">Confirm Bank Account Number</string>
+
+    <!--camera-->
+    <string name="take_front_photo_instruction">Please take a photo of the front of your I.D</string>
+    <string name="take_back_photo_instruction">Please take a photo of the back of your I.D</string>
+    <string name="place_inside_frame">Position your card on the frame</string>
+
+    <!--dialog-->
+    <string name="payment_received">Payment Received</string>
+    <string name="thank_you">Thank you</string>
+
+    <!--rewards-->
+    <string name="rewards">Rewards</string>
+    <string name="available_credits">Available Credits</string>
+    <string name="send_your_friend">Send your friends a free remittance worth $10 and you will get one too.</string>
+    <string name="enter_promo_code">Enter Promo Code</string>
+    <string name="apply">Apply</string>
+
+    <!--history-->
+    <string name="history">History</string>
+    <string name="transaction_history">Transaction History</string>
+
+    <!--help-->
+    <string name="help">Help</string>
+
+    <!--sign out-->
+    <string name="sign_out">Sign out</string>
+    <string name="take_photo_instruction" translatable="false">Please take a photo of the front of your I.D</string>
+
 </resources>

@@ -44,8 +44,8 @@ public class DialogUtils {
         builder.setTitle(title);
         builder.setMessage(message);
         builder.setCancelable(false);
-        builder.setNegativeButton("No", null);
-        builder.setPositiveButton("Yes", onYesClickListener);
+        builder.setNegativeButton(context.getString(R.string.no), null);
+        builder.setPositiveButton(context.getString(R.string.yes), onYesClickListener);
         final AlertDialog dialog = builder.create();
 
         //2. now setup to change color of the button

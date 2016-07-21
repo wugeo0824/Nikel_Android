@@ -21,7 +21,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="@dimen/keyline_16"
         android:layout_marginLeft="4dp"
-        android:text="Available Credits"
+        android:text="@string/available_credits"
         android:textSize="16sp" />
 
     <TextView
@@ -56,7 +56,7 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/keyline_16"
         android:gravity="center"
-        android:text="Send your friends a free remittance worth $10 and you will get one too."
+        android:text="@string/send_your_friend"
         android:textSize="16sp" />
 
     <com.media2359.nickel.ui.customview.CustomTextView
@@ -66,7 +66,7 @@
         android:layout_above="@+id/etPromoCode"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/keyline_16"
-        android:text="Enter Promo Code"
+        android:text="@string/enter_promo_code"
         android:textColor="@color/pink" />
 
     <com.media2359.nickel.ui.customview.CustomEditText
@@ -85,6 +85,6 @@
         style="@style/PinkButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Apply" />
+        android:text="@string/apply" />
 
 </RelativeLayout>

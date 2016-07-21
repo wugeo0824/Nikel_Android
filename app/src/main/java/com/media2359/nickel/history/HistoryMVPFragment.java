@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceFragment;
 import com.media2359.nickel.R;
+import com.media2359.nickel.activities.MainActivity;
 import com.media2359.nickel.activities.TransactionActivity;
 import com.media2359.nickel.model.NickelTransfer;
 
@@ -56,6 +58,14 @@ public class HistoryMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<
         rvHistory.setAdapter(historyAdapter);
         rvHistory.setLayoutManager(new LinearLayoutManager(getActivity()));
         loadData(false);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getActivity() instanceof MainActivity){
+            ((MainActivity) getActivity()).setPageTitle(getString(R.string.transaction_history));
+        }
     }
 
     @Override
@@ -116,5 +126,12 @@ public class HistoryMVPFragment extends MvpLceFragment<SwipeRefreshLayout, List<
         loadingView.setVisibility(View.GONE);
         contentView.setVisibility(View.GONE);
         emptyView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showErrorMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        contentView.setRefreshing(false);
+        emptyView.setVisibility(View.GONE);
     }
 }

@@ -28,9 +28,9 @@ public class InProgressViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Recipient recipient) {
-        tvRecipientName.setText(recipient.getName());
+        tvRecipientName.setText(recipient.getDisplayName());
         tvRecipientBank.setText(recipient.getBankAccount());
-        tvTransactionAmount.setText(recipient.getCurrentTransaction().getTransactionAmount() + " SGD");
+        tvTransactionAmount.setText(recipient.getCurrentTransaction().getAmountSent() + " SGD");
         progressBar.updateProgress(recipient.getCurrentTransaction().getInItemProgress());
     }
 

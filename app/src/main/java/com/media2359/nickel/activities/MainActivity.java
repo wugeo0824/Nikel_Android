@@ -53,7 +53,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private TextView tvTitle, tvHeaderView;
-    private Fragment mSpinnerFragment;
     private NavigationView navigationView;
     private RelativeLayout btnLogout;
 
@@ -293,8 +292,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
-                //TODO sign out
-                UserSessionManager.getInstance().signOut();
+                UserSessionManager.getInstance().signOut(getApplicationContext());
                 backToLogin();
             }
         });
@@ -391,18 +389,6 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
         }
     }
 
-    public void showLoadingSpinner() {
-        mSpinnerFragment = new SpinnerFragment();
-        manager.beginTransaction().add(R.id.fl_container, mSpinnerFragment).commit();
-    }
-
-    public void dismissLoadingSpinner() {
-        if (mSpinnerFragment == null)
-            return;
-
-        manager.beginTransaction().remove(mSpinnerFragment).commit();
-    }
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -411,7 +397,7 @@ public class MainActivity extends BaseActivity implements BaseFragment.FragmentV
 
         if (MyProfile.getCurrentProfile(getApplicationContext()) == null) {
             //tvHeaderView.setVisibility(View.INVISIBLE);
-            tvHeaderView.setText("Please complete your profile");
+            tvHeaderView.setText("Welcome to Nickel");
         } else {
             tvHeaderView.setText(MyProfile.getCurrentProfile(getApplicationContext()).getFullName());
         }

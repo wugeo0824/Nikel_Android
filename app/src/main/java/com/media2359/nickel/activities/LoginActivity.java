@@ -287,12 +287,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean validPhone(EditText et) {
         String input = et.getText().toString();
-        // TODO:
         if (TextUtils.isEmpty(input)) {
             et.requestFocus();
             et.setError("Please enter your phone number");
             return false;
-        } else if (input.length() < 5 || input.charAt(0) != '+') {
+        } else if (input.length() != 11 || input.charAt(0) != '+') {
             et.requestFocus();
             et.setError("Please enter correct phone number");
             return false;
@@ -303,9 +302,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean validPassword() {
         String password = etPassword.getText().toString();
-        if (TextUtils.isEmpty(password)) {
+        if (password.length() < 8) {
             etPassword.requestFocus();
-            etPassword.setError("Please enter your password");
+            etPassword.setError("Minimum 8 characters required for password");
             return false;
         }
         return true;
@@ -315,7 +314,7 @@ public class LoginActivity extends AppCompatActivity {
         String passwordB = etPasswordAgain.getText().toString();
         String passwordA = etPassword.getText().toString();
 
-        if (TextUtils.isEmpty(passwordB) || !passwordA.equals(passwordB)) {
+        if (passwordB.length() < 8|| !passwordA.equals(passwordB)) {
             etPasswordAgain.requestFocus();
             etPasswordAgain.setError("Passwords do not match");
             return false;
@@ -398,7 +397,6 @@ public class LoginActivity extends AppCompatActivity {
             if (!validPassword())
                 return;
 
-            //TODO sign in
             progressDialog = showProgressDialog("Signing in", "Please wait...");
             RequestHandler.login(etPhone.getText().toString(), etPassword.getText().toString());
 

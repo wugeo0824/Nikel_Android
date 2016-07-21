@@ -1,5 +1,8 @@
 package com.media2359.nickel.managers;
 
+import android.content.Context;
+
+import com.media2359.nickel.model.MyProfile;
 import com.media2359.nickel.utils.PreferencesUtils;
 
 /**
@@ -31,8 +34,9 @@ public class UserSessionManager {
         return token;
     }
 
-    public void signOut() {
-        // TODO clear user cache and sign out
+    public void signOut(Context context) {
+        // clear user cache and sign out
         token = "";
+        MyProfile.clearProfile(context);
     }
 }

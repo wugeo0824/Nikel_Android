@@ -95,6 +95,11 @@ public class ProfileField extends RelativeLayout {
                     // date
                     etInputLayout.setInputType(InputType.TYPE_CLASS_DATETIME | InputType.TYPE_DATETIME_VARIATION_DATE);
                     break;
+                case 4:
+                    //phone
+                    etInputLayout.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                    etInputLayout.addTextChangedListener(phoneWatcher);
+                    break;
                 default:
                     etInputLayout.setInputType(InputType.TYPE_CLASS_TEXT);
                     break;
@@ -114,6 +119,31 @@ public class ProfileField extends RelativeLayout {
 
         }
     }
+
+    // to add a permenant prefix "+" to the phone number
+    private TextWatcher phoneWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            etInputLayout.removeTextChangedListener(this);
+
+            if (!s.toString().startsWith("+")){
+                etInputLayout.setText("+"+s.toString());
+                etInputLayout.setSelection(etInputLayout.getText().toString().length());
+            }
+
+            etInputLayout.addTextChangedListener(this);
+        }
+    };
 
     private TextWatcher textValidationWatcher = new TextWatcher() {
         @Override
@@ -152,7 +182,7 @@ public class ProfileField extends RelativeLayout {
     }
 
     public boolean validateInput() {
-        if (etInputLayout.getText().toString().length() > 3) {
+        if (etInputLayout.getText().toString().length() > 0) {
             showCompletedStatus(true);
             return true;
         } else {
@@ -242,6 +272,7 @@ public class ProfileField extends RelativeLayout {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
                 etInputLayout.setText(dateFormatter.format(newDate.getTime()));
+                etInputLayout.addTextChangedListener(calendarWatcher);
             }
             //initial year month day to be displayed
         }, year, month, dayOfMonth);
@@ -288,6 +319,42 @@ public class ProfileField extends RelativeLayout {
         }
     }
 
+    private TextWatcher calendarWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            etInputLayout.removeTextChangedListener(calendarWatcher);
+            showCalendar();
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    private TextWatcher docTypesWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            etInputLayout.removeTextChangedListener(docTypesWatcher);
+            showDocTypesDialog();
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
     private void showDocTypesDialog() {
 
         final String[] items = getContext().getResources().getStringArray(R.array.document_types);
@@ -298,6 +365,7 @@ public class ProfileField extends RelativeLayout {
             public void onClick(DialogInterface dialog, int item) {
                 // Do something with the selection
                 etInputLayout.setText(items[item]);
+                etInputLayout.addTextChangedListener(docTypesWatcher);
             }
         });
         AlertDialog alert = builder.create();
@@ -310,7 +378,7 @@ public class ProfileField extends RelativeLayout {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         final int action = MotionEventCompat.getActionMasked(ev);
 
-        if (action == MotionEvent.ACTION_DOWN && shouldIntercept)
+        if (action == MotionEvent.ACTION_BUTTON_PRESS && shouldIntercept)
             return true;
 
         return super.onInterceptTouchEvent(ev);
@@ -318,7 +386,7 @@ public class ProfileField extends RelativeLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN && shouldIntercept) {
+        if (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS && shouldIntercept) {
             if (popupType == POPUP_TYPE_CALENDAR) {
                 showCalendar();
                 return true;

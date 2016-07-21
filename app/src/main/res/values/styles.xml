@@ -50,7 +50,9 @@
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:paddingLeft">@dimen/keyline_16</item>
         <item name="android:paddingRight">@dimen/keyline_16</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:paddingBottom">24dp</item>
+        <item name="android:textSize">17sp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/color_black_b5</item>
     </style>

@@ -27,6 +27,6 @@ public class RewardsFragment extends BaseFragment {
 
     @Override
     protected String getPageTitle() {
-        return "Rewards";
+        return getString(R.string.rewards);
     }
 }

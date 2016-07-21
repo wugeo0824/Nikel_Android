@@ -23,6 +23,6 @@ public class HelpFragment extends BaseFragment {
 
     @Override
     protected String getPageTitle() {
-        return "Help";
+        return getString(R.string.help);
     }
 }
