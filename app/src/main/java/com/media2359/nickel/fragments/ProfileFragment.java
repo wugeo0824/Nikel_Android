@@ -144,7 +144,7 @@ public class ProfileFragment extends BaseFragment {
     }
 
     private void saveChanges() {
-        btnSaveChanges.setEnabled(false);
+
         MyProfile.Builder builder = new MyProfile.Builder();
         builder.withFullName(pfName.getInput()).withDOB(pfDOB.getInput()).withStreetAddress(pfStreet.getInput())
                 .withCity(pfCity.getInput()).withPostalCode(pfPostal.getInput())
@@ -156,6 +156,8 @@ public class ProfileFragment extends BaseFragment {
         uploadProfileAsyncTask.execute(MyProfile.getCurrentProfile(getContext()));
 
         progressDialog = ProgressDialog.show(getContext(), "Uploading", "Please wait...", true);
+
+        btnSaveChanges.setEnabled(false);
 
     }
 

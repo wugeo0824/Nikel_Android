@@ -36,7 +36,7 @@ public class Recipient {
     @SerializedName("bankShortName")
     String bankShortName;
 
-    @SerializedName("bankId")
+    @SerializedName("bank")
     int bankId;
 
     @SerializedName("id")

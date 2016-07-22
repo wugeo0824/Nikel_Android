@@ -27,6 +27,7 @@ import com.media2359.nickel.R;
 import com.media2359.nickel.activities.MainActivity;
 import com.media2359.nickel.activities.TransactionActivity;
 import com.media2359.nickel.adapter.RecipientAdapter;
+import com.media2359.nickel.event.OnProfileChangedEvent;
 import com.media2359.nickel.event.OnRecipientsChangedEvent;
 import com.media2359.nickel.managers.CentralDataManager;
 import com.media2359.nickel.model.MyProfile;
@@ -88,7 +89,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         initViews(view);
         loadMyProfile();
         getRecipients(false);
-        
+
         return view;
     }
 
@@ -372,12 +373,12 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         call.enqueue(new Callback<NickelTransfer>() {
             @Override
             public void onResponse(Call<NickelTransfer> call, Response<NickelTransfer> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     // update the transaction status
                     currentTransaction = response.body();
                     currentTransaction.transactionConfirmed();
                     TransactionActivity.startTransactionActivity(getActivity(), currentTransaction, position);
-                }else {
+                } else {
                     Toast.makeText(getContext(), RequestHandler.convert400Response(response), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -407,7 +408,24 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         if (MyProfile.getCurrentProfile(getContext()) != null) {
             hideMyProfile();
         } else {
-            showMyProfile();
+            NikelService.getApiManager().getMyProfile().enqueue(new Callback<MyProfile>() {
+                @Override
+                public void onResponse(Call<MyProfile> call, Response<MyProfile> response) {
+                    if (response.isSuccessful()) {
+                        if (TextUtils.isEmpty(response.body().getFullName())) {
+                            hideMyProfile();
+                            MyProfile.saveCurrentProfile(getContext(), response.body());
+                            EventBus.getDefault().post(new OnProfileChangedEvent(true, response.message()));
+                        } else
+                            showMyProfile();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MyProfile> call, Throwable t) {
+                    showMyProfile();
+                }
+            });
         }
     }
 
