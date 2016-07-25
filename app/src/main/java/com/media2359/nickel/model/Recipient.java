@@ -45,6 +45,9 @@ public class Recipient {
     @SerializedName("latestTransfer")
     NickelTransfer currentTransaction;
 
+    @SerializedName("status")
+    String status;
+
     @Expose(serialize = false, deserialize = false)
     private boolean expanded = false;
 
@@ -120,6 +123,14 @@ public class Recipient {
 
     public String getRecipientId() {
         return recipientId;
+    }
+
+    public String getBankShortName() {
+        return bankShortName;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public boolean isInProgress() {

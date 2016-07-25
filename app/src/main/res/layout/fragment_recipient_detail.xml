@@ -11,6 +11,31 @@
         android:layout_marginTop="@dimen/keyline_12"
         android:orientation="vertical">
 
+        <FrameLayout
+            android:id="@+id/flProfileStatus"
+            android:layout_marginBottom="@dimen/keyline_12"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/home_background"/>
+
+            <com.media2359.nickel.ui.customview.CustomTextView
+                android:id="@+id/tvProfileStatus"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:text="@string/profile_status_pending"
+                android:gravity="center"
+                android:padding="@dimen/keyline_16"
+                android:drawableLeft="@drawable/ico_alert"
+                android:background="@color/home_background"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp" />
+
+        </FrameLayout>
+
         <com.media2359.nickel.ui.customview.ProfileField
             android:id="@+id/pfReciDisplayName"
             android:layout_width="match_parent"

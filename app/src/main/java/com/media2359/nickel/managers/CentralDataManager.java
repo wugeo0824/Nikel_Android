@@ -56,10 +56,13 @@ public class CentralDataManager {
         manager = null;
     }
 
-
     public static void setCurrentTransaction(NickelTransfer currentTransaction, int recipientPosition) {
         CentralDataManager.currentTransaction = currentTransaction;
         CentralDataManager.recipientPosition = recipientPosition;
+    }
+
+    public static void setCurrentTransaction(NickelTransfer currentTransaction) {
+        CentralDataManager.currentTransaction = currentTransaction;
     }
 
     public static NickelTransfer getCurrentTransaction() {

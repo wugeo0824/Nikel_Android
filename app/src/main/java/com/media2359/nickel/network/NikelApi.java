@@ -49,7 +49,7 @@ public interface NikelApi {
 
     @FormUrlEncoded
     @POST(API_VERSION + AUTH_PREFIX + "/resetPasswordConsumer")
-    Call<BaseResponse> resetPassword(@Field("mobilePhone") String mobile, @Field("otp") String otp, @Field("password") String password);
+    Call<BaseResponse> resetPassword(@Field("mobilePhone") String mobile, @Field("otp") String otp, @Field("newPassword") String password);
 
     @FormUrlEncoded
     @POST(API_VERSION + AUTH_PREFIX + "/forgotPasswordConsumer")

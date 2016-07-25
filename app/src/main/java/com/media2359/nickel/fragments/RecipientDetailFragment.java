@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.media2359.nickel.R;
@@ -53,6 +54,7 @@ public class RecipientDetailFragment extends BaseFragment {
     private Spinner spinnerBank;
     private BankAdapter bankAdapter;
     private Bank selectedBank;
+    private TextView tvStatus;
 
     public static RecipientDetailFragment newInstance(int recipientPosition) {
         RecipientDetailFragment instance = new RecipientDetailFragment();
@@ -106,6 +108,8 @@ public class RecipientDetailFragment extends BaseFragment {
                 saveChanges();
             }
         });
+
+        tvStatus = (TextView) view.findViewById(R.id.tvProfileStatus);
 
         spinnerBank = (Spinner) view.findViewById(R.id.spinnerBankName);
         bankAdapter = new BankAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, bankList);
@@ -290,23 +294,57 @@ public class RecipientDetailFragment extends BaseFragment {
     }
 
     private void bindDataToViews() {
-        pfFullName.setInput(recipient.getFullName());
-        pfDisplayName.setInput(recipient.getDisplayName());
-        //pfBankName.setInput(recipient.getBankName());
 
-        for (int i = 0; i < bankList.size(); i++) {
-            Bank bank = bankList.get(i);
-            if (bank.getName().equals(recipient.getBankName())) {
-                spinnerBank.setSelection(i);
-                break;
+        if (recipient.getStatus().equals("Verified")){
+            pfFullName.setInputAndLock(recipient.getFullName());
+            pfDisplayName.setInputAndLock(recipient.getDisplayName());
+            //pfBankName.setInput(recipient.getBankName());
+
+            for (int i = 0; i < bankList.size(); i++) {
+                Bank bank = bankList.get(i);
+                if (bank.getName().equals(recipient.getBankName())) {
+                    spinnerBank.setSelection(i);
+                    break;
+                }
             }
+
+            spinnerBank.setEnabled(false);
+
+            tvStatus.setText("Recipient status: " + recipient.getStatus());
+            tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_ok, 0, 0, 0);
+
+            pfBankAccount.setInputAndLock(recipient.getBankAccount());
+            pfStreet.setInputAndLock(recipient.getStreet());
+            pfCity.setInputAndLock(recipient.getCity());
+            pfPhone.setInputAndLock(recipient.getPhoneNumber());
+            pfPostalCode.setInputAndLock(recipient.getPostalCode());
+            btnSaveChanges.setVisibility(View.GONE);
+            pfBankAgain.setVisibility(View.GONE);
+
+        }else {
+            pfFullName.setInput(recipient.getFullName());
+            pfDisplayName.setInput(recipient.getDisplayName());
+            //pfBankName.setInput(recipient.getBankName());
+
+            for (int i = 0; i < bankList.size(); i++) {
+                Bank bank = bankList.get(i);
+                if (bank.getName().equals(recipient.getBankName())) {
+                    spinnerBank.setSelection(i);
+                    break;
+                }
+            }
+
+            tvStatus.setText("Recipient status: " + recipient.getStatus());
+            tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_alert, 0, 0, 0);
+
+            pfBankAccount.setInput(recipient.getBankAccount());
+            pfStreet.setInput(recipient.getStreet());
+            pfCity.setInput(recipient.getCity());
+            pfPhone.setInput(recipient.getPhoneNumber());
+            pfPostalCode.setInput(recipient.getPostalCode());
+            btnSaveChanges.setVisibility(View.VISIBLE);
         }
 
-        pfBankAccount.setInput(recipient.getBankAccount());
-        pfStreet.setInput(recipient.getStreet());
-        pfCity.setInput(recipient.getCity());
-        pfPhone.setInput(recipient.getPhoneNumber());
-        pfPostalCode.setInput(recipient.getPostalCode());
     }
 
     @Override

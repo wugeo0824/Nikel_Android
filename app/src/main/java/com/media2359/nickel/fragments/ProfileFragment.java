@@ -255,8 +255,9 @@ public class ProfileFragment extends BaseFragment {
             case MyProfile.STATUS_APPROVED:
                 flStatus.setVisibility(View.VISIBLE);
                 tvStatus.setText(getString(R.string.profile_status_approved));
-                btnSaveChanges.setText("Resubmit");
-                btnSaveChanges.setEnabled(false);
+//                btnSaveChanges.setText("Resubmit");
+//                btnSaveChanges.setEnabled(false);
+                btnSaveChanges.setVisibility(View.GONE);
                 tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_ok, 0, 0, 0);
                 break;
             default:

@@ -41,6 +41,7 @@ public class UploadReceiptAsyncTask extends AsyncTask<NickelTransfer, Void, Void
             public void onResponse(Call<NickelTransfer> call, Response<NickelTransfer> response) {
                 OnReceiptUploadedEvent event = new OnReceiptUploadedEvent();
                 if (response.isSuccessful()){
+                    event.setNickelTransfer(response.body());
                     event.setSuccess(true);
                     event.setMessage(response.message());
                 }else {

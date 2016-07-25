@@ -156,6 +156,7 @@
             android:layout_below="@id/tvPhotoID"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
+            android:layout_marginBottom="@dimen/keyline_16"
             android:background="@drawable/shape_square_grey_box"
             android:padding="10dp">
 
@@ -227,7 +228,6 @@
             android:layout_marginBottom="@dimen/keyline_16"
             android:layout_below="@id/rlIDPhotoContainer"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/keyline_16"
             android:text="@string/submit"
             android:textAllCaps="false" />
 

@@ -42,7 +42,7 @@ public class RecipientViewHolder extends RecyclerView.ViewHolder {
 
     public void bindItem(final Recipient recipient) {
         tvRecipientName.setText(recipient.getDisplayName());
-        tvRecipientBank.setText(recipient.getBankAccount());
+        tvRecipientBank.setText(recipient.getBankShortName() + " " + recipient.getBankAccount());
 
         btnRecipientOptions.setOnClickListener(new View.OnClickListener() {
             @Override

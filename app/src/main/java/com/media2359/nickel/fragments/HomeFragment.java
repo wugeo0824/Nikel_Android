@@ -87,8 +87,8 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         if (getActivity() instanceof MainActivity)
             mainActivity = (MainActivity) getActivity();
         initViews(view);
+        hideMyProfile();
         loadMyProfile();
-        getRecipients(false);
 
         return view;
     }
@@ -145,7 +145,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     public void onResume() {
         super.onResume();
 
-
+        getRecipients(false);
         refreshRate();
     }
 
@@ -301,7 +301,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     }
 
     @Subscribe
-    public void OnEvent(OnRecipientsChangedEvent onRecipientsChangedEvent) {
+    public void onEvent(OnRecipientsChangedEvent onRecipientsChangedEvent) {
 
         Log.d(TAG, "OnEvent: " + CentralDataManager.getInstance().getAllRecipients().size());
 
@@ -405,28 +405,27 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     }
 
     private void loadMyProfile() {
-        if (MyProfile.getCurrentProfile(getContext()) != null) {
-            hideMyProfile();
-        } else {
-            NikelService.getApiManager().getMyProfile().enqueue(new Callback<MyProfile>() {
-                @Override
-                public void onResponse(Call<MyProfile> call, Response<MyProfile> response) {
-                    if (response.isSuccessful()) {
-                        if (TextUtils.isEmpty(response.body().getFullName())) {
-                            hideMyProfile();
-                            MyProfile.saveCurrentProfile(getContext(), response.body());
-                            EventBus.getDefault().post(new OnProfileChangedEvent(true, response.message()));
-                        } else
-                            showMyProfile();
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<MyProfile> call, Throwable t) {
+        NikelService.getApiManager().getMyProfile().enqueue(new Callback<MyProfile>() {
+            @Override
+            public void onResponse(Call<MyProfile> call, Response<MyProfile> response) {
+                if (response.isSuccessful()) {
+                    if (!TextUtils.isEmpty(response.body().getFullName())) {
+                        hideMyProfile();
+                        MyProfile.saveCurrentProfile(getContext(), response.body());
+                        EventBus.getDefault().post(new OnProfileChangedEvent(true, response.message()));
+                    }
+                }else {
                     showMyProfile();
                 }
-            });
-        }
+            }
+
+            @Override
+            public void onFailure(Call<MyProfile> call, Throwable t) {
+                showMyProfile();
+            }
+        });
+
     }
 
     private void hideMyProfile() {

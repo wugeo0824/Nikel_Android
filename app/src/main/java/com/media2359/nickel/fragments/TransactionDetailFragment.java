@@ -173,7 +173,8 @@ public class TransactionDetailFragment extends BaseFragment {
             Picasso.with(getActivity()).load(image).fit().centerInside().into(ivReceipt);
         }
 
-
+        tvStatus.setText(transaction.getTransactionStatus());
+        tvInstruction.setText(transaction.getTransactionStatus());
 
         switch (transaction.getTransProgress()) {
             case NickelTransfer.TRANS_DRAFT:
@@ -231,6 +232,8 @@ public class TransactionDetailFragment extends BaseFragment {
         if (onReceiptUploadedEvent.isSuccess()){
             DialogUtils.showNickelDialog(getActivity(), "Submitted");
             CentralDataManager.getCurrentTransaction().receiptUploaded();
+            CentralDataManager.setCurrentTransaction(onReceiptUploadedEvent.getNickelTransfer());
+            transaction = onReceiptUploadedEvent.getNickelTransfer();
             updateUIProgress();
         }else {
             Toast.makeText(getContext(), onReceiptUploadedEvent.getMessage(), Toast.LENGTH_SHORT).show();

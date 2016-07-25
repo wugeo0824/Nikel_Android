@@ -276,6 +276,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void submitNewPassword() {
+
+        if (alertDialog != null && alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
+
         progressDialog = showProgressDialog("", "Please wait...");
         Call<BaseResponse> call = NikelService.getApiManager().resetPassword(etNewPhone.getText().toString(), etNewOtp.getText().toString(), etNewPassword.getText().toString());
         call.enqueue(new Callback<BaseResponse>() {
