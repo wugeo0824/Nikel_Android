@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="language_options">
+        <item>English</item>
+        <item>Bahasa Indonesia</item>
+    </string-array>
+
+    <string-array name="document_types">
+        <item>Passport</item>
+        <item>Work Pass</item>
+        <item>Expert Pass</item>
+        <item>Identity Card</item>
+    </string-array>
+</resources>

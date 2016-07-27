@@ -71,6 +71,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
     private ThemedSwipeRefreshLayout srl;
     private NickelTransfer currentTransaction;
     private LinearLayoutManager linearLayoutManager;
+    private boolean isProfileCompleted = false;
 
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
@@ -87,7 +88,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
         if (getActivity() instanceof MainActivity)
             mainActivity = (MainActivity) getActivity();
         initViews(view);
-        hideMyProfile();
+        //hideEditProfile();
         loadMyProfile();
 
         return view;
@@ -274,7 +275,7 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
             return false;
         }
 
-        if (MyProfile.getCurrentProfile(getContext()) == null) {
+        if (!isProfileCompleted) {
             String message = getString(R.string.complete_profile_first);
             DialogUtils.getNickelThemedAlertDialog(getContext(), "Alert", message, new DialogInterface.OnClickListener() {
                 @Override
@@ -410,34 +411,36 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
             @Override
             public void onResponse(Call<MyProfile> call, Response<MyProfile> response) {
                 if (response.isSuccessful()) {
-                    if (!TextUtils.isEmpty(response.body().getFullName())) {
-                        hideMyProfile();
+                    if (!TextUtils.isEmpty(response.body().getFullName()) && !TextUtils.isEmpty(response.body().getDocumentID())) {
+                        hideEditProfile();
                         MyProfile.saveCurrentProfile(getContext(), response.body());
                         EventBus.getDefault().post(new OnProfileChangedEvent(true, response.message()));
                     }
-                }else {
-                    showMyProfile();
+                } else {
+                    showEditProfile();
                 }
             }
 
             @Override
             public void onFailure(Call<MyProfile> call, Throwable t) {
-                showMyProfile();
+                showEditProfile();
             }
         });
 
     }
 
-    private void hideMyProfile() {
+    private void hideEditProfile() {
         tvMyInfo.setVisibility(View.GONE);
         btnMyInfoEdit.setVisibility(View.GONE);
         srl.setEnabled(true);
+        isProfileCompleted = true;
     }
 
-    private void showMyProfile() {
+    private void showEditProfile() {
         tvMyInfo.setVisibility(View.VISIBLE);
         btnMyInfoEdit.setVisibility(View.VISIBLE);
         srl.setEnabled(false);
+        isProfileCompleted = false;
     }
 
     private void getRecipients(boolean pullToRefresh) {

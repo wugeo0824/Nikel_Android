@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.media2359.nickel.R;
 import com.media2359.nickel.activities.CaptureActivity;
+import com.media2359.nickel.gallery.GuideActivity;
 import com.media2359.nickel.managers.CentralDataManager;
 import com.media2359.nickel.model.NickelTransfer;
 import com.media2359.nickel.utils.BarcodeUtils;
@@ -107,8 +108,10 @@ public class CStoreFragment extends BaseFragment {
     }
 
     private void openGuide() {
-        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(Const.WEB_LINK_GUIDE));
-        startActivity(i);
+//        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(Const.WEB_LINK_GUIDE));
+//        startActivity(i);
+
+        GuideActivity.startGuideActivity(getActivity());
     }
 
     @Override

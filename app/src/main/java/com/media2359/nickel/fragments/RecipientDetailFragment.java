@@ -110,6 +110,7 @@ public class RecipientDetailFragment extends BaseFragment {
         });
 
         tvStatus = (TextView) view.findViewById(R.id.tvProfileStatus);
+        tvStatus.setVisibility(View.GONE);
 
         spinnerBank = (Spinner) view.findViewById(R.id.spinnerBankName);
         bankAdapter = new BankAdapter(getContext(), android.R.layout.simple_dropdown_item_1line, bankList);
@@ -312,6 +313,7 @@ public class RecipientDetailFragment extends BaseFragment {
 
             tvStatus.setText("Recipient status: " + recipient.getStatus());
             tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_ok, 0, 0, 0);
+            tvStatus.setVisibility(View.VISIBLE);
 
             pfBankAccount.setInputAndLock(recipient.getBankAccount());
             pfStreet.setInputAndLock(recipient.getStreet());
@@ -336,6 +338,7 @@ public class RecipientDetailFragment extends BaseFragment {
 
             tvStatus.setText("Recipient status: " + recipient.getStatus());
             tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_alert, 0, 0, 0);
+            tvStatus.setVisibility(View.VISIBLE);
 
             pfBankAccount.setInput(recipient.getBankAccount());
             pfStreet.setInput(recipient.getStreet());

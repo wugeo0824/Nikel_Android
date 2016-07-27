@@ -15,12 +15,7 @@
             android:id="@+id/flProfileStatus"
             android:layout_marginBottom="@dimen/keyline_12"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/home_background"/>
+            android:layout_height="wrap_content">
 
             <com.media2359.nickel.ui.customview.CustomTextView
                 android:id="@+id/tvProfileStatus"

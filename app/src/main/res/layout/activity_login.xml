@@ -10,11 +10,9 @@
     <ImageView
         android:id="@+id/ivLogo"
         android:layout_width="200dp"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/centerAnchor"
+        android:layout_height="130dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp"
         android:layout_marginTop="@dimen/login_logo_top_margin"
         android:scaleType="fitCenter"
         android:src="@drawable/logo_whole_small" />
@@ -40,7 +38,7 @@
         android:id="@+id/rlLoginContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/centerAnchor">
+        android:layout_centerInParent="true">
 
         <ImageView
             android:id="@+id/ivPhone"

@@ -20,23 +20,24 @@
         <item
             android:id="@+id/nav_rewards"
             android:icon="@drawable/icn_rewards"
-            android:title="@string/rewards" />
+            android:title="@string/rewards"
+            android:visible="false" />
         <item
             android:id="@+id/nav_help"
             android:icon="@drawable/icn_help"
-            android:title="@string/help" />
+            android:title="@string/help"
+            android:visible="false" />
         <!--<item-->
-            <!--android:title="">-->
-            <!--<menu>-->
-                <!--<item-->
-                    <!--android:id="@+id/nav_sign_out"-->
-                    <!--android:icon="@drawable/icn_signout"-->
-                    <!--android:title="Sign Out" />-->
-            <!--</menu>-->
+        <!--android:title="">-->
+        <!--<menu>-->
+        <!--<item-->
+        <!--android:id="@+id/nav_sign_out"-->
+        <!--android:icon="@drawable/icn_signout"-->
+        <!--android:title="Sign Out" />-->
+        <!--</menu>-->
         <!--</item>-->
 
     </group>
-
 
 
 </menu>

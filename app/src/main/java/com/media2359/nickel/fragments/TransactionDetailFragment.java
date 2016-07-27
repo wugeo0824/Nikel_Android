@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.media2359.nickel.BuildConfig;
 import com.media2359.nickel.R;
 import com.media2359.nickel.activities.CaptureActivity;
 import com.media2359.nickel.activities.TransactionActivity;
@@ -108,6 +109,10 @@ public class TransactionDetailFragment extends BaseFragment {
         btnUOB.setOnClickListener(OnUOBClick);
         btnCStore.setOnClickListener(OnCStoreClick);
         btnSubmitReceipt.setOnClickListener(OnSubmitClick);
+
+        if (!BuildConfig.DEBUG){
+            btnCStore.setVisibility(View.GONE);
+        }
     }
 
     private void bindData() {
