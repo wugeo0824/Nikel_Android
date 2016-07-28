@@ -286,6 +286,18 @@ public class HomeFragment extends BaseFragment implements RecipientAdapter.onIte
             return false;
         }
 
+        if (MyProfile.getCurrentProfile(getContext()) != null && MyProfile.getCurrentProfile(getContext()).getStatusInt() != MyProfile.STATUS_APPROVED){
+            //String message = getString(R.string.complete_profile_first);
+            String message = "Your account is not verified yet. Our officers will review your account ASAP";
+            DialogUtils.getNickelThemedAlertDialog(getContext(), "Alert", message, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //showProfileFragment();
+                }
+            }).show();
+            return false;
+        }
+
         return true;
     }
 

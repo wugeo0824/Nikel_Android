@@ -120,13 +120,13 @@ public class TransactionDetailFragment extends BaseFragment {
         tvInstruction.setText(transaction.getTransactionStatus());
         tvID.setText("" + transaction.getTransactionID());
         tvDate.setText(transaction.getCreatedAt());
-        tvSendAmount.setText(transaction.getAmountSent());
-        tvGetAmount.setText(transaction.getAmtRecv());
+        tvSendAmount.setText(transaction.getAmountSent() + " " + transaction.getCurrencySent());
+        tvGetAmount.setText(transaction.getAmtRecv() + " " + transaction.getCurrencyRecv());
         tvFee.setText(transaction.getFee() + " SGD");
 
         tvStatus.setText(transaction.getTransactionStatus());
 
-        tvRecipient.setText(transaction.getRecipientFullName() + "\n" + transaction.getRecipientAccountNo());
+        tvRecipient.setText(transaction.getRecipientFullName() + "\n" + transaction.getRecpBankName() + " " + transaction.getRecipientAccountNo());
         tvExchangeRate.setText(transaction.getExchangeRate() + "IDR");
     }
 

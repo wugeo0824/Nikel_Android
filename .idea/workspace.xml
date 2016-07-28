@@ -137,51 +137,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c470110b-02dd-4c08-9531-689178b1652e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-in/uob1.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-in/uob10.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-in/uob2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-in/uob3.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-in/uob4.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-in/uob5.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-in/uob6.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-in/uob7.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-in/uob8.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-in/uob9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/uob1.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/uob10.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/uob2.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/uob3.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/uob4.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/uob5.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/uob6.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/uob7.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/uob8.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/uob9.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/gallery/GalleryAdapter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/gallery/GuideActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/gallery/PhotoFragment.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_guide.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_photo.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/values-in/arrays.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/converter_simplexml_2_0_0_beta4.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/simple_xml_2_7_1.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/proguard-rules.pro" afterPath="$PROJECT_DIR$/app/proguard-rules.pro" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/activities/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/activities/LoginActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/CStoreFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/CStoreFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/HomeFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/HomeFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/RecipientDetailFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/RecipientDetailFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/TransactionDetailFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/TransactionDetailFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/UOBMachinesFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/UOBMachinesFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/utils/Const.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/utils/Const.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_recipient_detail.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_recipient_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/menu/menu_drawer.xml" afterPath="$PROJECT_DIR$/app/src/main/res/menu/menu_drawer.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values-in/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values-in/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/model/NickelTransfer.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/model/NickelTransfer.java" />
     </list>
     <ignored path="nikel.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -283,46 +245,62 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/HomeFragment.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="413" column="127" selection-start-line="413" selection-start-column="127" selection-end-line="413" selection-end-column="127" />
+              <caret line="291" column="83" selection-start-line="291" selection-start-column="83" selection-end-line="291" selection-end-column="83" />
               <folding>
                 <element signature="method#newInstance#0;class#HomeFragment#0" expanded="false" />
                 <element signature="method#initViews#0;class#HomeFragment#0" expanded="false" />
                 <element signature="method#refreshRate#0;class#HomeFragment#0" expanded="false" />
+                <element signature="e#11713#11928#0" expanded="true" />
+                <element signature="e#11927#11928#0" expanded="true" />
                 <element signature="method#showDeleteDialog#0;class#HomeFragment#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CaptureActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/activities/CaptureActivity.java">
+      <file leaf-file-name="RecipientDetailFragment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/RecipientDetailFragment.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="282" column="0" selection-start-line="282" selection-start-column="0" selection-end-line="282" selection-end-column="0" />
-              <folding />
+              <caret line="340" column="49" selection-start-line="340" selection-start-column="49" selection-end-line="340" selection-end-column="49" />
+              <folding>
+                <element signature="method#newInstance#0;class#RecipientDetailFragment#0" expanded="false" />
+                <element signature="method#onDestroyView#0;class#RecipientDetailFragment#0" expanded="false" />
+                <element signature="class#6563:7200" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="fragment_photo.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_photo.xml">
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
+      <file leaf-file-name="TransactionDetailFragment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/TransactionDetailFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.792453">
-              <caret line="24" column="14" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="128" column="108" selection-start-line="128" selection-start-column="108" selection-end-line="128" selection-end-column="108" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UOBMachinesFragment.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UOBMachinesFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/UOBMachinesFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="113" column="8" selection-start-line="113" selection-start-column="8" selection-end-line="113" selection-end-column="56" />
+            <state vertical-scroll-proportion="0.34146342">
+              <caret line="96" column="129" selection-start-line="96" selection-start-column="129" selection-end-line="96" selection-end-column="129" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NickelTransfer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/model/NickelTransfer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="257" column="5" selection-start-line="257" selection-start-column="5" selection-end-line="257" selection-end-column="5" />
+              <folding>
+                <element signature="e#6976#6977#0" expanded="true" />
+                <element signature="e#7008#7009#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -337,24 +315,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Const.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Const.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/utils/Const.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3292683">
+            <state vertical-scroll-proportion="0.0">
               <caret line="9" column="122" selection-start-line="9" selection-start-column="122" selection-end-line="9" selection-end-column="122" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ProfileFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/ProfileFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="154" column="47" selection-start-line="154" selection-start-column="47" selection-end-line="154" selection-end-column="47" />
-              <folding>
-                <element signature="e#5850#5913#0" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -2320,7 +2286,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/RewardsFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_capture.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/activities/CaptureActivity.java" />
         <option value="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/values/values.xml" />
@@ -2352,7 +2317,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values-in/strings.xml" />
         <option value="$PROJECT_DIR$/app/proguard-rules.pro" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/activities/LoginActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/TransactionDetailFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_drawer.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/RecipientDetailFragment.java" />
@@ -2361,16 +2325,18 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/gallery.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_guide.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_photo.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/UOBMachinesFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/CStoreFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/tasks/UploadProfileAsyncTask.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/HomeFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/gallery/GuideActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/gallery/GalleryAdapter.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/gallery/PhotoFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/utils/Const.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/model/NickelTransfer.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/HomeFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/TransactionDetailFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/UOBMachinesFragment.java" />
       </list>
     </option>
   </component>
@@ -2422,6 +2388,7 @@
     </navigator>
     <panes>
       <pane id="ProjectPane" />
+      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -2443,7 +2410,6 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -2538,7 +2504,51 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nikel" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nickel" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="gallery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nikel" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nickel" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fragments" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2969,12 +2979,11 @@
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32919955" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32077765" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22197923" sideWeight="0.51598173" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22197923" sideWeight="0.5251142" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46780074" sideWeight="0.5046474" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.46780074" sideWeight="0.49535266" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22854018" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32919955" sideWeight="0.4977434" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32442284" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32807216" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -2982,8 +2991,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22197923" sideWeight="0.48401827" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3304982" sideWeight="0.4876982" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22197923" sideWeight="0.47488585" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32897317" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24983734" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Fabric" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -2997,7 +3005,9 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22854018" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="JRebel for Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3304982" sideWeight="0.4876982" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -3018,19 +3028,10 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/ico_sm_language_black.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.065645516">
-          <caret line="2" column="33" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/ico_sm_language.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3049,7 +3050,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3139,16 +3139,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/model/MyProfile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33170733">
-          <caret line="96" column="28" selection-start-line="96" selection-start-column="28" selection-end-line="96" selection-end-column="28" />
-          <folding>
-            <element signature="class#Builder#0;class#MyProfile#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/activities/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3161,7 +3151,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="51" column="119" selection-start-line="51" selection-start-column="119" selection-end-line="51" selection-end-column="119" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3193,7 +3182,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.07317073">
           <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3225,7 +3213,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="33" column="52" selection-start-line="33" selection-start-column="52" selection-end-line="33" selection-end-column="52" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3233,11 +3220,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#636#637#0" expanded="false" />
-            <element signature="e#664#665#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3263,20 +3245,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="212" column="47" selection-start-line="212" selection-start-column="47" selection-end-line="212" selection-end-column="47" />
-          <folding>
-            <element signature="method#onWindowFocusChanged#0;class#LoginActivity#0" expanded="false" />
-            <element signature="method#playAnimation#0;class#LoginActivity#0" expanded="false" />
-            <element signature="method#makeAllElementsHiding#0;class#LoginActivity#0" expanded="false" />
-            <element signature="method#initPrivacyMessage#0;class#LoginActivity#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/TransactionDetailFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="113" column="45" selection-start-line="113" selection-start-column="45" selection-end-line="113" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3310,18 +3278,6 @@
         <state vertical-scroll-proportion="0.71428573">
           <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="8" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/RecipientDetailFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="340" column="49" selection-start-line="340" selection-start-column="49" selection-end-line="340" selection-end-column="49" />
-          <folding>
-            <element signature="method#newInstance#0;class#RecipientDetailFragment#0" expanded="false" />
-            <element signature="method#onDestroyView#0;class#RecipientDetailFragment#0" expanded="false" />
-            <element signature="class#6563:7200" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3378,19 +3334,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/UOBMachinesFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="113" column="8" selection-start-line="113" selection-start-column="8" selection-end-line="113" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/tasks/UploadProfileAsyncTask.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.40243903">
           <caret line="37" column="81" selection-start-line="37" selection-start-column="77" selection-end-line="37" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3400,19 +3347,6 @@
           <caret line="154" column="47" selection-start-line="154" selection-start-column="47" selection-end-line="154" selection-end-column="47" />
           <folding>
             <element signature="e#5850#5913#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/HomeFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="413" column="127" selection-start-line="413" selection-start-column="127" selection-end-line="413" selection-end-column="127" />
-          <folding>
-            <element signature="method#newInstance#0;class#HomeFragment#0" expanded="false" />
-            <element signature="method#initViews#0;class#HomeFragment#0" expanded="false" />
-            <element signature="method#refreshRate#0;class#HomeFragment#0" expanded="false" />
-            <element signature="method#showDeleteDialog#0;class#HomeFragment#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3432,7 +3366,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="282" column="0" selection-start-line="282" selection-start-column="0" selection-end-line="282" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#10335#10336#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3470,9 +3406,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7804878">
           <caret line="61" column="10" selection-start-line="61" selection-start-column="10" selection-end-line="61" selection-end-column="10" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3486,8 +3419,72 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/utils/Const.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3292683">
+        <state vertical-scroll-proportion="0.0">
           <caret line="9" column="122" selection-start-line="9" selection-start-column="122" selection-end-line="9" selection-end-column="122" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/model/MyProfile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="5.195122">
+          <caret line="177" column="27" selection-start-line="177" selection-start-column="27" selection-end-line="177" selection-end-column="27" />
+          <folding>
+            <element signature="class#Builder#0;class#MyProfile#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/model/NickelTransfer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="257" column="5" selection-start-line="257" selection-start-column="5" selection-end-line="257" selection-end-column="5" />
+          <folding>
+            <element signature="e#6976#6977#0" expanded="true" />
+            <element signature="e#7008#7009#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/HomeFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="291" column="83" selection-start-line="291" selection-start-column="83" selection-end-line="291" selection-end-column="83" />
+          <folding>
+            <element signature="method#newInstance#0;class#HomeFragment#0" expanded="false" />
+            <element signature="method#initViews#0;class#HomeFragment#0" expanded="false" />
+            <element signature="method#refreshRate#0;class#HomeFragment#0" expanded="false" />
+            <element signature="e#11713#11928#0" expanded="true" />
+            <element signature="e#11927#11928#0" expanded="true" />
+            <element signature="method#showDeleteDialog#0;class#HomeFragment#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/RecipientDetailFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="340" column="49" selection-start-line="340" selection-start-column="49" selection-end-line="340" selection-end-column="49" />
+          <folding>
+            <element signature="method#newInstance#0;class#RecipientDetailFragment#0" expanded="false" />
+            <element signature="method#onDestroyView#0;class#RecipientDetailFragment#0" expanded="false" />
+            <element signature="class#6563:7200" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/TransactionDetailFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="128" column="108" selection-start-line="128" selection-start-column="108" selection-end-line="128" selection-end-column="108" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/media2359/nickel/fragments/UOBMachinesFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34146342">
+          <caret line="96" column="129" selection-start-line="96" selection-start-column="129" selection-end-line="96" selection-end-column="129" />
           <folding />
         </state>
       </provider>

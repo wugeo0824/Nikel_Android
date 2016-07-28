@@ -94,7 +94,7 @@ public class UOBMachinesFragment extends BaseFragment {
     private void bindData() {
         tvInstruction.setText(String.format(Locale.getDefault(), getString(R.string.uob_instruction), transaction.getAmountSent()));
         tvTransferTo.setText(String.format(Locale.getDefault(), getString(R.string.transfer_to), "Nickel"));
-        tvAccountNo.setText(String.format(Locale.getDefault(), getString(R.string.account_no), transaction.getRecipientAccountNo()));
+        tvAccountNo.setText(String.format(Locale.getDefault(), getString(R.string.account_no), transaction.getRecpBankName() + " " + transaction.getRecipientAccountNo()));
     }
 
     @Override

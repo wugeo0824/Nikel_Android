@@ -23,7 +23,6 @@ public class NickelTransfer {
     public static final String STATUS_FUNDS_READY = "funds ready for collection";
 
 
-
     @SerializedName("userId")
     String userId;
     @SerializedName("recipientId")
@@ -75,6 +74,9 @@ public class NickelTransfer {
 
     @SerializedName("createdAt")
     String createdAt;
+
+    @SerializedName("timestamp")
+    long timeStamp;
 
     String receiptFilePath;
 
@@ -171,7 +173,7 @@ public class NickelTransfer {
     }
 
     public int getTransProgress() {
-        if (transProgress > 100){
+        if (transProgress > 100) {
             String status = getTransactionStatus().toLowerCase();
             if (status.equals(STATUS_PENDING_PAYMENT))
                 return TRANS_NEW_BORN;
@@ -249,6 +251,10 @@ public class NickelTransfer {
 
     public void setReceiptFilePath(String receiptFilePath) {
         this.receiptFilePath = receiptFilePath;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
     }
 
     /**
