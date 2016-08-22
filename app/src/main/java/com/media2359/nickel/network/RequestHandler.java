@@ -2,7 +2,6 @@ package com.media2359.nickel.network;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.media2359.nickel.event.OnForgotPasswordEvent;
@@ -15,17 +14,13 @@ import com.media2359.nickel.event.OnResetPasswordEvent;
 import com.media2359.nickel.event.OnTransfersLoadedEvent;
 import com.media2359.nickel.managers.UserSessionManager;
 import com.media2359.nickel.model.MyProfile;
-import com.media2359.nickel.model.NickelTransfer;
 import com.media2359.nickel.network.responses.BaseResponse;
-import com.media2359.nickel.network.responses.ComputeResponse;
 import com.media2359.nickel.network.responses.LoginResponse;
-import com.media2359.nickel.network.responses.ProfileResponse;
 import com.media2359.nickel.network.responses.TransfersResponse;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
-import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -47,10 +42,10 @@ public class RequestHandler {
         call.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     OnRegisterConsumerEvent event = new OnRegisterConsumerEvent(true, response.body().getMessage());
                     EventBus.getDefault().post(event);
-                }else {
+                } else {
                     OnRegisterConsumerEvent event = new OnRegisterConsumerEvent(false, convert400Response(response));
                     EventBus.getDefault().post(event);
                 }
@@ -71,11 +66,11 @@ public class RequestHandler {
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     UserSessionManager.getInstance().setToken(response.body().getToken());
                     OnLoginWithOtpEvent event = new OnLoginWithOtpEvent(true, response.message());
                     EventBus.getDefault().post(event);
-                }else {
+                } else {
                     OnLoginWithOtpEvent event = new OnLoginWithOtpEvent(false, convert400Response(response));
                     EventBus.getDefault().post(event);
                 }
@@ -91,16 +86,16 @@ public class RequestHandler {
         return call;
     }
 
-    public static Call login (String mobile, String password) {
+    public static Call login(String mobile, String password) {
         Call<LoginResponse> call = NikelService.getApiManager().login(mobile, password);
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     UserSessionManager.getInstance().setToken(response.body().getToken());
                     OnLoginEvent event = new OnLoginEvent(true, response.message());
                     EventBus.getDefault().post(event);
-                }else {
+                } else {
                     OnLoginEvent event = new OnLoginEvent(false, convert400Response(response));
                     EventBus.getDefault().post(event);
                 }
@@ -120,10 +115,10 @@ public class RequestHandler {
         call.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     OnForgotPasswordEvent event = new OnForgotPasswordEvent(true, response.message());
                     EventBus.getDefault().post(event);
-                }else {
+                } else {
                     OnForgotPasswordEvent event = new OnForgotPasswordEvent(false, convert400Response(response));
                     EventBus.getDefault().post(event);
                 }
@@ -143,10 +138,10 @@ public class RequestHandler {
         call.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     OnResetPasswordEvent event = new OnResetPasswordEvent(true, response.message());
                     EventBus.getDefault().post(event);
-                }else {
+                } else {
                     OnResetPasswordEvent event = new OnResetPasswordEvent(false, convert400Response(response));
                     EventBus.getDefault().post(event);
                 }
@@ -181,10 +176,10 @@ public class RequestHandler {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
-                    if (response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         EventBus.getDefault().post(new OnProfileChangedEvent(true, response.body().getMessage()));
-                    }else {
-                        EventBus.getDefault().post(new OnProfileChangedEvent(false,convert400Response(response)));
+                    } else {
+                        EventBus.getDefault().post(new OnProfileChangedEvent(false, convert400Response(response)));
                     }
                 }
             });
@@ -208,9 +203,9 @@ public class RequestHandler {
         call.enqueue(new Callback<MyProfile>() {
             @Override
             public void onResponse(Call<MyProfile> call, Response<MyProfile> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     EventBus.getDefault().post(new OnProfileLoadedEvent(true, response.message(), response.body()));
-                }else {
+                } else {
                     EventBus.getDefault().post(new OnProfileLoadedEvent(false, convert400Response(response), null));
                 }
             }
@@ -228,9 +223,9 @@ public class RequestHandler {
         call.enqueue(new Callback<TransfersResponse>() {
             @Override
             public void onResponse(Call<TransfersResponse> call, Response<TransfersResponse> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     EventBus.getDefault().post(new OnTransfersLoadedEvent(true, response.message(), response.body().getTransfers()));
-                }else {
+                } else {
                     EventBus.getDefault().post(new OnTransfersLoadedEvent(false, convert400Response(response), null));
                 }
             }
@@ -250,7 +245,7 @@ public class RequestHandler {
             error = response.errorBody().string();
             BaseResponse baseResponse = new Gson().fromJson(error, BaseResponse.class);
             return baseResponse.getError();
-        } catch (Exception  e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "";

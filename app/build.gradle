@@ -11,12 +11,12 @@ android {
         }
     }
 
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "com.media2359.nickel"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }
@@ -39,14 +39,15 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:design:24.2.0'
     //mosby for MVP
     compile 'com.hannesdorfmann.mosby:mvp:2.0.1'
     compile 'com.hannesdorfmann.mosby:viewstate:2.0.1'
     //includes Retrofit
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
 //    compile('com.squareup.retrofit2:converter-simplexml:2.0.0-beta4') {
 //        exclude group: 'xpp3', module: 'xpp3'
 //        exclude group: 'stax', module: 'stax-api'
@@ -58,7 +59,10 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
 
-    //compile 'com.github.chrisbanes:PhotoView:1.2.7'
+    //compile 'io.reactivex:rxandroid:1.2.1'
+    // Because RxAndroid releases are few and far between, it is recommended you also
+    // explicitly depend on RxJava's latest version for bug fixes and new features.
+    //compile 'io.reactivex:rxjava:1.1.6'
 
     compile files('libs/core-3.2.1.jar')
 }

@@ -7,7 +7,6 @@ import com.media2359.nickel.network.responses.BanksResponse;
 import com.media2359.nickel.network.responses.BaseResponse;
 import com.media2359.nickel.network.responses.ComputeResponse;
 import com.media2359.nickel.network.responses.LoginResponse;
-import com.media2359.nickel.network.responses.RecipientListResponse;
 import com.media2359.nickel.network.responses.TransfersResponse;
 
 import java.util.List;

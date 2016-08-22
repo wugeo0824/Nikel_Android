@@ -18,7 +18,7 @@ public class GuideActivity extends AppCompatActivity {
     private PagerAdapter pagerAdapter;
     private ViewPager viewPager;
 
-    int[] mResources = {
+    final int[] mResources = {
             R.drawable.uob1,
             R.drawable.uob2,
             R.drawable.uob3,

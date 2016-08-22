@@ -341,6 +341,7 @@ public class ProfileField extends RelativeLayout {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             etInputLayout.removeTextChangedListener(docTypesWatcher);
+            etInputLayout.setText("");
             showDocTypesDialog();
         }
 
